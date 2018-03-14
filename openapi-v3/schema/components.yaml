@@ -1,0 +1,96 @@
+---
+# This file contains reusable openapi-v3 entities for defining
+#   interoperable API behavior by adopting developers.
+#
+# You can reference components via JSON-refs https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
+#  eg. $ref: 'https://gigantic-server.com/schemas/Monster/schema.json'
+#
+components:
+  parameters:
+    # Generic parameters for pagination
+    cursor:
+      name: cursor
+      in: query
+      description: An opaque identifier that points to the next item in the collection.
+      schema:
+        type: string
+        example: 01BX9NSMKVXXS5PSP2FATZM123
+    limit:
+      name: limit
+      in: query
+      description: How many items to return at one time (max 100)
+      schema:
+        type: integer
+        format: int32
+    offset:
+      name: offset
+      in: query
+      description: The zero-ary offset index into the results
+      schema:
+        type: integer
+        default: 0
+        format: int32
+    sort:
+      name: sort
+      in: query
+      description: Sorting order
+      schema:
+        type: string
+        default: 0
+        example: +name
+
+  headers:
+    # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
+    X-Rate-Limit-Limit:
+      description: The number of allowed requests in the current period
+      schema: {type: integer}
+    X-Rate-Limit-Remaining:
+      description: The number of remaining requests in the current period
+      schema: {type: integer}
+    X-Rate-Limit-Reset:
+      description: The number of seconds left in the current period
+      schema: {type: integer}
+
+  responses:
+    # Predefined error codes for this API
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    429TooManyRequests:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    503ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
