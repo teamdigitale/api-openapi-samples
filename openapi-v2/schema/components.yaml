@@ -16,32 +16,28 @@ x-components:
       description: An opaque identifier that points to the next item in the collection.
       in: query
       name: cursor
-      schema:
-        example: 01BX9NSMKVXXS5PSP2FATZM123
-        type: string
+      x-example: 01BX9NSMKVXXS5PSP2FATZM123
+      type: string
     limit:
       description: How many items to return at one time (max 100)
       in: query
       name: limit
-      schema:
-        format: int32
-        type: integer
+      format: int32
+      type: integer
     offset:
       description: The zero-ary offset index into the results
       in: query
       name: offset
-      schema:
-        default: 0
-        format: int32
-        type: integer
+      default: 0
+      format: int32
+      type: integer
     sort:
       description: Sorting order
       in: query
       name: sort
-      schema:
-        default: 0
-        example: +name
-        type: string
+      default: 0
+      x-example: +name
+      type: string
   responses:
     400BadRequest:
       content:
@@ -76,14 +72,11 @@ x-components:
   headers:
     X-Rate-Limit-Limit:
       description: The number of allowed requests in the current period
-      schema:
-        type: integer
+      type: integer
     X-Rate-Limit-Remaining:
       description: The number of remaining requests in the current period
-      schema:
-        type: integer
+      type: integer
     X-Rate-Limit-Reset:
       description: The number of seconds left in the current period
-      schema:
-        type: integer
+      type: integer
 
