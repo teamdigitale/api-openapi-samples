@@ -5,6 +5,7 @@
 # You can reference components via JSON-refs https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
 #  eg. $ref: 'https://gigantic-server.com/schemas/Monster/schema.json'
 #
+openapi: 3.0.0
 components:
   parameters:
     # Generic parameters for pagination
