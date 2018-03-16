@@ -1,0 +1,339 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: >-
+      https://virtserver.swaggerhub.com/ioggstream_italia/marketplace-italia/0.0.1
+info:
+  description: Test
+  version: 0.0.1
+  title: Interfaccia Standard Marketplace API
+  contact:
+    email: roberto@teamdigitale.governo.it
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: catalogo
+    description: Qualsiasi cosa circa il catalogo API
+  - name: stats
+    description: Circa le statistiche di utilizzo
+  - name: security
+    description: Per richiedere un'API Key
+paths:
+  /catalogo:
+    post:
+      tags:
+        - catalogo
+      summary: Aggiungi un nuovo end-point API al catalogo
+      description: >-
+        Con questa operazione è possibile aggiungere al catalogo esposto al
+        marketplace una nuova API di dominio
+      operationId: addCatalogo
+      responses:
+        '405':
+          description: Invalid input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIs'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/APIs'
+        description: oggetto API che si vuole aggiungere al catalogo
+        required: true
+    get:
+      tags:
+        - catalogo
+      summary: Lista di tutte le API pubblicate dal medesimo servizio
+      description: >-
+        Con questa operazione è possibile listare tutte le API messe a
+        disposizione dallo specifico erogatore
+      operationId: showCatalogo
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Lista API
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/APIs'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIs'
+        '404':
+          $ref: '#/components/responses/APIsDoesNotExistResponse'
+        '500':
+          $ref: '#/components/responses/Standard500ErrorResponse'
+  '/catalogo/{id}':
+    get:
+      tags:
+        - catalogo
+      summary: Lettura dei metadati caratteristici di ogni API esposta
+      description: >-
+        Con questa operazione è possibile leggere tutti i meta dati di una
+        singola API esposta dall'erogatore
+      operationId: showSingolaAPI
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Meta data API
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/APIs'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIs'
+        '404':
+          $ref: '#/components/responses/APIsDoesNotExistResponse'
+        '500':
+          $ref: '#/components/responses/Standard500ErrorResponse'
+  /stats:
+    get:
+      tags:
+        - stats
+      summary: >-
+        Recupera per tutte le API registrate dall'erogatore le statistiche di
+        base
+      description: >-
+        Statistiche esposte per singola API: Numero di accessi totali, media
+        giornaliera, numero errori totali, media giornaliera
+      operationId: statsAPI
+      responses:
+        '200':
+          description: Stats API
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Stats'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        '404':
+          $ref: '#/components/responses/StatsDoesNotExistsResponse'
+        '500':
+          $ref: '#/components/responses/Standard500ErrorResponse'
+  /getKey:
+    post:
+      tags:
+        - security
+      summary: Richiedi un'API Key per accedere alle API  della PA erogatotrice
+      description: >-
+        E' possibile chiedere la generazione di un API Key da utilizzare poi per
+        autenticare le chiamate alle API erogate dalla PA che gestisce questa
+        serie di API
+      operationId: apikey
+      responses:
+        '200':
+          description: API key generata con successo
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        '404':
+          $ref: '#/components/responses/APIsDoesNotExistResponse'
+        '500':
+          $ref: '#/components/responses/Standard500ErrorResponse'
+        '501':
+          $ref: '#/components/responses/UsernameAlreadyExists'
+        default:
+          description: API key generata con successo
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetKey'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/GetKey'
+        description: Creazione di una API Key
+        required: true
+components:
+  schemas:
+    API:
+      type: object
+      required:
+        - endPoint
+        - id
+        - OpenAPIDocURL
+      properties:
+        endPoint:
+          type: string
+          description: URI dell'endpoint della singola API
+          example: 'https://api.server.it/path/api-handler'
+        id:
+          type: integer
+          description: Id univoco interno della singola API
+          example: 15
+        OpenAPIDocURL:
+          type: string
+          description: Link al documento swagger/OpenAPI di specifica
+          example: 'https://api.server.it/swagger/api-handler'
+        Description:
+          type: string
+          description: Overview dello scopo della singola API
+          example: Questo handler API permetter la creazione di un utente...
+        Parameters:
+          type: array
+          items:
+            properties:
+              name:
+                type: string
+            type: object
+        httpVerb:
+          type: string
+          example: GET
+          enum:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          description: Quale HTTP verb è associato alla singola API
+        responses:
+          type: string
+          properties:
+            parameters:
+              enum:
+                - '200'
+                - '404'
+                - '500'
+                - '501'
+    APIs:
+      type: array
+      items:
+        $ref: '#/components/schemas/API'
+    SingleAPIStats:
+      type: array
+      items:
+        properties:
+          id:
+            type: integer
+            description: API id
+          endPoint:
+            type: string
+            description: URI dell'endpoint della singola API
+          totAccessi:
+            type: integer
+            description: Totale Accessi
+          mediaAccessiRounded:
+            type: integer
+            description: Media Accessi Giornalieri
+          totErrori:
+            type: integer
+            description: Totale Errori
+          mediaErroriRounded:
+            type: integer
+            description: Media Errori Giornalieri
+        type: object
+    Stats:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleAPIStats'
+    GetKey:
+      type: object
+      properties:
+        username:
+          type: string
+          description: username a cui associare la nuova appkey
+          example: grossi
+        firstName:
+          type: string
+          description: Nome del richiedente
+          example: Guido
+        lastName:
+          type: string
+          description: Cognome del richiedente
+          example: Rossi
+        email:
+          type: string
+          description: eMail del richidente
+          example: g.rossi@emailente.it
+        phone:
+          type: string
+          description: Telefono del richiedente
+          example: '0611111111'
+      xml:
+        name: GetKey
+    ApiKey:
+      type: object
+      properties:
+        apikey:
+          type: string
+          example: AIzaSyDHeXm6n1hyGIEO_wgscTYUBDJcMmqgOtA
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+  responses:
+    Standard500ErrorResponse:
+      description: Errore inaspettato.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+    APIsDoesNotExistResponse:
+      description: API non esisteti per questo erogatore.
+    StatsDoesNotExistsResponse:
+      description: Stats non esisteti per queste API dell'erogatore.
+    UsernameAlreadyExists:
+      description: Lo username specificato esiste già
+    429TooManyRequests:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    503ServiceUnavailable:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  headers:
+    X-Rate-Limit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+  parameters:
+    id:
+      name: id
+      in: path
+      description: l'ID dell'API che si vuole analizzare
+      required: true
+      schema:
+        type: integer
+    limit:
+      $ref: "schema/components.yml#/components/parameters/limit"
+    offset:
+      $ref: "schema/components.yml#/components/parameters/offset"
+    sort:
+      $ref: "schema/components.yml#/components/parameters/sort"
+
