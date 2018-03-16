@@ -1,0 +1,683 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: 'API SIOPE+'
+  description: >-
+    "Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e
+    Tesorieri con
+    [SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
+    tramite ProxySIOPE+
+    __Attenzione__: Il parametro download previsto per le risorse da acquisire assume nel ProxySIOPE+ il valore true anche in caso di notifica con successo tramite servizio di notifica push.
+    __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione."
+  license:
+    name: GPL v3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
+servers:
+  - url: 'https://www.link.it/projects/siope/v1'
+paths:
+  '/{idA2A}/PA/{codEnte}/flusso':
+    post:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Invio flusso ordinativi
+      description: |
+        Upload di un Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+      requestBody:
+        description: Flusso ordinativi in formato ZIP.
+        required: true
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Flusso ordinativi inviato con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  progFlusso:
+                    type: string
+                    description: progressivo assegnato al flusso ordinativi da SIOPE+
+                    example: '1234567890'
+                  dataUpload:
+                    type: string
+                    format: date
+                    example: '2016-12-12T15:44:59.789'
+                  download:
+                    type: boolean
+                    example: 'false'
+                  location:
+                    type: string
+                    format: uri
+                    description: URL dove reperire il flusso inviato
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '413':
+          description: body della richiesta troppo grande
+        '415':
+          description: >-
+            assenza dell'header della richiesta "Content-Type: application/zip"
+            o header valorizzato diversamente oppure body della richiesta non in
+            formato zip
+        '422':
+          description: >-
+            body della richiesta non aderente al suo schema XSD o comunque di
+            complessità troppo elevata
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+        '460':
+          description: >-
+            identificativo A2A del tramite della PA, specificato nel flusso
+            ordinativi inviato, non ancora abilitato
+  '/{idA2A}/PA/{codEnte}/flusso/ack':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Lista ack flussi ordinativi
+      description: |
+        Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: query
+          name: dataProduzioneDa
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di produzione iniziale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: dataProduzioneA
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di produzione finale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: download
+          schema:
+            type: boolean
+          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
+        - in: query
+          name: pagina
+          schema:
+            type: number
+            format: integer
+            default: 1
+          description: numero della pagina dei risultati richiesta
+      responses:
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numRisultati:
+                    type: number
+                    format: integer
+                    example: '12345'
+                  numPagine:
+                    type: number
+                    format: integer
+                    example: '123'
+                  risultatiPerPagina:
+                    type: number
+                    format: integer
+                    example: '100'
+                  pagina:
+                    type: number
+                    format: integer
+                    example: '1'
+                  risultati:
+                    type: array
+                    items:
+                      properties:
+                        progFlusso:
+                          type: string
+                          description: progressivo assegnato al flusso ordinativi da SIOPE+
+                          example: '1234567890'
+                        dataProduzione:
+                          type: string
+                          format: date
+                          description: >-
+                            data di produzione dell'ack, nel formato
+                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+                          example: '2016-12-12T15:44:59.789'
+                        download:
+                          type: boolean
+                          description: flag che indica se l'ack sia già stato scaricato o meno
+                          example: 'false'
+                        location:
+                          type: string
+                          format: url
+                          description: URL a cui reperire l'ack prodotto
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Download ack flusso ordinativi
+      description: |
+        Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: path
+          name: progFlusso
+          required: true
+          schema:
+            type: string
+          description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
+            ordinativi
+      responses:
+        '200':
+          description: Ack flusso ordinativi in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Lista esiti flussi ordinativi
+      description: |
+        Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: query
+          name: dataProduzioneDa
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di produzione iniziale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: dataProduzioneA
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di produzione finale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: download
+          schema:
+            type: boolean
+          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
+        - in: query
+          name: pagina
+          schema:
+            type: number
+            format: integer
+            default: 1
+          description: numero della pagina dei risultati richiesta
+      responses:
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numRisultati:
+                    type: number
+                    format: integer
+                    example: '12345'
+                  numPagine:
+                    type: number
+                    format: integer
+                    example: '123'
+                  risultatiPerPagina:
+                    type: number
+                    format: integer
+                    example: '100'
+                  pagina:
+                    type: number
+                    format: integer
+                    example: '1'
+                  risultati:
+                    type: array
+                    items:
+                      properties:
+                        progFlusso:
+                          type: string
+                          description: progressivo assegnato al flusso ordinativi da SIOPE+
+                          example: '1234567890'
+                        dataProduzione:
+                          type: string
+                          format: date
+                          description: >-
+                            data di produzione dell'esito, nel formato
+                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+                          example: '2016-12-12T15:44:59.789'
+                        download:
+                          type: boolean
+                          description: >-
+                            flag che indica se l'esito sia già stato scaricato o
+                            meno
+                          example: 'false'
+                        location:
+                          type: string
+                          format: url
+                          description: URL a cui reperire l'esito prodotto
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Download esito flusso ordinativi
+      description: |
+        Download esito flusso ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: path
+          name: progFlusso
+          required: true
+          schema:
+            type: string
+          description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
+            ordinativi
+      responses:
+        '200':
+          description: Esito flusso ordinativi in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Lista messaggi esiti applicativi
+      description: |
+        Lista messaggi Esito Applicativo relativi ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: query
+          name: dataUploadDa
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di upload iniziale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: dataUploadA
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di upload finale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: download
+          schema:
+            type: boolean
+          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
+        - in: query
+          name: pagina
+          schema:
+            type: number
+            format: integer
+            default: 1
+          description: numero della pagina dei risultati richiesta
+      responses:
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numRisultati:
+                    type: number
+                    format: integer
+                    example: '12345'
+                  numPagine:
+                    type: number
+                    format: integer
+                    example: '123'
+                  risultatiPerPagina:
+                    type: number
+                    format: integer
+                    example: '100'
+                  pagina:
+                    type: number
+                    format: integer
+                    example: '1'
+                  risultati:
+                    type: array
+                    items:
+                      properties:
+                        progEsitoApplicativo:
+                          type: string
+                          description: progressivo assegnato al messaggio da SIOPE+
+                          example: '1234567890'
+                        dataUpload:
+                          type: string
+                          format: date
+                          description: >-
+                            data di upload del messaggio, nel formato
+                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+                          example: '2016-12-12T15:44:59.789'
+                        download:
+                          type: boolean
+                          description: >-
+                            flag che indica se il messaggio sia già stato scaricato
+                            o meno
+                          example: 'false'
+                        location:
+                          type: string
+                          format: url
+                          description: URL a cui reperire il messaggio inviato
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo/{progEsitoApplicativo}':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Download messaggio di esito applicativo
+      description: |
+        Download esito flusso ordinativi relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: path
+          name: progEsitoApplicativo
+          required: true
+          schema:
+            type: string
+          description: Progressivo assegnato da SIOPE+ all'atto dell'invio del messaggio
+      responses:
+        '200':
+          description: Messaggio esito applicativo in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/giornale':
+    get:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Lista giornali di cassa
+      description: |
+        Lista giornali di cassa relativa ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: query
+          name: dataUploadDa
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di invio iniziale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: dataUploadA
+          schema:
+            type: string
+            format: time
+          description: >-
+            Filtro dei risultati sulla data di invio finale nel formato
+            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+        - in: query
+          name: download
+          schema:
+            type: boolean
+          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
+        - in: query
+          name: pagina
+          schema:
+            type: number
+            format: integer
+            default: 1
+          description: numero della pagina dei risultati richiesta
+      responses:
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numRisultati:
+                    type: number
+                    format: integer
+                    example: '12345'
+                  numPagine:
+                    type: number
+                    format: integer
+                    example: '123'
+                  risultatiPerPagina:
+                    type: number
+                    format: integer
+                    example: '100'
+                  pagina:
+                    type: number
+                    format: integer
+                    example: '1'
+                  risultati:
+                    type: array
+                    items:
+                      properties:
+                        progFlusso:
+                          type: string
+                          description: progressivo assegnato al giornale da SIOPE+
+                          example: '1234567890'
+                        dataUpload:
+                          type: string
+                          format: date
+                          description: >-
+                            data di invio del giornale, nel formato
+                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
+                          example: '2016-12-12T15:44:59.789'
+                        download:
+                          type: boolean
+                          description: >-
+                            flag che indica se il giornale sia già stato scaricato o
+                            meno
+                          example: 'false'
+                        location:
+                          type: string
+                          format: url
+                          description: URL a cui reperire il giornale inviato
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
+  '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}':
+    get:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Download giornale di cassa
+      description: |
+        Download giornale di cassa relativo ad uno specifico Ente
+      parameters:
+        - in: path
+          name: idA2A
+          required: true
+          schema:
+            type: string
+          description: identificativo A2A del tramite della PA che origina la richiesta
+        - in: path
+          name: codEnte
+          required: true
+          schema:
+            type: string
+          description: codice IPA della PA
+        - in: path
+          name: progGiornale
+          required: true
+          schema:
+            type: string
+          description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio del giornale di
+            cassa
+      responses:
+        '200':
+          description: Giornale di cassa in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+        '406':
+          description: 'assenza dell''header di richiesta "Accept: application/json"'
+        '429':
+          description: >-
+            richieste più frequenti di quanto consentito dalle regole di
+            throttling
