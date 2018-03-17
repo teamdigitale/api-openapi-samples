@@ -37,9 +37,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/APIs'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/APIs'
         description: oggetto API che si vuole aggiungere al catalogo
         required: true
     get:
@@ -55,11 +52,16 @@ paths:
         - $ref: '#/components/parameters/offset'
       responses:
         '200':
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: "#/components/headers/X-Rate-Limit-Limit"
+            X-Rate-Limit-Remaining:
+              $ref: "#/components/headers/X-Rate-Limit-Remaining"
+            X-Rate-Limit-Reset:
+              $ref: "#/components/headers/X-Rate-Limit-Reset"
+
           description: Lista API
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/APIs'
             application/json:
               schema:
                 $ref: '#/components/schemas/APIs'
@@ -81,10 +83,14 @@ paths:
       responses:
         '200':
           description: Meta data API
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: "#/components/headers/X-Rate-Limit-Limit"
+            X-Rate-Limit-Remaining:
+              $ref: "#/components/headers/X-Rate-Limit-Remaining"
+            X-Rate-Limit-Reset:
+              $ref: "#/components/headers/X-Rate-Limit-Reset"
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/APIs'
             application/json:
               schema:
                 $ref: '#/components/schemas/APIs'
@@ -106,10 +112,14 @@ paths:
       responses:
         '200':
           description: Stats API
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: "#/components/headers/X-Rate-Limit-Limit"
+            X-Rate-Limit-Remaining:
+              $ref: "#/components/headers/X-Rate-Limit-Remaining"
+            X-Rate-Limit-Reset:
+              $ref: "#/components/headers/X-Rate-Limit-Reset"
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Stats'
             application/json:
               schema:
                 $ref: '#/components/schemas/Stats'
@@ -131,9 +141,6 @@ paths:
         '200':
           description: API key generata con successo
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ApiKey'
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKey'
@@ -146,18 +153,12 @@ paths:
         default:
           description: API key generata con successo
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ApiKey'
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKey'
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/GetKey'
-          application/xml:
             schema:
               $ref: '#/components/schemas/GetKey'
         description: Creazione di una API Key
@@ -167,20 +168,23 @@ components:
     API:
       type: object
       required:
-        - endPoint
+        - api_endpoint
         - id
-        - OpenAPIDocURL
+        - openapi_url
       properties:
-        endPoint:
-          type: string
+        api_endpoint:
           description: URI dell'endpoint della singola API
+          type: string
+          format: url
           example: 'https://api.server.it/path/api-handler'
         id:
-          type: integer
           description: Id univoco interno della singola API
-          example: 15
-        OpenAPIDocURL:
           type: string
+          format: uuid
+          example: 15
+        openapi_url:
+          type: string
+          format: url
           description: Link al documento swagger/OpenAPI di specifica
           example: 'https://api.server.it/swagger/api-handler'
         Description:
@@ -221,23 +225,38 @@ components:
       items:
         properties:
           id:
-            type: integer
-            description: API id
-          endPoint:
             type: string
-            description: URI dell'endpoint della singola API
-          totAccessi:
+            format: uuid
+            description: API uuid from #/info/x-api-id
+          api_endpoint:
+            type: string
+            format: uri
+            description: API endpoint
+          request_count:
             type: integer
-            description: Totale Accessi
-          mediaAccessiRounded:
+            format: int64
+            description: cumulative number of requests since the service startup.
+          http_request_size_bytes_max:
             type: integer
-            description: Media Accessi Giornalieri
-          totErrori:
-            type: integer
-            description: Totale Errori
-          mediaErroriRounded:
-            type: integer
-            description: Media Errori Giornalieri
+            format: int64
+            description: Max request size allowed
+          availability_per_30d:
+            type: number
+            format: float
+            description: % of time when the service was available during the last 30 days.
+          http_response_success_rate_1d:
+            type: number
+            format: float
+            description: % of successful call during the last 24 hours.
+          expected_response_time_seconds_85pp:
+            type: number
+            format: float
+            description: Expected response time at 85pp
+          responsiveness_per_30d:
+            type: number
+            format: float
+            description: |-
+              % of time when 85% of the requests was served before the deadline expiration.
         type: object
     Stats:
       type: array
@@ -250,11 +269,11 @@ components:
           type: string
           description: username a cui associare la nuova appkey
           example: grossi
-        firstName:
+        name:
           type: string
           description: Nome del richiedente
           example: Guido
-        lastName:
+        surname:
           type: string
           description: Cognome del richiedente
           example: Rossi
@@ -275,53 +294,29 @@ components:
           type: string
           example: AIzaSyDHeXm6n1hyGIEO_wgscTYUBDJcMmqgOtA
     Error:
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      type: object
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/schemas/Error"
+
   responses:
     Standard500ErrorResponse:
-      description: Errore inaspettato.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/default"
     APIsDoesNotExistResponse:
       description: API non esisteti per questo erogatore.
     StatsDoesNotExistsResponse:
       description: Stats non esisteti per queste API dell'erogatore.
     UsernameAlreadyExists:
-      description: Lo username specificato esiste già
+      description: Username already existing
     429TooManyRequests:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/429TooManyRequests"
     503ServiceUnavailable:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/503ServiceUnavailable"
+
   headers:
     X-Rate-Limit-Limit:
-      description: The number of allowed requests in the current period
-      schema:
-        type: integer
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Limit"
     X-Rate-Limit-Remaining:
-      description: The number of remaining requests in the current period
-      schema:
-        type: integer
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Remaining"
     X-Rate-Limit-Reset:
-      description: The number of seconds left in the current period
-      schema:
-        type: integer
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Reset"
   parameters:
     id:
       name: id
@@ -331,9 +326,9 @@ components:
       schema:
         type: integer
     limit:
-      $ref: "schema/components.yml#/components/parameters/limit"
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/limit"
     offset:
-      $ref: "schema/components.yml#/components/parameters/offset"
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/offset"
     sort:
-      $ref: "schema/components.yml#/components/parameters/sort"
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/sort"
 
