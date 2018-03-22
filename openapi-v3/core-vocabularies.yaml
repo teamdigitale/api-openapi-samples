@@ -243,11 +243,11 @@ paths:
 components:
   parameters:
     limit:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/limit'
+      $ref: './schema/components.yaml#components/parameters/limit'
     offset:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/offset'
+      $ref: 'schema/components.yaml#components/parameters/offset'
     sort:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/sort'
+      $ref: 'schema/components.yaml#components/parameters/sort'
     name:
         name: name
         in: query
@@ -259,24 +259,24 @@ components:
   headers:
     # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
     X-Rate-Limit-Limit:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Limit'
+      $ref: 'schema/components.yaml#components/headers/X-Rate-Limit-Limit'
     X-Rate-Limit-Remaining:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Remaining'
+      $ref: 'schema/components.yaml#components/headers/X-Rate-Limit-Remaining'
     X-Rate-Limit-Reset:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Reset'
+      $ref: 'schema/components.yaml#components/headers/X-Rate-Limit-Reset'
 
   responses:
     # Predefined error codes for this API
     400BadRequest:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/400BadRequest'
+      $ref: 'schema/components.yaml#components/responses/400BadRequest'
     404NotFound:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/404NotFound'
+      $ref: 'schema/components.yaml#components/responses/404NotFound'
     429TooManyRequests:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/429TooManyRequests'
+      $ref: 'schema/components.yaml#components/responses/429TooManyRequests'
     503ServiceUnavailable:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/503ServiceUnavailable'
+      $ref: 'schema/components.yaml#components/responses/503ServiceUnavailable'
     default:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/default'
+      $ref: 'schema/components.yaml#components/responses/default'
 
 
   links:
@@ -289,7 +289,7 @@ components:
   schemas:
 
     Error:
-      $ref: 'https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/schemas/Error'
+      $ref: 'schema/components.yaml#components/schemas/Error'
 
     Dictionaries:
       required:
