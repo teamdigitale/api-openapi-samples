@@ -13,9 +13,9 @@ components:
       name: cursor
       in: query
       description: An opaque identifier that points to the next item in the collection.
+      example: 01BX9NSMKVXXS5PSP2FATZM123
       schema:
         type: string
-        example: 01BX9NSMKVXXS5PSP2FATZM123
     limit:
       name: limit
       in: query
