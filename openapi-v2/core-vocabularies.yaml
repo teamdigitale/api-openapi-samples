@@ -12,6 +12,12 @@ info:
       - get a single entry via an unique key
       - find entries by a given key (which could not be unique)
 
+      Dictionary structure is the following:
+      - Dictionary: has a single name and many versions
+        - Table: it's a specific version of a dictionary. May
+            expire
+            - Entry: it's the actual data contained in a table.
+
     Despite http://zalando.github.io/restful-api-guidelines/index.html#160
         we use pagination as it's more intuitive for this use case.
   license:
@@ -35,20 +41,18 @@ paths:
         - application/json
       parameters:
         - description: The indexed key to search with.
+          example: Latina
           in: query
           name: name
           required: false
           type: string
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/limit
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/offset
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/sort
+        - $ref: 'schema/components.yaml#x-components/parameters/limit'
+        - $ref: 'schema/components.yaml#x-components/parameters/offset'
+        - $ref: 'schema/components.yaml#x-components/parameters/sort'
       responses:
         '200':
           description: >
-            A list of dictionaries.
+            A list of Dictionaries.
 
             Headers secondo
             http://zalando.github.io/restful-api-guidelines/index.html#132
@@ -59,9 +63,6 @@ paths:
               $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/x-components/headers/X-Rate-Limit-Reset'
-          links:
-            NextDictionaries:
-              $ref: '#/x-components/links/NextDictionaries'
           schema:
             $ref: '#/definitions/Dictionaries'
       tags:
@@ -74,7 +75,13 @@ paths:
     get:
       produces:
         - application/json
-      parameters: []
+      parameters:
+        - description: The name of the dictionary
+          example: cities
+          in: path
+          name: dictionary_name
+          required: true
+          type: string
       responses:
         '200':
           description: |
@@ -89,14 +96,11 @@ paths:
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
-          $ref: >-
-            '#/x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
         '404':
-          $ref: >-
-            '#/x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
         default:
-          $ref: >-
-            '#/x-components/responses/default'
+          $ref: 'schema/components.yaml#x-components/responses/default'
       tags:
         - public
       description: |
@@ -104,30 +108,27 @@ paths:
       operationId: getDictionary
       summary: Get informations about a dictionary.
     post:
+      consumes:
+        - application/json
       produces:
         - application/json
-      parameters: []
+      parameters:
+        - description: Use MarkDown here!
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TableData'
       responses:
         '201':
           description: |
             A new version of the table have been created.
-          links:
-            GetNewVersion:
-              parameters:
-                version: '$response.body#/version'
-              description: >
-                Il valore di  `v` ritornato dalla response puo' essere passato
-                via GET `/comuni?v={v}` per interrogare l'ultima versione delle
-                API .
-              operationId: getDictionaries
           schema:
-            $ref: '#/definitions/Dictionary'
+            $ref: '#/definitions/Table'
         '404':
-          $ref: >-
-            '#/x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
         default:
-          $ref: >-
-            '#/x-components/responses/default'
+          $ref: 'schema/components.yaml#x-components/responses/default'
       tags:
         - admins
       operationId: uploadDictionary
@@ -140,7 +141,13 @@ paths:
     get:
       produces:
         - application/json
-      parameters: []
+      parameters:
+        - description: The name of the dictionary
+          example: cities
+          in: path
+          name: dictionary_name
+          required: true
+          type: string
       responses:
         '200':
           description: |
@@ -155,14 +162,11 @@ paths:
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
-          $ref: >-
-            '#/x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
         '404':
-          $ref: >-
-            '#/x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
         default:
-          $ref: >-
-            '#/x-components/responses/default'
+          $ref: 'schema/components.yaml#x-components/responses/default'
       tags:
         - public
       description: |
@@ -175,17 +179,27 @@ paths:
       produces:
         - application/json
       parameters:
+        - description: The name of the dictionary
+          example: cities
+          in: path
+          name: dictionary_name
+          required: true
+          type: string
+        - description: A specific version of a dictionary.
+          example: 137
+          in: path
+          name: version
+          required: true
+          type: integer
         - description: The indexed key to search with.
+          example: Latina
           in: query
           name: name
           required: false
           type: string
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/limit
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/offset
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/sort
+        - $ref: 'schema/components.yaml#x-components/parameters/limit'
+        - $ref: 'schema/components.yaml#x-components/parameters/offset'
+        - $ref: 'schema/components.yaml#x-components/parameters/sort'
       responses:
         '200':
           description: |
@@ -197,20 +211,14 @@ paths:
               $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/x-components/headers/X-Rate-Limit-Reset'
-          links:
-            NextDictionaries:
-              $ref: '#/x-components/links/NextDictionaries'
           schema:
             $ref: '#/definitions/Entry'
         '400':
-          $ref: >-
-            '#/x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
         '404':
-          $ref: >-
-            '#/x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
         default:
-          $ref: >-
-            '#/x-components/responses/default'
+          $ref: 'schema/components.yaml#x-components/responses/default'
       tags:
         - public
       description: |
@@ -222,21 +230,28 @@ paths:
       produces:
         - application/json
       parameters:
-        - description: The indexed key to search with.
-          in: query
-          name: name
-          required: false
+        - description: The name of the dictionary
+          example: cities
+          in: path
+          name: dictionary_name
+          required: true
           type: string
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/limit
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/offset
-        - $ref: >-
-            https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/sort
+        - description: A specific version of a dictionary.
+          example: 137
+          in: path
+          name: version
+          required: true
+          type: integer
+        - description: The entry key
+          example: E472-2007
+          in: path
+          name: entry_key
+          required: true
+          type: string
       responses:
         '200':
           description: |
-            Retrieves a dictionary entry.
+            Returns the given entry.
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/x-components/headers/X-Rate-Limit-Limit'
@@ -244,31 +259,145 @@ paths:
               $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/x-components/headers/X-Rate-Limit-Reset'
-          links:
-            NextDictionaries:
-              $ref: '#/x-components/links/NextDictionaries'
           schema:
             $ref: '#/definitions/Entries'
         '400':
-          $ref: >-
-            '#/x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
         '404':
-          $ref: >-
-            '#/x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
         '429':
-          $ref: >-
-            '#/x-components/responses/429TooManyRequests'
+          $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
         '503':
-          $ref: >-
-            '#/x-components/responses/503ServiceUnavailable'
+          $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
         default:
-          $ref: >-
-            '#/x-components/responses/default'
+          $ref: 'schema/components.yaml#x-components/responses/default'
       tags:
         - public
-      description: ''
+      description: Retrieve an entry from a Table.
       operationId: getEntry
       summary: Get a Table entry
+  '/table/{table_uuid}/':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: The table uuid
+          example: 2b356821-868e-4274-9c8e-ca119dd097df
+          in: path
+          name: table_uuid
+          required: true
+          type: string
+        - description: The indexed key to search with.
+          example: Latina
+          in: query
+          name: name
+          required: false
+          type: string
+        - $ref: 'schema/components.yaml#x-components/parameters/limit'
+        - $ref: 'schema/components.yaml#x-components/parameters/offset'
+        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+      responses:
+        '200':
+          description: |
+            Retrieve table data
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+          schema:
+            $ref: '#/definitions/Entries'
+        '400':
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+        '404':
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+        default:
+          $ref: 'schema/components.yaml#x-components/responses/default'
+      tags:
+        - public
+      description: |
+        Retrieve paged entries from a Table.
+      operationId: getTableEntries
+      summary: Get entries from a given table.
+  '/table/{table_uuid}/{entry_key}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: The table uuid
+          example: 2b356821-868e-4274-9c8e-ca119dd097df
+          in: path
+          name: table_uuid
+          required: true
+          type: string
+        - description: The entry key
+          example: E472-2007
+          in: path
+          name: entry_key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: |
+            Returns the given entry.
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+          schema:
+            $ref: '#/definitions/Entries'
+        '400':
+          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+        '404':
+          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+        '429':
+          $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
+        '503':
+          $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
+        default:
+          $ref: 'schema/components.yaml#x-components/responses/default'
+      tags:
+        - public
+      description: Retrieve an entry from a Table.
+      operationId: getEntryByTable
+      summary: Get a Table entry
+  /tables:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: The name of the dictionary
+          example: cities
+          in: query
+          name: dictionary_name
+          type: string
+        - $ref: 'schema/components.yaml#x-components/parameters/limit'
+        - $ref: 'schema/components.yaml#x-components/parameters/offset'
+        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+      responses:
+        '200':
+          description: |
+            A list of Tables.
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+          schema:
+            $ref: '#/definitions/Tables'
+      tags:
+        - public
+      description: |
+        Shows a list of supported tables matching the given name.
+      operationId: getTables
+      summary: Get informations about exiting tables.
 definitions:
   Dictionaries:
     properties:
@@ -281,7 +410,7 @@ definitions:
         format: int32
         type: integer
       offset_next:
-        example: 5
+        example: 10
         format: int32
         type: integer
     required:
@@ -290,11 +419,16 @@ definitions:
       - offset_next
   Dictionary:
     description: |
-      Reference to a dictionary, that is a versioned table.
+      Reference to a dictionary, that is a multi-versioned table.
     properties:
-      last_version:
-        example: 1.0.0
+      description:
+        example: |-
+          Which data is contained in the dictionary? Cities? Foreign countries?
+          Healtcare codes?
         type: string
+      last_version:
+        example: 134
+        type: integer
       name:
         example: cities
         type: string
@@ -304,6 +438,7 @@ definitions:
         type: string
     required:
       - name
+      - description
       - last_version
       - uri
   Entries:
@@ -313,13 +448,22 @@ definitions:
           $ref: '#/definitions/Entry'
         type: array
       offset:
-        example: 5
+        description: Current offset (eg. entries 50 to 99)
+        example: 50
         format: int32
         type: integer
       offset_next:
-        example: 5
+        description: |-
+          Offset for the next page (eg. entries from 100 to 149).
+          This could be a link too in HATEOAS.
+        example: 100
         format: int32
         type: integer
+      table_uri:
+        example: >-
+          http://dictionaries-beta.api.example.com/table/2b356821-868e-4274-9c8e-ca119dd097df
+        format: uri
+        type: string
     required:
       - items
       - offset
@@ -335,28 +479,62 @@ definitions:
           provincia: LT
         type: object
       key:
+        description: |-
+          An unique ID for the entry in the given table. This may have
+            a semantic meaning or could be just an UUID.
         example: E472-2007
         type: string
       name:
+        description: Searchable string.
         example: Latina
-        type: string
-      version:
-        example: 1.0.0
         type: string
     required:
       - key
-      - uuid
-      - name
-      - version
       - data
   Error:
-    $ref: >-
-      https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/schemas/Error
+    $ref: 'schema/components.yaml#x-components/schemas/Error'
   Table:
+    description: |
+      Versioned dictionary.
+    properties:
+      name:
+        example: cities
+        type: string
+      table_uri:
+        example: >-
+          http://dictionaries-beta.api.example.com/table/2b356821-868e-4274-9c8e-ca119dd097df
+        format: uri
+        type: string
+      ttl:
+        description: Seconds to the invalidation of the API.
+        format: int32
+        type: integer
+      uri:
+        example: 'http://dictionaries-beta.api.example.com/dictionaries/cities/137'
+        format: uri
+        type: string
+      uuid:
+        example: 2b356821-868e-4274-9c8e-ca119dd097df
+        format: uuid
+        type: string
+      version:
+        example: 137
+        type: integer
+    required:
+      - name
+      - version
+      - uri
+      - uuid
+      - ttl
+  TableData:
     description: >
       Dictionary data, freely inspired by
       https://github.com/italia/daf-ontologie-vocabolari-controllati/
     properties:
+      data:
+        items:
+          $ref: '#/definitions/Entry'
+        type: array
       name:
         example: cities
         type: string
@@ -364,18 +542,28 @@ definitions:
         description: Seconds to the invalidation of the API.
         format: int32
         type: integer
-      uri:
-        example: 'http://dictionaries-beta.api.example.com/dictionaries/cities/v1.0'
-        format: uri
-        type: string
-      version:
-        example: 1.0.0
-        type: string
     required:
       - name
-      - version
-      - uri
       - ttl
+      - data
+  Tables:
+    properties:
+      item:
+        items:
+          $ref: '#/definitions/Table'
+        type: array
+      offset:
+        example: 5
+        format: int32
+        type: integer
+      offset_next:
+        example: 10
+        format: int32
+        type: integer
+    required:
+      - items
+      - offset
+      - offset_next
 tags:
   - description: Create and update dictionaries
     name: admins
@@ -383,50 +571,69 @@ tags:
     name: public
 x-components:
   parameters:
+    dictionary_name:
+      description: The name of the dictionary
+      example: cities
+      in: query
+      name: dictionary_name
+      type: string
+    dictionary_name_path:
+      description: The name of the dictionary
+      example: cities
+      in: path
+      name: dictionary_name
+      required: true
+      type: string
+    entry_key_path:
+      description: The entry key
+      example: E472-2007
+      in: path
+      name: entry_key
+      required: true
+      type: string
     limit:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/limit
+      $ref: 'schema/components.yaml#x-components/parameters/limit'
     name:
       description: The indexed key to search with.
+      example: Latina
       in: query
       name: name
       required: false
       type: string
     offset:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/offset
+      $ref: 'schema/components.yaml#x-components/parameters/offset'
     sort:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/parameters/sort
+      $ref: 'schema/components.yaml#x-components/parameters/sort'
+    table_uuid_path:
+      description: The table uuid
+      example: 2b356821-868e-4274-9c8e-ca119dd097df
+      in: path
+      name: table_uuid
+      required: true
+      type: string
+    version_path:
+      description: A specific version of a dictionary.
+      example: 137
+      in: path
+      name: version
+      required: true
+      type: integer
   responses:
     400BadRequest:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/400BadRequest
+      $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
     404NotFound:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/404NotFound
+      $ref: 'schema/components.yaml#x-components/responses/404NotFound'
     429TooManyRequests:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/429TooManyRequests
+      $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
     503ServiceUnavailable:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/503ServiceUnavailable
+      $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
     default:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/responses/default
+      $ref: 'schema/components.yaml#x-components/responses/default'
   headers:
     X-Rate-Limit-Limit:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Limit
+      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Limit'
     X-Rate-Limit-Remaining:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Remaining
+      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Remaining'
     X-Rate-Limit-Reset:
-      $ref: >-
-        https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#components/headers/X-Rate-Limit-Reset
-  links:
-    NextDictionaries:
-      parameters:
-        offset: '$response.body#/offset_next'
-      operationId: getDictionaries
+      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Reset'
 
