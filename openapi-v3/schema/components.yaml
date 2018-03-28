@@ -8,12 +8,19 @@
 openapi: 3.0.0
 components:
   parameters:
-    # Generic parameters for pagination
+    # Generic parameters for pagination defined in
+    # http://zalando.github.io/restful-api-guidelines/index.html#137
     cursor:
       name: cursor
       in: query
       description: An opaque identifier that points to the next item in the collection.
       example: 01BX9NSMKVXXS5PSP2FATZM123
+      schema:
+        type: string
+    fields:
+      name: fields
+      in: query
+      description: Fields to retrieve
       schema:
         type: string
     limit:
@@ -31,6 +38,12 @@ components:
         type: integer
         default: 0
         format: int32
+    q:
+      name: q
+      in: query
+      description: Search query term
+      schema:
+        type: string
     sort:
       name: sort
       in: query
@@ -43,14 +56,26 @@ components:
     # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
     X-Rate-Limit-Limit:
       description: The number of allowed requests in the current period
-      schema: {type: integer}
+      schema:
+        type: integer
+        format: int32
     X-Rate-Limit-Remaining:
       description: The number of remaining requests in the current period
-      schema: {type: integer}
+      schema:
+        type: integer
+        format: int32
     X-Rate-Limit-Reset:
       description: The number of seconds left in the current period
-      schema: {type: integer}
-
+      schema:
+        type: integer
+        format: int32
+    Retry-After:
+        description: |-
+          Retry contacting the endpoint *at least* after seconds.
+          See https://tools.ietf.org/html/rfc7231#section-7.1.3
+        schema:
+          type: integer
+          format: int32
   responses:
     # Predefined error codes for this API
     400BadRequest:
@@ -67,12 +92,22 @@ components:
             $ref: '#/components/schemas/Error'
     429TooManyRequests:
       description: Too many requests
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     503ServiceUnavailable:
       description: Service Unavailable
+      headers:
+        Retry-After:
+          '$ref': '#/components/headers/Retry-After'
       content:
         application/problem+json:
           schema:

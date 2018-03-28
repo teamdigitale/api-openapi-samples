@@ -1,24 +1,5 @@
 swagger: '2.0'
 definitions:
-  SampleEntry:
-    description: |-
-      This entry shows a set of common fields to be used
-      with their proper format and description.
-    properties:
-      id:
-        type: string
-        format: uuid
-        description: |-
-          The unique and opaque identifier for the entry, which:
-            * is unique in its context;
-            * will not be reused in time;
-            * is not a number.
-      created:
-        type: date-time
-        description: The object creation time.
-      modified:
-        type: date-time
-        description: The object modification time.
   Error:
     properties:
       code:
@@ -73,6 +54,25 @@ definitions:
         format: uri
         type: string
     type: object
+  SampleEntry:
+    description: |-
+      This entry shows a set of common fields to be used
+      with their proper format and description.
+    properties:
+      created:
+        description: The object creation time.
+        type: date-time
+      id:
+        description: |-
+          The unique and opaque identifier for the entry, which:
+            * is unique in its context;
+            * will not be reused in time;
+            * is not a number.
+        format: uuid
+        type: string
+      modified:
+        description: The object modification time.
+        type: date-time
 x-components:
   parameters:
     cursor:
@@ -80,6 +80,11 @@ x-components:
       in: query
       name: cursor
       x-example: 01BX9NSMKVXXS5PSP2FATZM123
+      type: string
+    fields:
+      description: Fields to retrieve
+      in: query
+      name: fields
       type: string
     limit:
       description: How many items to return at one time (max 100)
@@ -94,6 +99,11 @@ x-components:
       default: 0
       format: int32
       type: integer
+    q:
+      description: Search query term
+      in: query
+      name: q
+      type: string
     sort:
       description: Sorting order
       in: query
@@ -119,26 +129,44 @@ x-components:
           schema:
             $ref: '#/definitions/Error'
       description: Too many requests
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/x-components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/x-components/headers/X-Rate-Limit-Reset'
     503ServiceUnavailable:
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: '#/definitions/Problem'
       description: Service Unavailable
+      headers:
+        Retry-After:
+          $ref: '#/x-components/headers/Retry-After'
     default:
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: '#/definitions/Problem'
       description: Unexpected error
   headers:
+    Retry-After:
+      description: |-
+        Retry contacting the endpoint *at least* after seconds.
+        See https://tools.ietf.org/html/rfc7231#section-7.1.3
+      format: int32
+      type: integer
     X-Rate-Limit-Limit:
       description: The number of allowed requests in the current period
+      format: int32
       type: integer
     X-Rate-Limit-Remaining:
       description: The number of remaining requests in the current period
+      format: int32
       type: integer
     X-Rate-Limit-Reset:
       description: The number of seconds left in the current period
+      format: int32
       type: integer
-
