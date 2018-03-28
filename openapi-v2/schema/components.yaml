@@ -1,5 +1,24 @@
 swagger: '2.0'
 definitions:
+  SampleEntry:
+    description: |-
+      This entry shows a set of common fields to be used
+      with their proper format and description.
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: |-
+          The unique and opaque identifier for the entry, which:
+            * is unique in its context;
+            * will not be reused in time;
+            * is not a number.
+      created:
+        type: date-time
+        description: The object creation time.
+      modified:
+        type: date-time
+        description: The object modification time.
   Error:
     properties:
       code:
