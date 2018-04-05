@@ -118,15 +118,15 @@ components:
     400BadRequest:
       description: Bad Request
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Problem'
     404NotFound:
       description: Not Found
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Problem'
     429TooManyRequests:
       description: Too many requests
       headers:
@@ -137,9 +137,9 @@ components:
         X-Rate-Limit-Reset:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Problem'
     503ServiceUnavailable:
       description: Service Unavailable
       headers:

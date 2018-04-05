@@ -151,19 +151,19 @@ x-components:
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Problem'
       description: Bad Request
     404NotFound:
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Problem'
       description: Not Found
     429TooManyRequests:
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Problem'
       description: Too many requests
       headers:
         X-Rate-Limit-Limit:
