@@ -33,8 +33,12 @@ info:
 tags:
   - name: admins
     description: Create and update dictionaries
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
   - name: public
     description: Retrieve dictionaries
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
@@ -60,12 +64,12 @@ paths:
             A list of Dictionaries.
             Headers secondo http://zalando.github.io/restful-api-guidelines/index.html#132
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -85,12 +89,12 @@ paths:
           description: |
             Retrieve information from a dictionary.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -147,12 +151,12 @@ paths:
           description: |
             Retrieve information from a dictionary.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -183,12 +187,12 @@ paths:
           description: |
             Retrieve dictionary metadata
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -216,12 +220,12 @@ paths:
           description: |
             Returns the given entry.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -254,12 +258,12 @@ paths:
           description: |
             A list of Tables.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -283,12 +287,12 @@ paths:
           description: |
             Retrieve table data
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -315,12 +319,12 @@ paths:
           description: |
             Returns the given entry.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -395,12 +399,12 @@ components:
 
   headers:
     # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
-    X-Rate-Limit-Limit:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-Rate-Limit-Limit'
-    X-Rate-Limit-Remaining:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-Rate-Limit-Remaining'
-    X-Rate-Limit-Reset:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-Rate-Limit-Reset'
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
 
   responses:
     # Predefined error codes for this API

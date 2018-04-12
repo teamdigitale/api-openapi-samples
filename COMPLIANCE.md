@@ -62,6 +62,41 @@ components:
 
 ```
 
+## Throttle clients
+
+Your API should throttle clients always returning the following headers.
+
+```
+  headers:
+    # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+
+```
+
+You can use the pre-built responses in errors.
+
+```
+# https://teamdigitale.github.io/openapi/responses/v3.yaml#/429TooManyRequests
+429TooManyRequests:
+  description: Too many requests
+  headers:
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+  content:
+    application/problem+json:
+      schema:
+        $ref: 'https://teamdigitale.github.io/openapi/schemas/problem.yaml#Problem'
+
+```
 
 
 
