@@ -53,12 +53,12 @@ paths:
       responses:
         '200':
           headers:
-            X-Rate-Limit-Limit:
-              $ref: "#/components/headers/X-Rate-Limit-Limit"
-            X-Rate-Limit-Remaining:
-              $ref: "#/components/headers/X-Rate-Limit-Remaining"
-            X-Rate-Limit-Reset:
-              $ref: "#/components/headers/X-Rate-Limit-Reset"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
 
           description: Lista API
           content:
@@ -84,12 +84,12 @@ paths:
         '200':
           description: Meta data API
           headers:
-            X-Rate-Limit-Limit:
-              $ref: "#/components/headers/X-Rate-Limit-Limit"
-            X-Rate-Limit-Remaining:
-              $ref: "#/components/headers/X-Rate-Limit-Remaining"
-            X-Rate-Limit-Reset:
-              $ref: "#/components/headers/X-Rate-Limit-Reset"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
@@ -113,12 +113,12 @@ paths:
         '200':
           description: Stats API
           headers:
-            X-Rate-Limit-Limit:
-              $ref: "#/components/headers/X-Rate-Limit-Limit"
-            X-Rate-Limit-Remaining:
-              $ref: "#/components/headers/X-Rate-Limit-Remaining"
-            X-Rate-Limit-Reset:
-              $ref: "#/components/headers/X-Rate-Limit-Reset"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
@@ -311,12 +311,12 @@ components:
       $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/503ServiceUnavailable"
 
   headers:
-    X-Rate-Limit-Limit:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Limit"
-    X-Rate-Limit-Remaining:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Remaining"
-    X-Rate-Limit-Reset:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-Rate-Limit-Reset"
+    X-RateLimit-Limit:
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Limit"
+    X-RateLimit-Remaining:
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Remaining"
+    X-RateLimit-Reset:
+      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Reset"
   parameters:
     id:
       name: id

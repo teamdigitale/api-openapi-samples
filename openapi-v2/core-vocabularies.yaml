@@ -57,12 +57,12 @@ paths:
             Headers secondo
             http://zalando.github.io/restful-api-guidelines/index.html#132
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Dictionaries'
       tags:
@@ -87,12 +87,12 @@ paths:
           description: |
             Retrieve information from a dictionary.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
@@ -153,12 +153,12 @@ paths:
           description: |
             Retrieve information from a dictionary.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
@@ -205,12 +205,12 @@ paths:
           description: |
             Retrieve dictionary metadata
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Entry'
         '400':
@@ -253,12 +253,12 @@ paths:
           description: |
             Returns the given entry.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Entries'
         '400':
@@ -301,12 +301,12 @@ paths:
           description: |
             Retrieve table data
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Entries'
         '400':
@@ -343,12 +343,12 @@ paths:
           description: |
             Returns the given entry.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Entries'
         '400':
@@ -384,12 +384,12 @@ paths:
           description: |
             A list of Tables.
           headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/x-components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/x-components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/x-components/headers/X-Rate-Limit-Reset'
+            X-RateLimit-Limit:
+              $ref: '#/x-components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/x-components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/x-components/headers/X-RateLimit-Reset'
           schema:
             $ref: '#/definitions/Tables'
       tags:
@@ -630,10 +630,10 @@ x-components:
     default:
       $ref: 'schema/components.yaml#x-components/responses/default'
   headers:
-    X-Rate-Limit-Limit:
-      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Limit'
-    X-Rate-Limit-Remaining:
-      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Remaining'
-    X-Rate-Limit-Reset:
-      $ref: 'schema/components.yaml#x-components/headers/X-Rate-Limit-Reset'
+    X-RateLimit-Limit:
+      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Reset'
 
