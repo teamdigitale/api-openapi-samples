@@ -1,6 +1,16 @@
 # openapi-samples
-API samples following given specs. 
+API samples following given specs.
 
+
+## Converting swagger to openapi-v3
+
+Just use this online API
+
+        https://mermade.org.uk/api/v1/convert?url=$YOUR_URL
+
+eg.
+
+        https://mermade.org.uk/api/v1/convert?url=https://sgiauth.azurewebsites.net/explorer/swagger.json
 
 ## Converting openapi-v3 to openapi-v2
 
@@ -11,5 +21,5 @@ To convert between formats use:
 To convert all v3 files to v2, use:
 
         find openapi-v3/ -name \*.yaml \
-          -exec bash -c 'I="{}"; ./bin/api-spec-converter.sh "$I" -f openapi_3 -t swagger_2 -s yaml > "${I//v3/v2}" ' \; 
+          -exec bash -c 'I="{}"; ./bin/api-spec-converter.sh "$I" -f openapi_3 -t swagger_2 -s yaml > "${I//v3/v2}" ' \;
 
