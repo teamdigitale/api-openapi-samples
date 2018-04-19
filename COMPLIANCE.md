@@ -32,7 +32,7 @@ info:
     [CommonMark](http://spec.commonmark.org/) syntax
     *MAY* be used for rich text representation.
 
-    The `x-api-id` MUST be an [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+    The `x-api-id` *MUST* be an [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
   termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
   contact:
     email: robipolli@gmail.com
@@ -64,7 +64,7 @@ components:
 
 ## Throttle clients
 
-Your API should throttle clients always returning the following headers.
+Your API should throttle clients always returning the [following headers](http://william.holroyd.name/2014/11/02/how-do-most-apis-handle-rate-limiting/).
 
 ```
   headers:
@@ -99,4 +99,47 @@ You can use the pre-built responses in errors.
 ```
 
 
+## Use common parameters in requests
 
+To ease API consumption, we standardize some request parameters.
+
+### Pagination
+
+Pagination must be implemented with the following parameters:
+
+  - limit: max number of entries returned
+  - offset: offset from the first entries
+  - cursor: replaces offset for cursor pagination, the key representing the
+            first entry to return
+  - sort: a list of sorting fields, use minus "-" for descending order
+
+
+## Use HTTP headers (etags) for Conditional requests
+
+HTTP Headers for conditional requests are defined here:
+
+```
+# https://teamdigitale.github.io/openapi/parameters/v3.yaml
+Etag:
+  name: Etag
+  description: |
+    The RFC7232 ETag header field in a response provides the current entity-
+    tag for the selected resource. An entity-tag is an opaque identifier for
+    different versions of a resource over time, regardless whether multiple
+    versions are valid at the same time. An entity-tag consists of an opaque
+    quoted string, possibly prefixed by a weakness indicator.
+  in: header
+  example: W/"xy", "5", "7da7a728-f910-11e6-942a-68f728c1ba70"
+  required: false
+  schema:
+    type: string
+...
+```
+
+Use them when needed, eg
+
+```
+...
+    parameters:
+
+```
