@@ -112,7 +112,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/InventoryItem'
+              $ref: '#/definitions/CkanResponse'
         400:
           description: bad input parameter
 
@@ -169,7 +169,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/InventoryItem'
+              $ref: '#/definitions/CkanResponse'
         400:
           description: bad input parameter
         409:
@@ -206,7 +206,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/InventoryItem'
+              $ref: '#/definitions/CkanResponse'
         400:
           description: bad input parameter
 
@@ -291,7 +291,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/InventoryItem'
+              $ref: '#/definitions/CkanResponse'
         400:
           description: bad input parameter
 
@@ -520,14 +520,27 @@ paths:
 
 
 definitions:
-  Error:
+  CkanResponse:
     type: object
     required:
       - result
       - success
+      - help
     properties:
       result:
+        anyOf:
+        - object
+        - array
+      error:
         type: object
+      help:
+        type: string
+        format: url
+      status:
+        type: boolean
+        enum:
+        - true
+        - false
 
   delete:
     type: object
@@ -720,38 +733,3 @@ definitions:
         description: |
           ID of the organization
 
-  InventoryItem:
-    type: object
-    required:
-    - id
-    - name
-    - manufacturer
-    - releaseDate
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      name:
-        type: string
-        example: Widget Adapter
-      releaseDate:
-        type: string
-        format: int32
-        example: 2016-08-29T09:12:33.001Z
-      manufacturer:
-        $ref: '#/definitions/Manufacturer'
-  Manufacturer:
-    required:
-    - name
-    properties:
-      name:
-        type: string
-        example: ACME Corporation
-      homePage:
-        type: string
-        format: url
-        example:  https://www.acme-corp.com
-      phone:
-        type: string
-        example: 408-867-5309
