@@ -4,8 +4,9 @@ basePath: /dati-gov/ckan_proxy
 schemes:
  - https
 info:
+  # @ercolani: modifica dove serve
   description: |
-    Simple API to manage open data sets in api.daf.teamdigitale.it
+    Simple API to manage open data sets in api.daf.teamdigitale.it.
 
     # Important note
     This is not a traditional rest API in the strict sense. **It does not use PUT or DELETE http methods**. Instead, it does everything with GET or POST methods. This means that the color coding in the (swagger) documentation is misleading.
@@ -51,14 +52,17 @@ info:
 
   version: 3
   title: DAF CKAN API
-  # put the contact info for your development or API team
+  x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
   contact:
-    email: roberto@teamdigitale.governo.it
+    email: alessandro@teamdigitale.governo.it
     url: "https://dataportal.daf.teamdigitale.it/"
-
+  termsOfService: 'TODO ereditare la parte sensata da http://geodati.gov.it/geoportale/note-legali'
+  x-audience:
+  - public
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
+# @ercolani: modifica dove serve
 securityDefinitions:
 #  key:
 #    type: apiKey
@@ -70,11 +74,12 @@ securityDefinitions:
     in: header
 
 # tags are used for organizing operations
+# @ercolani: rimuovi se non applicabile
 tags:
 - name: consumers
   description: Operations available to regular consumers
-- name: admins
-  description: Secured Admin-only calls
+#- name: admins
+#  description: Secured Admin-only calls
 
 paths:
 
@@ -110,6 +115,7 @@ paths:
               $ref: '#/definitions/InventoryItem'
         400:
           description: bad input parameter
+
 
   /package_search:
     get:
@@ -514,6 +520,15 @@ paths:
 
 
 definitions:
+  Error:
+    type: object
+    required:
+      - result
+      - success
+    properties:
+      result:
+        type: object
+
   delete:
     type: object
 
