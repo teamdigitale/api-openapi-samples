@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: 'https://api.daf.teamdigitale.it/dati-gov/ckan_proxy'
+  - url: 'http://dati.mit.gov.it/catalog/api/3/action'
 x-origin:
   - url: >-
       https://raw.githubusercontent.com/teamdigitale/api-openapi-samples/ckan-v3-stubs/openapi-v2/api.daf.teamdigitale.it.yml
@@ -50,7 +50,7 @@ info:
 
 
     ``curl -X GET
-    "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_list" -H
+    "http://dati.mit.gov.it/catalog/api/3/action/package_list" -H
     "X-API-Key: YOUR APINF API KEY"``
 
 
@@ -61,7 +61,7 @@ info:
 
 
     ``curl -X GET
-    "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_show?id=digiroad"
+    "http://dati.mit.gov.it/catalog/api/3/action/package_show?id=digiroad"
     -H  "X-API-Key: YOUR APINF API KEY"``
 
 
@@ -101,12 +101,12 @@ info:
 
     All datamodels used are defined in separate service. LINKS HERE!
   version: '3'
-  title: DAF CKAN API
-  x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
+  title: XXX MIT CKAN API
+  x-api-id: 28a40681-4c28-45c9-9bda-7e55d1d6ec68
   contact:
-    name: "Data Analytics Framework"
-    email: alessandro@teamdigitale.governo.it
-    url: 'https://dataportal.daf.teamdigitale.it/'
+    name: "Ministero Infrastrutture e Trasporti"
+    email: WRITEME
+    url: 'vedi responsabile pubblicazione in geodati'
   termsOfService: >-
     TODO ereditare la parte sensata da
     http://geodati.gov.it/geoportale/note-legali
