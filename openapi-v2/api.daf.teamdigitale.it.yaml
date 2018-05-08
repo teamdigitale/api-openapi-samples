@@ -104,6 +104,7 @@ info:
   title: DAF CKAN API
   x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
   contact:
+    name: "Data Analytics Framework"
     email: alessandro@teamdigitale.governo.it
     url: 'https://dataportal.daf.teamdigitale.it/'
   termsOfService: >-
