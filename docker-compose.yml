@@ -1,0 +1,12 @@
+editor:
+  image: swaggerapi/swagger-editor
+  ports:
+  - "80:8080"
+  volumes:
+  - .:/code
+
+node:
+  image: node:9
+  volumes:
+  - .:/code
+  command: tail -f /etc/hosts
