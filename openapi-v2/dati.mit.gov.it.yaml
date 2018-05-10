@@ -1,0 +1,432 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://dati.mit.gov.it/catalog/api/3/action'
+x-origin:
+  - url: >-
+      https://raw.githubusercontent.com/teamdigitale/api-openapi-samples/ckan-v3-stubs/openapi-v2/api.daf.teamdigitale.it.yml
+    format: swagger
+    version: '2.0'
+    converter:
+      url: 'https://github.com/mermade/swagger2openapi'
+      version: 2.11.5
+info:
+  description: >
+    Simple API to manage open data sets in api.daf.teamdigitale.it.
+
+
+    # Important note
+
+    This is not a traditional rest API in the strict sense. **It does not use
+    PUT or DELETE http methods**. Instead, it does everything with GET or POST
+    methods. This means that the color coding in the (swagger) documentation is
+    misleading.
+
+
+    # Open and limited access functions
+
+
+    Functions which can be used **without authorization are grouped under
+    _consumers_**.
+
+    Some API functions **require authorization (grouped under _admins_)**. With
+    these methods you will need API key provided by CKAN system.
+
+
+    **In every API call you need to provide APInf platform specific API-key**.
+    You can get that by creating account. After logging in, your API key is
+    visible in every API profile page (top right corner).
+
+    <center>
+
+    ![Imgur](https://i.imgur.com/bEGmr2s.png)
+
+    </center>
+
+
+    # A few simple examples
+
+
+    **Simple example to list datasets** is:
+
+
+    ``curl -X GET
+    "http://dati.mit.gov.it/catalog/api/3/action/package_list" -H
+    "X-API-Key: YOUR APINF API KEY"``
+
+
+    which returns JSON formatted list of datasets.
+
+
+    **Simple example to view details of one dataset** is:
+
+
+    ``curl -X GET
+    "http://dati.mit.gov.it/catalog/api/3/action/package_show?id=digiroad"
+    -H  "X-API-Key: YOUR APINF API KEY"``
+
+
+    which returns JSON formatted detailed infomation about identified dataset.
+
+
+
+    # Authentication and API keys
+
+
+    There's two kind of keys:
+
+    - **X-API-Key**. APInf Platform API key used in analytics. This required in
+    all API calls. You can get that by creating account. After logging in, your
+    API key is visible in every API profile page (right top corner).
+
+    - **Authorization**. To authorize user to do admin operations in CKAN
+    system. This key can be obtained by signing up to https://beta.avoindata.fi.
+
+
+    Some API functions require authorization (grouped under _admins_). The API
+    uses the same authorization functions and configuration as the web
+    interface, so if a user is authorized to do something in the web interface
+    they’ll be authorized to do it via the API as well.
+
+
+    When calling an API function that requires authorization, you must
+    authenticate yourself by providing your API key with your HTTP request. To
+    find your API key, login to the CKAN site using its web interface and visit
+    your user profile page. In SwaggerUI, you need to input CKAN authorization
+    API-key to _Authorization_ value field. Open authentication dialog by
+    clicking _Authorize_ button.
+
+
+    # Datamodels
+
+
+    All datamodels used are defined in separate service. LINKS HERE!
+  version: '3'
+  title: XXX MIT CKAN API
+  x-api-id: 28a40681-4c28-45c9-9bda-7e55d1d6ec68
+  contact:
+    name: "Ministero Infrastrutture e Trasporti"
+    email: WRITEME
+    url: 'vedi responsabile pubblicazione in geodati'
+  termsOfService: >-
+    TODO ereditare la parte sensata da
+    http://geodati.gov.it/geoportale/note-legali
+  x-audience:
+    - public
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: consumers
+    description: Operations available to regular consumers
+paths:
+  /package_list:
+    get:
+      tags:
+        - consumers
+      summary: List all datasets within given limit
+      operationId: listInventory
+      description: |
+        List or search all datasets
+      parameters:
+        - in: query
+          name: offset
+          description: 'when limit is given, the offset to start returning packages from'
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: >-
+            if given, the list of datasets will be broken into pages of at most
+            limit datasets per page and only one page will be returned at a time
+            (optional)
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+          - $ref: '#/components/responses/400BadRequest'
+        default:
+          - $ref: '#/components/responses/default'
+
+  /package_search:
+    get:
+      tags:
+        - consumers
+      summary: Search among all datasets
+      operationId: searchInventory
+      description: |
+        List or search all datasets
+      parameters:
+        - in: query
+          name: q
+          description: 'the solr query. For example ``name:pdf-testi``'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: >
+            any filter queries to apply. Note: +site_id:{ckan_site_id} is added
+            to this string prior to the query being executed.
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: >
+            sorting of the search results. Optional. **Default: 'relevance asc,
+            metadata_modified desc'**. As per the solr documentation, this is a
+            comma-separated string of field names and sort-orderings.
+          required: false
+          schema:
+            type: string
+            default: 'relevance asc, metadata_modified desc'
+        - in: query
+          name: rows
+          description: >-
+            the number of matching rows to return. There is a hard limit of 1000
+            datasets per query.
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: start
+          description: >-
+            the offset in the complete result for where the set of returned
+            datasets should begin.
+          schema:
+            type: integer
+        - in: query
+          name: include_drafts
+          description: >-
+            if True, draft datasets will be included in the results. A user will
+            only be returned their own draft datasets, and a sysadmin will be
+            returned all draft datasets. Optional, the default is False.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+          - $ref: '#/components/responses/400BadRequest'
+        '409':
+          description: Conflict (can result e.g. from incorrectly formatted solr query)
+        default:
+          - $ref: '#/components/responses/default'
+
+  /package_show:
+    get:
+      tags:
+        - consumers
+      summary: Get details of one package
+      operationId: showInventory
+      description: |
+        List or search all datasets
+      parameters:
+        - in: query
+          name: id
+          description: the id or name of the dataset
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: include_tracking
+          description: |
+            add tracking information to dataset and resources (default: False)
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+          - $ref: '#/components/responses/400BadRequest'
+        default:
+          - $ref: '#/components/responses/default'
+  /organization_list:
+    get:
+      tags:
+        - consumers
+      summary: List all groups within given parameters
+      operationId: listOrgs
+      description: |
+        List or search all datasets
+      parameters:
+        - in: query
+          name: sort
+          description: >
+            sorting of the search results. Optional. Default: “name asc” string
+            of field name and sort-order. The allowed fields are ‘name’,
+            ‘package_count’ and ‘title’
+          required: false
+          schema:
+            type: string
+            default: name asc
+        - in: query
+          name: limit
+          description: >
+            if given, the list of organizations will be broken into pages of at
+            most limit organizations per page and only one page will be returned
+            at a time (optional)
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: offset
+          description: >
+            when limit is given, the offset to start returning organizations
+            from
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: organizations
+          description: >
+            a list of names of the groups to return, if given only groups whose
+            names are in this list will be returned (optional)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: all_fields
+          description: >
+            return group dictionaries instead of just names. Only core fields
+            are returned - get some more using the include_* options. Returning
+            a list of packages is too expensive, so the packages property for
+            each group is deprecated, but there is a count of the packages in
+            the package_count property. (optional, default: False)
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: include_dataset_count
+          description: >
+            if all_fields, include the full package_count (optional, default:
+            True)
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: include_extras
+          description: >
+            if all_fields, include the organization extra fields (optional,
+            default: False)
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          name: include_tags
+          description: >
+            if all_fields, include the organization tags (optional, default:
+            False)
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          name: include_groups
+          description: >
+            if all_fields, include the organizations the organizations are in
+            (optional, default: False)
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          name: include_users
+          description: >
+            if all_fields, include the organization users (optional, default:
+            False).
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+          - $ref: '#/components/responses/400BadRequest'
+        default:
+          - $ref: '#/components/responses/default'
+
+components:
+  responses:
+    CkanResponse:
+      description: |
+        Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanReply'
+    400BadRequest:
+      description: |
+        Invalid input
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+    403Forbidden:
+      description: |
+        Missing authorization key
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+    409AlreadyExists:
+      description: |
+        Item already exists
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+    Error:
+      description: |
+        An unexpected status has been returned.
+
+  securitySchemes:
+    ckanapikey:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    CkanError:
+      type: object
+      required:
+        - result
+        - success
+        - help
+        - error
+      properties:
+        result:
+          anyOf:
+            - object
+            - array
+        error:
+          type: object
+        help:
+          type: string
+          format: url
+        status:
+          type: boolean
+          enum:
+            - false
+    CkanReply:
+      type: object
+      required:
+        - result
+        - success
+        - help
+      properties:
+        result:
+          anyOf:
+            - object
+            - array
+        error:
+          type: object
+        help:
+          type: string
+          format: url
+        status:
+          type: boolean
+          enum:
+            - true
+            - false
