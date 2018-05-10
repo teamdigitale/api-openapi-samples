@@ -175,16 +175,6 @@ components:
         modified:
           type: date-time
           description: The object modification time.
-    Error:
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     Problem:
       type: object
       properties:
