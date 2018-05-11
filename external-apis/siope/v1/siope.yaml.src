@@ -137,7 +137,7 @@ paths:
           name: dataProduzioneDa
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di produzione iniziale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -145,7 +145,7 @@ paths:
           name: dataProduzioneA
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di produzione finale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -231,7 +231,7 @@ paths:
           name: dataProduzioneDa
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di produzione iniziale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -239,7 +239,7 @@ paths:
           name: dataProduzioneA
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di produzione finale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -325,7 +325,7 @@ paths:
           name: dataUploadDa
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di upload iniziale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -333,7 +333,7 @@ paths:
           name: dataUploadA
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di upload finale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -417,7 +417,7 @@ paths:
           name: dataUploadDa
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di invio iniziale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -425,7 +425,7 @@ paths:
           name: dataUploadA
           schema:
             type: string
-            format: time
+            format: date-time
           description: >-
             Filtro dei risultati sulla data di invio finale nel formato
             \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
@@ -498,7 +498,7 @@ components:
                     example: '1234567890'
                   dataUpload:
                     type: string
-                    format: date
+                    format: date-time
                     description: >-
                           data di invio del giornale, nel formato
                           \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
