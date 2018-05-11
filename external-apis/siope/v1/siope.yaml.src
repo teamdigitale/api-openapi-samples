@@ -34,28 +34,32 @@ x-common_json_responses: &common_json_responses
   '406':
       description: >-
         Assenza dell'header di richiesta `Accept: application/json`
-  
+
 
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: 'API SIOPE+'
   description: >-
-    "Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e
-    Tesorieri con
-    [SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
+    SIOPE+ è la nuova infrastruttura che intermedierà il colloquio tra pubbliche amministrazioni
+    e banche tesoriere con l’obiettivo di migliorare la qualità dei dati per il monitoraggio
+    della spesa pubblica e per rilevare i tempi di pagamento delle Pubbliche Amministrazioni
+    nei confronti delle imprese fornitrici.
+
+    La documentazione ufficiale è disponibile al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e
+    Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
     tramite ProxySIOPE+
-    
+
     __Attenzione__: Il parametro download previsto per le risorse da acquisire assume nel ProxySIOPE+ il valore true anche in caso di notifica con successo tramite servizio di notifica push.
-    
-    __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione."
-    
+
+    __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione.
+
   termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
   contact:
     email: robipolli@gmail.com
     name: Roberto Polli
     url: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
-  
+
   license:
     name: GPL v3.0
     url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
@@ -84,7 +88,7 @@ paths:
         <<: *common_json_responses
         '201':
           description: Flusso ordinativi inviato con successo
-          headers: 
+          headers:
             <<: *common_headers
           content:
             application/json:
@@ -132,18 +136,8 @@ paths:
           description: >-
             Filtro dei risultati sulla data di produzione finale nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -206,18 +200,8 @@ paths:
           description: >-
             Filtro dei risultati sulla data di produzione finale nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -280,18 +264,8 @@ paths:
           description: >-
             Filtro dei risultati sulla data di upload finale nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -352,18 +326,8 @@ paths:
           description: >-
             Filtro dei risultati sulla data di invio finale nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -403,68 +367,81 @@ paths:
 components:
   parameters:
     idA2A:
-        in: path
-        name: idA2A
-        required: true
-        schema:
-            type: string
-        description: identificativo A2A del tramite della PA che origina la richiesta
+      in: path
+      name: idA2A
+      required: true
+      schema:
+        type: string
+      description: identificativo A2A del tramite della PA che origina la richiesta
     codEnte:
-        in: path
-        name: codEnte
-        required: true
-        schema:
-          type: string
-        description: codice IPA della PA
+      in: path
+      name: codEnte
+      required: true
+      schema:
+        type: string
+      description: codice IPA della PA
+    pagina:
+      in: query
+      name: pagina
+      schema:
+        type: number
+        format: integer
+        default: 1
+      description: numero della pagina dei risultati richiesta
+    download:
+      in: query
+      name: download
+      schema:
+        type: boolean
+      description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
+
 
   schemas:
     Flusso:
-                type: object
-                properties:
-                  progFlusso:
-                    type: string
-                    description: progressivo assegnato al flusso ordinativi da SIOPE+
-                    example: '1234567890'
-                  dataUpload:
-                    type: string
-                    format: date-time
-                    description: >-
-                          data di invio del giornale, nel formato
-                          `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      type: object
+      properties:
+        progFlusso:
+          type: string
+          description: progressivo assegnato al flusso ordinativi da SIOPE+
+          example: '1234567890'
+        dataUpload:
+          type: string
+          format: date-time
+          description: >-
+            data di invio del giornale, nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+          example: '2016-12-12T15:44:59.789'
+        download:
+          type: boolean
+          description: >-
+            flag che indica se il giornale sia già stato scaricato o
+            meno
+          example: 'false'
+        location:
+          type: string
+          format: uri
+          description: URL dove reperire il flusso inviato
 
-                    example: '2016-12-12T15:44:59.789'
-                  download:
-                    type: boolean
-                    description: >-
-                          flag che indica se il giornale sia già stato scaricato o
-                          meno
-                    
-                    example: 'false'
-                  location:
-                    type: string
-                    format: uri
-                    description: URL dove reperire il flusso inviato
-
-    FlussiPaginati:    
-        type: object
-        properties:
-            numRisultati:
-                type: number
-                format: integer
-                example: '12345'
-            numPagine:
-                type: number
-                format: integer
-                example: '123'
-            risultatiPerPagina:
-                type: number
-                format: integer
-                example: '100'
-            pagina:
-                type: number
-                format: integer
-                example: '1'
-            risultati:
-                type: array
-                items:
-                  '$ref': '#/components/schemas/Flusso'
+    FlussiPaginati:
+      type: object
+      properties:
+        numRisultati:
+          type: number
+          format: integer
+          example: '12345'
+        numPagine:
+          type: number
+          format: integer
+          example: '123'
+        risultatiPerPagina:
+          type: number
+          format: integer
+          example: '100'
+        pagina:
+          type: number
+          format: integer
+          example: '1'
+        risultati:
+          type: array
+          items:
+            '$ref': '#/components/schemas/Flusso'
