@@ -67,18 +67,8 @@ paths:
       description: |
         Upload di un Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
       requestBody:
         description: Flusso ordinativi in formato ZIP.
         required: true
@@ -121,18 +111,8 @@ paths:
       description: |
         Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: query
           name: dataProduzioneDa
           schema:
@@ -178,18 +158,8 @@ paths:
       description: |
         Download Ack Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: path
           name: progFlusso
           required: true
@@ -215,18 +185,8 @@ paths:
       description: |
         Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: query
           name: dataProduzioneDa
           schema:
@@ -272,18 +232,8 @@ paths:
       description: |
         Download esito flusso ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: path
           name: progFlusso
           required: true
@@ -309,18 +259,8 @@ paths:
       description: |
         Lista messaggi Esito Applicativo relativi ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: query
           name: dataUploadDa
           schema:
@@ -366,18 +306,8 @@ paths:
       description: |
         Download esito flusso ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: path
           name: progEsitoApplicativo
           required: true
@@ -401,18 +331,8 @@ paths:
       description: |
         Lista giornali di cassa relativa ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: query
           name: dataUploadDa
           schema:
@@ -457,18 +377,8 @@ paths:
       description: |
         Download giornale di cassa relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
         - in: path
           name: progGiornale
           required: true
@@ -488,6 +398,22 @@ paths:
                 format: binary
 
 components:
+  parameters:
+    idA2A:
+        in: path
+        name: idA2A
+        required: true
+        schema:
+            type: string
+        description: identificativo A2A del tramite della PA che origina la richiesta
+    codEnte:
+        in: path
+        name: codEnte
+        required: true
+        schema:
+          type: string
+        description: codice IPA della PA
+
   schemas:
     Flusso:
                 type: object
