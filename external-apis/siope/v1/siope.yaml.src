@@ -1,4 +1,4 @@
-common_headers: &common_headers
+x_common_headers: &common_headers
         X-RateLimit-Limit:
           $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
         X-RateLimit-Remaining:
@@ -6,7 +6,7 @@ common_headers: &common_headers
         X-RateLimit-Reset:
           $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
 
-common_responses: &common_responses
+x_common_responses: &common_responses
   '400':
       description: Bad Request
   '401':
@@ -14,7 +14,8 @@ common_responses: &common_responses
   '404':
       description: Not Found
   '406':
-      description: 'assenza dell''header di richiesta "Accept: application/json"'
+      description: >-
+        Assenza dell'header di richiesta `Accept: application/json`
   '429':
       description: >-
        richieste più frequenti di quanto consentito dalle regole di
@@ -22,13 +23,13 @@ common_responses: &common_responses
       headers:
         <<: *common_headers
   '503':
-     description: |
+     description: >-
        Servizio non disponibile
      headers:
        Retry-After:
          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
   default:
-    description: |
+    description: >-
       Errore non atteso
 
 
@@ -41,8 +42,17 @@ info:
     Tesorieri con
     [SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
     tramite ProxySIOPE+
+    
     __Attenzione__: Il parametro download previsto per le risorse da acquisire assume nel ProxySIOPE+ il valore true anche in caso di notifica con successo tramite servizio di notifica push.
+    
     __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione."
+    
+  termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
+  contact:
+    email: robipolli@gmail.com
+    name: Roberto Polli
+    url: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
+  
   license:
     name: GPL v3.0
     url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
@@ -86,23 +96,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  progFlusso:
-                    type: string
-                    description: progressivo assegnato al flusso ordinativi da SIOPE+
-                    example: '1234567890'
-                  dataUpload:
-                    type: string
-                    format: date
-                    example: '2016-12-12T15:44:59.789'
-                  download:
-                    type: boolean
-                    example: 'false'
-                  location:
-                    type: string
-                    format: uri
-                    description: URL dove reperire il flusso inviato
+                '$ref': '#/components/schemas/Flusso'
+
         '413':
           description: body della richiesta troppo grande
         '415':
@@ -173,47 +168,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al flusso ordinativi da SIOPE+
-                          example: '1234567890'
-                        dataProduzione:
-                          type: string
-                          format: date
-                          description: >-
-                            data di produzione dell'ack, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: flag che indica se l'ack sia già stato scaricato o meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire l'ack prodotto
+                '$ref': '#/components/schemas/FlussiPaginati'
+
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack':
     get:
       tags:
@@ -306,49 +262,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al flusso ordinativi da SIOPE+
-                          example: '1234567890'
-                        dataProduzione:
-                          type: string
-                          format: date
-                          description: >-
-                            data di produzione dell'esito, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se l'esito sia già stato scaricato o
-                            meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire l'esito prodotto
+                '$ref': '#/components/schemas/FlussiPaginati'
+
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso':
     get:
       tags:
@@ -441,49 +356,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progEsitoApplicativo:
-                          type: string
-                          description: progressivo assegnato al messaggio da SIOPE+
-                          example: '1234567890'
-                        dataUpload:
-                          type: string
-                          format: date
-                          description: >-
-                            data di upload del messaggio, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se il messaggio sia già stato scaricato
-                            o meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire il messaggio inviato
+                '$ref': '#/components/schemas/FlussiPaginati'
+
   '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo/{progEsitoApplicativo}':
     get:
       tags:
@@ -574,49 +448,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al giornale da SIOPE+
-                          example: '1234567890'
-                        dataUpload:
-                          type: string
-                          format: date
-                          description: >-
-                            data di invio del giornale, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se il giornale sia già stato scaricato o
-                            meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire il giornale inviato
+                '$ref': '#/components/schemas/FlussiPaginati'
   '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}':
     get:
       tags:
@@ -655,4 +487,55 @@ paths:
                 type: string
                 format: binary
 
+components:
+  schemas:
+    Flusso:
+                type: object
+                properties:
+                  progFlusso:
+                    type: string
+                    description: progressivo assegnato al flusso ordinativi da SIOPE+
+                    example: '1234567890'
+                  dataUpload:
+                    type: string
+                    format: date
+                    description: >-
+                          data di invio del giornale, nel formato
+                          \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
 
+                    example: '2016-12-12T15:44:59.789'
+                  download:
+                    type: boolean
+                    description: >-
+                          flag che indica se il giornale sia già stato scaricato o
+                          meno
+                    
+                    example: 'false'
+                  location:
+                    type: string
+                    format: uri
+                    description: URL dove reperire il flusso inviato
+
+    FlussiPaginati:    
+        type: object
+        properties:
+            numRisultati:
+                type: number
+                format: integer
+                example: '12345'
+            numPagine:
+                type: number
+                format: integer
+                example: '123'
+            risultatiPerPagina:
+                type: number
+                format: integer
+                example: '100'
+            pagina:
+                type: number
+                format: integer
+                example: '1'
+            risultati:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/Flusso'
