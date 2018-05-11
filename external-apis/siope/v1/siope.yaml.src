@@ -1,4 +1,4 @@
-x_common_headers: &common_headers
+x-common_headers: &common_headers
         X-RateLimit-Limit:
           $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
         X-RateLimit-Remaining:
@@ -6,16 +6,13 @@ x_common_headers: &common_headers
         X-RateLimit-Reset:
           $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
 
-x_common_responses: &common_responses
+x-common_responses: &common_responses
   '400':
       description: Bad Request
   '401':
       description: Identificativo A2A di chi origina la richiesta non ancora abilitato
   '404':
       description: Not Found
-  '406':
-      description: >-
-        Assenza dell'header di richiesta `Accept: application/json`
   '429':
       description: >-
        richieste più frequenti di quanto consentito dalle regole di
@@ -32,6 +29,12 @@ x_common_responses: &common_responses
     description: >-
       Errore non atteso
 
+x-common_json_responses: &common_json_responses
+  << : *common_responses
+  '406':
+      description: >-
+        Assenza dell'header di richiesta `Accept: application/json`
+  
 
 openapi: 3.0.0
 info:
@@ -78,7 +81,7 @@ paths:
               type: string
               format: binary
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
         '201':
           description: Flusso ordinativi inviato con successo
           headers: 
@@ -92,7 +95,7 @@ paths:
           description: body della richiesta troppo grande
         '415':
           description: >-
-            assenza dell'header della richiesta "Content-Type: application/zip"
+            assenza dell'header della richiesta `Content-Type: application/zip`
             o header valorizzato diversamente oppure body della richiesta non in
             formato zip
         '422':
@@ -142,7 +145,7 @@ paths:
             default: 1
           description: numero della pagina dei risultati richiesta
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
         '200':
           description: Ricerca completata con successo
           content:
@@ -216,7 +219,7 @@ paths:
             default: 1
           description: numero della pagina dei risultati richiesta
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
         '200':
           description: Ricerca completata con successo
           content:
@@ -290,7 +293,7 @@ paths:
             default: 1
           description: numero della pagina dei risultati richiesta
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
         '200':
           description: Ricerca completata con successo
           content:
@@ -362,7 +365,7 @@ paths:
             default: 1
           description: numero della pagina dei risultati richiesta
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
         '200':
           description: Ricerca completata con successo
           content:
