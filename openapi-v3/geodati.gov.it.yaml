@@ -11,9 +11,9 @@ info:
     La ricerca (ad esempio, di dati cartografici su "Latina") ritorna una serie di informazioni che includono:
 
       - la descrizione dei dati, eg. *Cartografia catastale in scala 1:2000*
-      - le coordinate geografiche, eg. *[12.7200248, 41.3830331, 13.0246195, 41.5616704]*
-      - la data di ultima revisione dei dati, eg. *2015-04-20T22:00:00Z*
-      - i contatti dell'ente che li pubblica, eg. *Agenzia delle Entrate Direzione Centrale Catasto* con la relativa email.
+      - le coordinate geografiche
+      - la data di ultima revisione dei dati
+      - i contatti dell'ente che li pubblica, eg. *Agenzia delle Entrate Direzione Centrale Catasto* con la relativa email
 
     #### Note
 
@@ -21,11 +21,11 @@ info:
     basata sulle indicazioni della [Direttiva INSPIRE](http://geodati.gov.it/geoportale/direttiva-inspire)** è descritta
     [qui](http://geodati.gov.it/geoportale/che-cos-e-il-rndt/2015-04-21-22-41-05).
 
-    L'endpoint [CSW - Catologo dei Servizi Web](https://it.wikipedia.org/wiki/Catalog_Service_for_the_Web) è disponibile qui: http://geodati.gov.it/RNDT/csw
+    L'endpoint in formato [CSW - Catologo dei Servizi Web](https://it.wikipedia.org/wiki/Catalog_Service_for_the_Web) è disponibile qui: http://geodati.gov.it/RNDT/csw
 
     #### Informazioni tecniche ed esempi
 
-    Di default, il server ritorna `xml`; Utilizzare `f=json` per richiedere risposte in formato JSON.
+    Di default, i dati sono ritornati in `xml`; utilizzare `f=json` per richiedere dati in formato JSON.
 
     Query:
     ```
