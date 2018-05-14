@@ -35,44 +35,66 @@ x-common_json_responses: &common_json_responses
       description: >-
         Assenza dell'header di richiesta `Accept: application/json`
 
+x-common_zip_responses: &common_zip_responses
+  << : *common_responses
+  '406':
+      description: >-
+        Assenza dell'header di richiesta `Accept: application/zip`
+
+x-common_post_responses: &common_post_responses
+  << : *common_json_responses
+  '413':
+    description: body della richiesta troppo grande
+  '415':
+    description: >-
+      assenza dell'header della richiesta `Content-Type: application/zip`
+      o header valorizzato diversamente oppure body della richiesta non in
+      formato zip
+  '422':
+    description: >-
+      body della richiesta non aderente al suo schema XSD o comunque di
+      complessità troppo elevata
+  '460':
+    description: >-
+      identificativo A2A del tramite della PA oppure codice UNI_UO della PA,
+      entrambi specificati nel messaggio inviato, non ancora abilitato
+  '461':
+    description: >-
+      identificativo A2A del tramite della BT oppure codice ABI della BT,
+      entrambi specificati nel messaggio inviato, non censiti in anagrafica
 
 openapi: 3.0.0
 info:
   version: 1.0.1
-  title: 'API SIOPE+'
-  description: >-
-    SIOPE+ è la nuova infrastruttura che intermedierà il colloquio tra pubbliche amministrazioni
-    e banche tesoriere con l’obiettivo di migliorare la qualità dei dati per il monitoraggio
-    della spesa pubblica e per rilevare i tempi di pagamento delle Pubbliche Amministrazioni
-    nei confronti delle imprese fornitrici.
+  title: 'API SIOPE+, trasmissione degli ordini d''incasso e pagamento tra amministrazioni pubbliche e tesorieri.'
+  description: |-
+    SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e  le banche tesoriere con l''obiettivo di migliorare la qualità dei dati per il monitoraggio  della spesa pubblica, rilevare i tempi di pagamento dei debiti commerciali e aumentare  l'efficienza del sistema dei pagamenti pubblici.
 
-    La documentazione ufficiale è disponibile al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e
-    Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
-    tramite ProxySIOPE+
+    E' stato sviluppato dalla Banca d'Italia in collaborazione con:
+    - Ragioneria Generale di Stato;
+    - Agenzia per l'Italia Digitale.
 
-    __Attenzione__: Il parametro download previsto per le risorse da acquisire assume nel ProxySIOPE+ il valore true anche in caso di notifica con successo tramite servizio di notifica push.
-
-    __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione.
+    La documentazione ufficiale è disponibile al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)
 
   termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
   contact:
-    email: robipolli@gmail.com
-    name: Roberto Polli
+    email: siopeplus@bancaditalia.it
+    name: SIOPEPLUS
     url: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
 
   license:
     name: GPL v3.0
     url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
 servers:
-  - url: 'https://www.link.it/projects/siope/v1'
+  - url: 'https://a2a.siopeplus.it/v1'
 paths:
-  '/{idA2A}/PA/{codEnte}/flusso':
+  '/{idA2A}/PA/{codEnte}/flusso/':
     post:
       tags:
         - 'Flusso Ordinativi'
       summary: Invio flusso ordinativi
       description: |
-        Upload di un Flusso Ordinativi relativo ad uno specifico Ente
+        ENTE: Upload di un Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
@@ -85,7 +107,7 @@ paths:
               type: string
               format: binary
       responses:
-        <<: *common_json_responses
+        <<: *common_post_responses
         '201':
           description: Flusso ordinativi inviato con successo
           headers:
@@ -93,49 +115,18 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/Flusso'
-
-        '413':
-          description: body della richiesta troppo grande
-        '415':
-          description: >-
-            assenza dell'header della richiesta `Content-Type: application/zip`
-            o header valorizzato diversamente oppure body della richiesta non in
-            formato zip
-        '422':
-          description: >-
-            body della richiesta non aderente al suo schema XSD o comunque di
-            complessità troppo elevata
-        '460':
-          description: >-
-            identificativo A2A del tramite della PA, specificato nel flusso
-            ordinativi inviato, non ancora abilitato
-  '/{idA2A}/PA/{codEnte}/flusso/ack':
+                '$ref': '#/components/schemas/FlussoDataUpload'
     get:
       tags:
         - 'Flusso Ordinativi'
-      summary: Lista ack flussi ordinativi
+      summary: Lista Flussi Ordinativi relativi ad uno specifico Ente
       description: |
-        Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
+        TESORIERE: Lista Flussi Ordinativi relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: query
-          name: dataProduzioneDa
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di produzione iniziale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: dataProduzioneA
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di produzione finale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+        - '$ref': '#/components/parameters/dataUploadDa'
+        - '$ref': '#/components/parameters/dataUploadA'
         - '$ref': '#/components/parameters/download'
         - '$ref': '#/components/parameters/pagina'
       responses:
@@ -145,7 +136,30 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/FlussiPaginati'
+                '$ref': '#/components/schemas/FlussiPaginatiUpload'
+
+  '/{idA2A}/PA/{codEnte}/flusso/ack/':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Lista ack flussi ordinativi
+      description: |
+        ENTE: Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
 
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack':
     get:
@@ -153,18 +167,11 @@ paths:
         - 'Flusso Ordinativi'
       summary: Download ack flusso ordinativi
       description: |
-        Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+        ENTE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: path
-          name: progFlusso
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
-            ordinativi
+        - '$ref': '#/components/parameters/progFlusso'
       responses:
         <<: *common_responses
         '200':
@@ -174,32 +181,19 @@ paths:
               schema:
                 type: string
                 format: binary
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso':
+
+  '/{idA2A}/BT/{codBanca}/flusso/':
     get:
       tags:
         - 'Flusso Ordinativi'
-      summary: Lista esiti flussi ordinativi
+      summary: Lista Flussi Ordinativi relativi a tutti gli Enti
       description: |
-        Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
+        TESORIERE: Lista Flussi Ordinativi relativi a tutti gli Enti
       parameters:
         - '$ref': '#/components/parameters/idA2A'
-        - '$ref': '#/components/parameters/codEnte'
-        - in: query
-          name: dataProduzioneDa
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di produzione iniziale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: dataProduzioneA
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di produzione finale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+        - '$ref': '#/components/parameters/codBanca'
+        - '$ref': '#/components/parameters/dataUploadDa'
+        - '$ref': '#/components/parameters/dataUploadA'
         - '$ref': '#/components/parameters/download'
         - '$ref': '#/components/parameters/pagina'
       responses:
@@ -209,28 +203,162 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/FlussiPaginati'
+                '$ref': '#/components/schemas/FlussiPaginatiUpload'
+
+  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}':
+    get:
+      tags:
+        - 'Flusso Ordinativi'
+      summary: Download ack flusso ordinativi
+      description: |
+        TESORIERE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progFlusso'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          description: Flusso ordinativi in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+
+  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/':
+    post:
+      tags:
+        - 'Esito Flusso Ordinativi'
+      summary: Invio esito flusso ordinativi
+      description: |
+        TESORIERE: Upload Esito Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progFlusso'
+      requestBody:
+        description: Esito flusso ordinativi in formato ZIP.
+        required: true
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      responses:
+        <<: *common_post_responses
+        '201':
+          description: Flusso ordinativi inviato con successo
+          headers:
+            <<: *common_headers
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussoDataUpload'
+
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack/':
+    get:
+      tags:
+        - 'Esito Flusso Ordinativi'
+      summary: Lista ack esiti flusso ordinativi
+      description: |
+        TESORIERE: Lista Ack Esito Flusso Ordinativi relativi ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/BT/{codBanca}/flusso/esitoflusso/ack/':
+    get:
+      tags:
+        - 'Esito Flusso Ordinativi'
+      summary: Lista ack esiti flusso ordinativi
+      description: |
+        TESORIERE: Lista Ack Esito Flusso Ordinativi relativi a tutti gli Enti
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codBanca'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/ack':
+    get:
+      tags:
+        - 'Esito Flusso Ordinativi'
+      summary: Download ack esito flusso ordinativi
+      description: |
+        TESORIERE: Download Ack Esito Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progFlusso'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          description: Ack esito flusso ordinativi in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/':
+    get:
+      tags:
+        - 'Esito Flusso Ordinativi'
+      summary: Lista esiti flussi ordinativi
+      description: |
+        ENTE: Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiUpload'
 
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso':
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - 'Esito Flusso Ordinativi'
       summary: Download esito flusso ordinativi
       description: |
-        Download esito flusso ordinativi relativo ad uno specifico Ente
+        ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: path
-          name: progFlusso
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
-            ordinativi
+        - '$ref': '#/components/parameters/progFlusso'
       responses:
-        <<: *common_responses
+        <<: *common_zip_responses
         '200':
           description: Esito flusso ordinativi in formato ZIP
           content:
@@ -238,32 +366,46 @@ paths:
               schema:
                 type: string
                 format: binary
-  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo':
-    get:
+
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo/':
+    post:
       tags:
-        - 'Flusso Ordinativi'
-      summary: Lista messaggi esiti applicativi
+        - 'Esito Applicativo'
+      summary: Invio esito applicativo
       description: |
-        Lista messaggi Esito Applicativo relativi ad uno specifico Ente
+        TESORIERE: Upload Esito Applicativo relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: query
-          name: dataUploadDa
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di upload iniziale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: dataUploadA
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di upload finale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      requestBody:
+        description: Esito applicativo in formato ZIP.
+        required: true
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      responses:
+        <<: *common_post_responses
+        '201':
+          description: Esito applicativo inviato con successo
+          headers:
+            <<: *common_headers
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussoDataUpload'
+    get:
+      tags:
+        - 'Esito Applicativo'
+      summary: Lista messaggi esiti applicativi
+      description: |
+        ENTE: Lista messaggi Esito Applicativo relativi ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/dataUploadDa'
+        - '$ref': '#/components/parameters/dataUploadA'
         - '$ref': '#/components/parameters/download'
         - '$ref': '#/components/parameters/pagina'
       responses:
@@ -273,26 +415,88 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/FlussiPaginati'
+                '$ref': '#/components/schemas/FlussiPaginatiUpload'
 
-  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo/{progEsitoApplicativo}':
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo/ack/':
     get:
       tags:
-        - 'Flusso Ordinativi'
-      summary: Download messaggio di esito applicativo
+        - 'Esito Applicativo'
+      summary: Lista ack messaggio esito applicativo
       description: |
-        Download esito flusso ordinativi relativo ad uno specifico Ente
+        TESORIERE: Lista Ack Messaggio Esito Applicativo relativi ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: path
-          name: progEsitoApplicativo
-          required: true
-          schema:
-            type: string
-          description: Progressivo assegnato da SIOPE+ all'atto dell'invio del messaggio
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
       responses:
-        <<: *common_responses
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/BT/{codBanca}/esitoapplicativo/ack/':
+    get:
+      tags:
+        - 'Esito Applicativo'
+      summary: Lista ack messaggio esito applicativo
+      description: |
+        TESORIERE: Lista Ack Messaggio Esito Applicativo relativi a tutti gli Enti
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codBanca'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}/ack':
+    get:
+      tags:
+        - 'Esito Applicativo'
+      summary: Download ack messaggio esito applicativo
+      description: |
+        ENTE: Download Ack Messaggio Esito Applicativo relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progEsitoApplicativo'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          description: Ack messaggio esito applicativo in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}':
+    get:
+      tags:
+        - 'Esito Applicativo'
+      summary: Download messaggio di esito applicativo
+      description: |
+        ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progEsitoApplicativo'
+      responses:
+        <<: *common_zip_responses
         '200':
           description: Messaggio esito applicativo in formato ZIP
           content:
@@ -300,32 +504,46 @@ paths:
               schema:
                 type: string
                 format: binary
-  '/{idA2A}/PA/{codEnte}/giornale':
+
+  '/{idA2A}/PA/{codEnte}/giornale/':
+    post:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Invio giornale di cassa
+      description: |
+        TESORIERE: Upload Giornale di cassa relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+      requestBody:
+        description: Giornale di cassa in formato ZIP.
+        required: true
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      responses:
+        <<: *common_post_responses
+        '201':
+          description: Giornale di cassa inviato con successo
+          headers:
+            <<: *common_headers
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussoDataUpload'
     get:
       tags:
         - 'Giornale di Cassa'
       summary: Lista giornali di cassa
       description: |
-        Lista giornali di cassa relativa ad uno specifico Ente
+        ENTE: Lista giornali di cassa relativa ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: query
-          name: dataUploadDa
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di invio iniziale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
-        - in: query
-          name: dataUploadA
-          schema:
-            type: string
-            format: date-time
-          description: >-
-            Filtro dei risultati sulla data di invio finale nel formato
-            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+        - '$ref': '#/components/parameters/dataUploadDa'
+        - '$ref': '#/components/parameters/dataUploadA'
         - '$ref': '#/components/parameters/download'
         - '$ref': '#/components/parameters/pagina'
       responses:
@@ -335,27 +553,88 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/FlussiPaginati'
+                '$ref': '#/components/schemas/FlussiPaginatiUpload'
+
+  '/{idA2A}/PA/{codEnte}/giornale/ack/':
+    get:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Lista ack giornale di cassa
+      description: |
+        TESORIERE: Lista Ack Giornale di cassa relativi ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/BT/{codBanca}/giornale/ack/':
+    get:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Lista ack giornale di cassa
+      description: |
+        TESORIERE: Lista Ack Giornale di cassa relativi a tutti gli Enti
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codBanca'
+        - '$ref': '#/components/parameters/dataProduzioneDa'
+        - '$ref': '#/components/parameters/dataProduzioneA'
+        - '$ref': '#/components/parameters/download'
+        - '$ref': '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          description: Ricerca completata con successo
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/FlussiPaginatiProduzione'
+
+  '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}/ack':
+    get:
+      tags:
+        - 'Giornale di Cassa'
+      summary: Download ack giornale di cassa
+      description: |
+        TESORIERE: Download Ack Giornale di cassa relativo ad uno specifico Ente
+      parameters:
+        - '$ref': '#/components/parameters/idA2A'
+        - '$ref': '#/components/parameters/codEnte'
+        - '$ref': '#/components/parameters/progGiornale'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          description: Ack flusso ordinativi in formato ZIP
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+
   '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}':
     get:
       tags:
         - 'Giornale di Cassa'
       summary: Download giornale di cassa
       description: |
-        Download giornale di cassa relativo ad uno specifico Ente
+        ENTE: Download giornale di cassa relativo ad uno specifico Ente
       parameters:
         - '$ref': '#/components/parameters/idA2A'
         - '$ref': '#/components/parameters/codEnte'
-        - in: path
-          name: progGiornale
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del giornale di
-            cassa
+        - '$ref': '#/components/parameters/progGiornale'
       responses:
-        <<: *common_responses
+        <<: *common_zip_responses
         '200':
           description: Giornale di cassa in formato ZIP
           content:
@@ -380,6 +659,40 @@ components:
       schema:
         type: string
       description: codice IPA della PA
+    codBanca:
+      in: path
+      name: codBanca
+      required: true
+      schema:
+        type: string
+      description: codice ABI della BT
+    progFlusso:
+      in: path
+      name: progFlusso
+      required: true
+      schema:
+        type: string
+      description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
+            ordinativi
+    progEsitoApplicativo:
+      in: path
+      name: progEsitoApplicativo
+      required: true
+      schema:
+        type: string
+      description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio dell'esito
+            applicativo
+    progGiornale:
+      in: path
+      name: progGiornale
+      required: true
+      schema:
+        type: string
+      description: >-
+            Progressivo assegnato da SIOPE+ all'atto dell'invio del giornale
+            di cassa
     pagina:
       in: query
       name: pagina
@@ -394,27 +707,61 @@ components:
       schema:
         type: boolean
       description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-
-
+    dataUploadDa:
+      in: query
+      name: dataUploadDa
+      schema:
+        type: string
+        format: date-time
+      description: >-
+            Filtro dei risultati sulla data di upload iniziale nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+    dataUploadA:
+      in: query
+      name: dataUploadA
+      schema:
+        type: string
+        format: date-time
+      description: >-
+            Filtro dei risultati sulla data di upload finale nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+    dataProduzioneDa:
+      in: query
+      name: dataProduzioneDa
+      schema:
+        type: string
+        format: date-time
+      description: >-
+            Filtro dei risultati sulla data di produzione iniziale nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+    dataProduzioneA:
+      in: query
+      name: dataProduzioneA
+      schema:
+        type: string
+        format: date-time
+      description: >-
+            Filtro dei risultati sulla data di produzione finale nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
   schemas:
-    Flusso:
+    FlussoDataUpload:
       type: object
       properties:
         progFlusso:
           type: string
-          description: progressivo assegnato al flusso ordinativi da SIOPE+
+          description: progressivo assegnato al flusso da SIOPE+
           example: '1234567890'
         dataUpload:
           type: string
           format: date-time
           description: >-
-            data di invio del giornale, nel formato
+            data di invio del flusso, nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
           example: '2016-12-12T15:44:59.789'
         download:
           type: boolean
           description: >-
-            flag che indica se il giornale sia già stato scaricato o
+            flag che indica se il flusso sia già stato scaricato o
             meno
           example: 'false'
         location:
@@ -422,7 +769,32 @@ components:
           format: uri
           description: URL dove reperire il flusso inviato
 
-    FlussiPaginati:
+    FlussoDataProduzione:
+      type: object
+      properties:
+        progFlusso:
+          type: string
+          description: progressivo assegnato al flusso da SIOPE+
+          example: '1234567890'
+        dataProduzione:
+          type: string
+          format: date-time
+          description: >-
+            data di produzione del flusso, nel formato
+            `yyyy-MM-dd'T'HH:mm:ss.SSS`
+          example: '2016-12-12T15:44:59.789'
+        download:
+          type: boolean
+          description: >-
+            flag che indica se il flusso sia già stato scaricato o
+            meno
+          example: 'false'
+        location:
+          type: string
+          format: uri
+          description: URL dove reperire il flusso inviato
+
+    FlussiPaginatiUpload:
       type: object
       properties:
         numRisultati:
@@ -444,4 +816,28 @@ components:
         risultati:
           type: array
           items:
-            '$ref': '#/components/schemas/Flusso'
+            '$ref': '#/components/schemas/FlussoDataUpload'
+
+    FlussiPaginatiProduzione:
+      type: object
+      properties:
+        numRisultati:
+          type: number
+          format: integer
+          example: '12345'
+        numPagine:
+          type: number
+          format: integer
+          example: '123'
+        risultatiPerPagina:
+          type: number
+          format: integer
+          example: '100'
+        pagina:
+          type: number
+          format: integer
+          example: '1'
+        risultati:
+          type: array
+          items:
+            '$ref': '#/components/schemas/FlussoDataProduzione'
