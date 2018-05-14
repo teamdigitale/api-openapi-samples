@@ -1,80 +1,90 @@
-x-common_headers: &common_headers
-        X-RateLimit-Limit:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
-        X-RateLimit-Remaining:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
-        X-RateLimit-Reset:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
 
-x-common_responses: &common_responses
-  '400':
+x-common:
+  headers: &common_headers
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+
+  responses: &common_responses
+    '400':
       description: Bad Request
-  '401':
+    '401':
       description: Identificativo A2A di chi origina la richiesta non ancora abilitato
-  '404':
+    '404':
       description: Not Found
-  '429':
+    '429':
       description: >-
-       richieste più frequenti di quanto consentito dalle regole di
-       throttling
+        richieste più frequenti di quanto consentito dalle regole di
+        throttling
       headers:
         <<: *common_headers
-  '503':
-     description: >-
-       Servizio non disponibile
-     headers:
-       Retry-After:
-         $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
-  default:
-    description: >-
-      Errore non atteso
-
-x-common_json_responses: &common_json_responses
-  << : *common_responses
-  '406':
+    '503':
+      description: >-
+        Servizio non disponibile
+      headers:
+        Retry-After:
+          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+    default:
+      description: >-
+        Errore non atteso
+  json_responses: &common_json_responses
+    <<: *common_responses
+    '406':
       description: >-
         Assenza dell'header di richiesta `Accept: application/json`
 
-x-common_zip_responses: &common_zip_responses
-  << : *common_responses
-  '406':
+  zip_responses: &common_zip_responses
+    <<: *common_responses
+    '406':
       description: >-
         Assenza dell'header di richiesta `Accept: application/zip`
 
-x-common_post_responses: &common_post_responses
-  << : *common_json_responses
-  '413':
-    description: body della richiesta troppo grande
-  '415':
-    description: >-
-      assenza dell'header della richiesta `Content-Type: application/zip`
-      o header valorizzato diversamente oppure body della richiesta non in
-      formato zip
-  '422':
-    description: >-
-      body della richiesta non aderente al suo schema XSD o comunque di
-      complessità troppo elevata
-  '460':
-    description: >-
-      identificativo A2A del tramite della PA oppure codice UNI_UO della PA,
-      entrambi specificati nel messaggio inviato, non ancora abilitato
-  '461':
-    description: >-
-      identificativo A2A del tramite della BT oppure codice ABI della BT,
-      entrambi specificati nel messaggio inviato, non censiti in anagrafica
+  post_responses: &common_post_responses
+    <<: *common_json_responses
+    '413':
+      description: body della richiesta troppo grande
+    '415':
+      description: >-
+        assenza dell'header della richiesta `Content-Type: application/zip`
+        o header valorizzato diversamente oppure body della richiesta non in
+        formato zip
+    '422':
+      description: >-
+        body della richiesta non aderente al suo schema XSD o comunque di
+        complessità troppo elevata
+    '460':
+      description: >-
+        identificativo A2A del tramite della PA oppure codice UNI_UO della PA,
+        entrambi specificati nel messaggio inviato, non ancora abilitato
+    '461':
+      description: >-
+        identificativo A2A del tramite della BT oppure codice ABI della BT,
+        entrambi specificati nel messaggio inviato, non censiti in anagrafica
 
 openapi: 3.0.0
 info:
   version: 1.0.1
-  title: 'API SIOPE+, trasmissione degli ordini d''incasso e pagamento tra amministrazioni pubbliche e tesorieri.'
-  description: |-
-    SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e  le banche tesoriere con l''obiettivo di migliorare la qualità dei dati per il monitoraggio  della spesa pubblica, rilevare i tempi di pagamento dei debiti commerciali e aumentare  l'efficienza del sistema dei pagamenti pubblici.
+  title: 'SIOPE+ API'
+  description: |
+    SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
+
+    #### Documentazione
+    SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere
+    con l'obiettivo di migliorare la qualità dei dati per il monitoraggio della spesa pubblica,
+    rilevare i tempi di pagamento dei debiti commerciali e aumentare l'efficienza del sistema dei pagamenti pubblici.
 
     E' stato sviluppato dalla Banca d'Italia in collaborazione con:
     - Ragioneria Generale di Stato;
     - Agenzia per l'Italia Digitale.
 
+    #### Note
     La documentazione ufficiale è disponibile al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)
+
+    #### Informazioni tecniche ed esempi
+    TBD
 
   termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
   contact:
