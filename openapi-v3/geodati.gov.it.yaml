@@ -301,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref:  '#/components/responses/Response'
+                $ref:  '#/components/schemas/Response'
         '400':
           $ref: '#/components/responses/400BadRequest'
         '404':
@@ -363,7 +363,7 @@ components:
         updated:
           format: date-time
           type: string
-          example: 2018-05-14T09:07:55Z
+          example: "2018-05-14T09:07:55Z"
         records:
           type: array
           items:
@@ -432,6 +432,7 @@ components:
         updated:
           format: date-time
           type: string
+          example: "2018-05-14T09:07:55Z"
         summary:
           type: string
           example: Cartografia catastale
