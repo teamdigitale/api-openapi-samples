@@ -31,6 +31,7 @@ def main(src_file, dst_file):
 
   with open(src_file) as fh_src, open(dst_file, 'w') as fh_dst:
     ret = yaml.load(fh_src)
+    del ret['x-commons']
     content = yaml.dump(ret, default_flow_style=False)
     fh_dst.write(content)
 
