@@ -28,19 +28,11 @@ info:
     Functions which can be used **without authorization are grouped under
     _consumers_**.
 
-    Some API functions **require authorization (grouped under _admins_)**. With
-    these methods you will need API key provided by CKAN system.
 
 
-    **In every API call you need to provide APInf platform specific API-key**.
-    You can get that by creating account. After logging in, your API key is
-    visible in every API profile page (top right corner).
+    **In every API call you need to provide Basic Authentication credentials*.
+    You can get that by creating account here https://dataportal-private.daf.teamdigitale.it/#/register.
 
-    <center>
-
-    ![Imgur](https://i.imgur.com/bEGmr2s.png)
-
-    </center>
 
 
     # A few simple examples
@@ -49,9 +41,10 @@ info:
     **Simple example to list datasets** is:
 
 
-    ``curl -X GET
-    "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_list" -H
-    "X-API-Key: YOUR APINF API KEY"``
+    ``curl --request GET \
+  --url https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_list \
+  --header "authorization: Basic XXXXXXXXXXXXXXX=="``
+
 
 
     which returns JSON formatted list of datasets.
@@ -60,40 +53,24 @@ info:
     **Simple example to view details of one dataset** is:
 
 
-    ``curl -X GET
+    ``curl --request GET \
     "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_show?id=digiroad"
-    -H  "X-API-Key: YOUR APINF API KEY"``
+    --header "authorization: Basic XXXXXXXXXXXXXXX=="``
 
 
     which returns JSON formatted detailed infomation about identified dataset.
 
 
 
-    # Authentication and API keys
+    # Authentication with Basic Authentication
 
 
-    There's two kind of keys:
-
-    - **X-API-Key**. APInf Platform API key used in analytics. This required in
-    all API calls. You can get that by creating account. After logging in, your
-    API key is visible in every API profile page (right top corner).
-
-    - **Authorization**. To authorize user to do admin operations in CKAN
-    system. This key can be obtained by signing up to https://beta.avoindata.fi.
+    - **Basic Authentication**. At the moment Basic Authentication is supported. After 
+    registered here at https://dataportal-private.daf.teamdigitale.it/#/register every 
+    api call can be authorized. Also JWT is supported but issueing JWT will be described
+    in future. 
 
 
-    Some API functions require authorization (grouped under _admins_). The API
-    uses the same authorization functions and configuration as the web
-    interface, so if a user is authorized to do something in the web interface
-    they’ll be authorized to do it via the API as well.
-
-
-    When calling an API function that requires authorization, you must
-    authenticate yourself by providing your API key with your HTTP request. To
-    find your API key, login to the CKAN site using its web interface and visit
-    your user profile page. In SwaggerUI, you need to input CKAN authorization
-    API-key to _Authorization_ value field. Open authentication dialog by
-    clicking _Authorize_ button.
 
 
     # Datamodels
@@ -108,7 +85,7 @@ info:
     email: alessandro@teamdigitale.governo.it
     url: 'https://dataportal.daf.teamdigitale.it/'
   termsOfService: >-
-    TODO ereditare la parte sensata da
+    TODO non ho le competenze per scrivere le note legali chiedere a qualcuno che possa aiutare
     http://geodati.gov.it/geoportale/note-legali
   x-audience:
     - public
