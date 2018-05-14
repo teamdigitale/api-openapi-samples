@@ -2,9 +2,38 @@ openapi: 3.0.0
 info:
   version: "0.0.1"
   title: |
-    RNDT geodati.gov.it REST API
+    Repertorio Nazionale dei Dati Territoriali -  geodati.gov.it REST API
   description: |
-    REST search interface for the National Catalog for Spatial Data -  RNDT.
+    The RNDT - Repertorio Nazionale dei Dati Territoriali - is the National Catalog for Spatial Data.
+    \
+    \
+    The catalog contains [the metadata for PAs spatial data and the associated services](http://geodati.gov.it/geoportale/eng/about).
+    It constitutes as a public register of such data certifying its existence through the publication of the metadata.
+    \
+    \
+    Here you can find the references to the spatial data provided by PAs. Eg.
+
+    Looking for cartographic data about Latina, you will get a list of records which includes the following informations:
+
+      - a summary of the data, eg. `Cartografia catastale in scala 1:2000`
+      - the geographic coordinates, eg. `[12.7200248, 41.3830331, 13.0246195, 41.5616704]`
+      - the last revision `2015-04-20T22:00:00Z`
+      - the reference to the data owner and contact, eg:
+    ```
+        'email': 'dc.cc.ascart@agenziaentrate.it',
+        'name': 'Agenzia delle Entrate Direzione Centrale Catasto e Cartografia Area Servizi Cartografici',
+      ...
+    ```
+
+    #### Disclaimer
+
+    This **development** REST interface is provided as an helper for browsing and searches.
+
+    The official CSW interface is described [here](http://geodati.gov.it/geoportale/che-cos-e-il-rndt/2015-04-21-22-41-05).
+
+    The CSW endpoint is here: http://geodati.gov.it/RNDT/csw
+
+    #### Technical informations
 
     By default, responses are in `xml`; use `f=json` for JSON responses.
 
@@ -13,9 +42,6 @@ info:
     curl 'http://geodati.gov.it/RNDT/find/document?start=1&max=15&geometryType=esriGeometryBox&searchText=natura&spatialRel=all&f=json'
     ```
 
-    The official CSW interface is described [here](http://geodati.gov.it/geoportale/che-cos-e-il-rndt/2015-04-21-22-41-05).
-
-    The CSW endpoint is here: http://geodati.gov.it/RNDT/csw
 
   termsOfService: 'http://geodati.gov.it/geoportale/note-legali'
   contact:
