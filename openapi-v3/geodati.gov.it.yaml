@@ -300,6 +300,8 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
+              schema:
+                $ref:  '#/components/responses/Response'
         '400':
           $ref: '#/components/responses/400BadRequest'
         '404':
@@ -345,3 +347,127 @@ components:
   schemas:
     Problem:
       $ref: 'https://teamdigitale.github.io/openapi/schemas/problem.yaml#Problem'
+    Response:
+      title: Root Type for Response
+      description: Geoportal response.
+      type: object
+      properties:
+        title:
+          type: string
+          example: Geoportal GeoRSS.
+        description:
+          type: string
+          example: Most recently updated documents
+        copyright:
+          type: string
+        updated:
+          format: date-time
+          type: string
+          example: 2018-05-14T09:07:55Z
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/Record'
+    Geometry:
+      title: Geometry
+      description: Geometry schema
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items: {}
+          example:
+          - |-
+            - [12.7200248, 41.3830331]
+            - [12.7200248, 41.5616704]
+            - [13.0246195, 41.5616704]
+            - [13.0246195, 41.3830331]
+            - [12.7200248, 41.3830331]
+        type:
+          type: string
+          example: Polygon
+    Links:
+      title: Root Type for Links
+      description: The root of the Links type's schema.
+      type: object
+      properties:
+        href:
+          format: url
+          type: string
+          example: http://geodati.gov.it/geoportalRNDTPA/catalog/search/resource/details.page?uuid=age%3AD_E472_LATINA
+        type:
+          type: string
+          example: details
+        labelKey:
+          type: string
+          example: catalog.rest.viewDetails
+    PointOfContactOfData:
+      title: Root Type for PointOfContactOfData
+      description: The root of the PointOfContactOfData type's schema.
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Agenzia delle Entrate
+        email:
+          type: string
+          example: contatto@example.it
+        phone:
+          type: string
+    Record:
+      title: Root Type for Record
+      description: The root of the Record type's schema.
+      required:
+      - geometry
+      - bbox
+      - pointOfContactOfData
+      type: object
+      properties:
+        title:
+          type: string
+        id:
+          type: string
+        updated:
+          format: date-time
+          type: string
+        summary:
+          type: string
+          example: Cartografia catastale
+        hierarchyLevel:
+          type: string
+          example: Dataset
+        responsibleOfData:
+          type: string
+          example: Agenzia delle Entrate
+        pointOfContactOfData:
+          $ref: '#/components/schemas/PointOfContactOfData'
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+        keywords:
+          type: array
+          items:
+            type: string
+            example: Particelle catastali
+        bbox:
+          type: array
+          items:
+            format: double
+            type: number
+          example:
+          - 12.7200248
+          - 41.3830331
+          - 13.0246195
+          - 41.5616704
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Links'
