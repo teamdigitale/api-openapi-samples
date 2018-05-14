@@ -1,683 +1,1521 @@
-openapi: 3.0.0
+components:
+  parameters:
+    codBanca:
+      description: codice ABI della BT
+      in: path
+      name: codBanca
+      required: true
+      schema:
+        type: string
+    codEnte:
+      description: codice IPA della PA
+      in: path
+      name: codEnte
+      required: true
+      schema:
+        type: string
+    dataProduzioneA:
+      description: Filtro dei risultati sulla data di produzione finale nel formato
+        `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      in: query
+      name: dataProduzioneA
+      schema:
+        format: date-time
+        type: string
+    dataProduzioneDa:
+      description: Filtro dei risultati sulla data di produzione iniziale nel formato
+        `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      in: query
+      name: dataProduzioneDa
+      schema:
+        format: date-time
+        type: string
+    dataUploadA:
+      description: Filtro dei risultati sulla data di upload finale nel formato `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      in: query
+      name: dataUploadA
+      schema:
+        format: date-time
+        type: string
+    dataUploadDa:
+      description: Filtro dei risultati sulla data di upload iniziale nel formato
+        `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      in: query
+      name: dataUploadDa
+      schema:
+        format: date-time
+        type: string
+    download:
+      description: "Filtro dei risultati sul fatto che siano stati gi\xE0 scaricati\
+        \ o meno."
+      in: query
+      name: download
+      schema:
+        type: boolean
+    idA2A:
+      description: identificativo A2A del tramite della PA che origina la richiesta
+      in: path
+      name: idA2A
+      required: true
+      schema:
+        type: string
+    pagina:
+      description: numero della pagina dei risultati richiesta
+      in: query
+      name: pagina
+      schema:
+        default: 1
+        format: integer
+        type: number
+    progEsitoApplicativo:
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio dell'esito
+        applicativo
+      in: path
+      name: progEsitoApplicativo
+      required: true
+      schema:
+        type: string
+    progFlusso:
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
+        ordinativi
+      in: path
+      name: progFlusso
+      required: true
+      schema:
+        type: string
+    progGiornale:
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio del giornale
+        di cassa
+      in: path
+      name: progGiornale
+      required: true
+      schema:
+        type: string
+  schemas:
+    FlussiPaginatiProduzione:
+      properties:
+        numPagine:
+          example: '123'
+          format: integer
+          type: number
+        numRisultati:
+          example: '12345'
+          format: integer
+          type: number
+        pagina:
+          example: '1'
+          format: integer
+          type: number
+        risultati:
+          items:
+            $ref: '#/components/schemas/FlussoDataProduzione'
+          type: array
+        risultatiPerPagina:
+          example: '100'
+          format: integer
+          type: number
+      type: object
+    FlussiPaginatiUpload:
+      properties:
+        numPagine:
+          example: '123'
+          format: integer
+          type: number
+        numRisultati:
+          example: '12345'
+          format: integer
+          type: number
+        pagina:
+          example: '1'
+          format: integer
+          type: number
+        risultati:
+          items:
+            $ref: '#/components/schemas/FlussoDataUpload'
+          type: array
+        risultatiPerPagina:
+          example: '100'
+          format: integer
+          type: number
+      type: object
+    FlussoDataProduzione:
+      properties:
+        dataProduzione:
+          description: data di produzione del flusso, nel formato `yyyy-MM-dd'T'HH:mm:ss.SSS`
+          example: '2016-12-12T15:44:59.789'
+          format: date-time
+          type: string
+        download:
+          description: "flag che indica se il flusso sia gi\xE0 stato scaricato o\
+            \ meno"
+          example: 'false'
+          type: boolean
+        location:
+          description: URL dove reperire il flusso inviato
+          format: uri
+          type: string
+        progFlusso:
+          description: progressivo assegnato al flusso da SIOPE+
+          example: '1234567890'
+          type: string
+      type: object
+    FlussoDataUpload:
+      properties:
+        dataUpload:
+          description: data di invio del flusso, nel formato `yyyy-MM-dd'T'HH:mm:ss.SSS`
+          example: '2016-12-12T15:44:59.789'
+          format: date-time
+          type: string
+        download:
+          description: "flag che indica se il flusso sia gi\xE0 stato scaricato o\
+            \ meno"
+          example: 'false'
+          type: boolean
+        location:
+          description: URL dove reperire il flusso inviato
+          format: uri
+          type: string
+        progFlusso:
+          description: progressivo assegnato al flusso da SIOPE+
+          example: '1234567890'
+          type: string
+      type: object
 info:
-  version: 1.0.0
-  title: 'API SIOPE+'
-  description: >-
-    "Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e
-    Tesorieri con
-    [SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/SIOPEx_Regole_di_Colloquio_v31gen2017.pdf)
-    tramite ProxySIOPE+
-    __Attenzione__: Il parametro download previsto per le risorse da acquisire assume nel ProxySIOPE+ il valore true anche in caso di notifica con successo tramite servizio di notifica push.
-    __Attenzione__: A causa della non transazionalità del protocollo HTTP, si sconsiglia di utilizzare il parametro download per la ricerca delle entità non ancora acquisite, ma piuttosto basare l’algoritmo di ricerca sulla data di pubblicazione."
+  contact:
+    email: siopeplus@bancaditalia.it
+    name: SIOPEPLUS
+    url: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
+  description: "SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni\
+    \ pubbliche e tesorieri.\n\n#### Documentazione\nSIOPE+ \xE8 l'infrastruttura\
+    \ che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere\n\
+    con l'obiettivo di migliorare la qualit\xE0 dei dati per il monitoraggio della\
+    \ spesa pubblica,\nrilevare i tempi di pagamento dei debiti commerciali e aumentare\
+    \ l'efficienza del sistema dei pagamenti pubblici.\n\nE' stato sviluppato dalla\
+    \ Banca d'Italia in collaborazione con:\n- Ragioneria Generale di Stato;\n- Agenzia\
+    \ per l'Italia Digitale.\n\n#### Note\nLa documentazione ufficiale \xE8 disponibile\
+    \ al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche\
+    \ e Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)\n\
+    \n#### Informazioni tecniche ed esempi\nTBD\n"
   license:
     name: GPL v3.0
-    url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
-servers:
-  - url: 'https://www.link.it/projects/siope/v1'
+    url: https://www.gnu.org/licenses/gpl-3.0.txt
+  termsOfService: https://en.wikipedia.org/wiki/Terms_of_service
+  title: SIOPE+ API
+  version: 1.0.1
+openapi: 3.0.0
 paths:
-  '/{idA2A}/PA/{codEnte}/flusso':
-    post:
-      tags:
-        - 'Flusso Ordinativi'
-      summary: Invio flusso ordinativi
+  /{idA2A}/BT/{codBanca}/esitoapplicativo/ack/:
+    get:
       description: |
-        Upload di un Flusso Ordinativi relativo ad uno specifico Ente
+        TESORIERE: Lista Ack Messaggio Esito Applicativo relativi a tutti gli Enti
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codBanca'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack messaggio esito applicativo
+      tags:
+      - Esito Applicativo
+  /{idA2A}/BT/{codBanca}/flusso/:
+    get:
+      description: |
+        TESORIERE: Lista Flussi Ordinativi relativi a tutti gli Enti
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codBanca'
+      - $ref: '#/components/parameters/dataUploadDa'
+      - $ref: '#/components/parameters/dataUploadA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista Flussi Ordinativi relativi a tutti gli Enti
+      tags:
+      - Flusso Ordinativi
+  /{idA2A}/BT/{codBanca}/flusso/esitoflusso/ack/:
+    get:
+      description: |
+        TESORIERE: Lista Ack Esito Flusso Ordinativi relativi a tutti gli Enti
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codBanca'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack esiti flusso ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/BT/{codBanca}/giornale/ack/:
+    get:
+      description: |
+        TESORIERE: Lista Ack Giornale di cassa relativi a tutti gli Enti
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codBanca'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack giornale di cassa
+      tags:
+      - Giornale di Cassa
+  /{idA2A}/PA/{codEnte}/esitoapplicativo/:
+    get:
+      description: |
+        ENTE: Lista messaggi Esito Applicativo relativi ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataUploadDa'
+      - $ref: '#/components/parameters/dataUploadA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista messaggi esiti applicativi
+      tags:
+      - Esito Applicativo
+    post:
+      description: |
+        TESORIERE: Upload Esito Applicativo relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
       requestBody:
-        description: Flusso ordinativi in formato ZIP.
-        required: true
         content:
           application/zip:
             schema:
-              type: string
               format: binary
+              type: string
+        description: Esito applicativo in formato ZIP.
+        required: true
       responses:
         '201':
-          description: Flusso ordinativi inviato con successo
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  progFlusso:
-                    type: string
-                    description: progressivo assegnato al flusso ordinativi da SIOPE+
-                    example: '1234567890'
-                  dataUpload:
-                    type: string
-                    format: date
-                    example: '2016-12-12T15:44:59.789'
-                  download:
-                    type: boolean
-                    example: 'false'
-                  location:
-                    type: string
-                    format: uri
-                    description: URL dove reperire il flusso inviato
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Esito applicativo inviato con successo
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '400':
+          description: Bad Request
         '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
         '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '413':
           description: body della richiesta troppo grande
         '415':
-          description: >-
-            assenza dell'header della richiesta "Content-Type: application/zip"
-            o header valorizzato diversamente oppure body della richiesta non in
-            formato zip
+          description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+            o header valorizzato diversamente oppure body della richiesta non in formato
+            zip'
         '422':
-          description: >-
-            body della richiesta non aderente al suo schema XSD o comunque di
-            complessità troppo elevata
+          description: "body della richiesta non aderente al suo schema XSD o comunque\
+            \ di complessit\xE0 troppo elevata"
         '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
         '460':
-          description: >-
-            identificativo A2A del tramite della PA, specificato nel flusso
-            ordinativi inviato, non ancora abilitato
-  '/{idA2A}/PA/{codEnte}/flusso/ack':
-    get:
+          description: identificativo A2A del tramite della PA oppure codice UNI_UO
+            della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+        '461':
+          description: identificativo A2A del tramite della BT oppure codice ABI della
+            BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Invio esito applicativo
       tags:
-        - 'Flusso Ordinativi'
-      summary: Lista ack flussi ordinativi
+      - Esito Applicativo
+  /{idA2A}/PA/{codEnte}/esitoapplicativo/ack/:
+    get:
       description: |
-        Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
+        TESORIERE: Lista Ack Messaggio Esito Applicativo relativi ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: query
-          name: dataProduzioneDa
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di produzione iniziale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: dataProduzioneA
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di produzione finale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
       responses:
         '200':
-          description: Ricerca completata con successo
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al flusso ordinativi da SIOPE+
-                          example: '1234567890'
-                        dataProduzione:
-                          type: string
-                          format: date
-                          description: >-
-                            data di produzione dell'ack, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: flag che indica se l'ack sia già stato scaricato o meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire l'ack prodotto
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
         '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
         '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack':
-    get:
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack messaggio esito applicativo
       tags:
-        - 'Flusso Ordinativi'
-      summary: Download ack flusso ordinativi
+      - Esito Applicativo
+  /{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}:
+    get:
       description: |
-        Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+        ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: path
-          name: progFlusso
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
-            ordinativi
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progEsitoApplicativo'
       responses:
         '200':
-          description: Ack flusso ordinativi in formato ZIP
           content:
             application/zip:
               schema:
-                type: string
                 format: binary
-        '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
-        '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
-        '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso':
-    get:
-      tags:
-        - 'Flusso Ordinativi'
-      summary: Lista esiti flussi ordinativi
-      description: |
-        Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
-      parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: query
-          name: dataProduzioneDa
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di produzione iniziale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: dataProduzioneA
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di produzione finale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
-      responses:
-        '200':
-          description: Ricerca completata con successo
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al flusso ordinativi da SIOPE+
-                          example: '1234567890'
-                        dataProduzione:
-                          type: string
-                          format: date
-                          description: >-
-                            data di produzione dell'esito, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se l'esito sia già stato scaricato o
-                            meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire l'esito prodotto
-        '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
-        '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
-        '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso':
-    get:
-      tags:
-        - 'Flusso Ordinativi'
-      summary: Download esito flusso ordinativi
-      description: |
-        Download esito flusso ordinativi relativo ad uno specifico Ente
-      parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: path
-          name: progFlusso
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del flusso
-            ordinativi
-      responses:
-        '200':
-          description: Esito flusso ordinativi in formato ZIP
-          content:
-            application/zip:
-              schema:
                 type: string
-                format: binary
-        '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
-        '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
-        '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo':
-    get:
-      tags:
-        - 'Flusso Ordinativi'
-      summary: Lista messaggi esiti applicativi
-      description: |
-        Lista messaggi Esito Applicativo relativi ad uno specifico Ente
-      parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: query
-          name: dataUploadDa
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di upload iniziale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: dataUploadA
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di upload finale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
-      responses:
-        '200':
-          description: Ricerca completata con successo
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progEsitoApplicativo:
-                          type: string
-                          description: progressivo assegnato al messaggio da SIOPE+
-                          example: '1234567890'
-                        dataUpload:
-                          type: string
-                          format: date
-                          description: >-
-                            data di upload del messaggio, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se il messaggio sia già stato scaricato
-                            o meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire il messaggio inviato
-        '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
-        '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
-        '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/flusso/esitoapplicativo/{progEsitoApplicativo}':
-    get:
-      tags:
-        - 'Flusso Ordinativi'
-      summary: Download messaggio di esito applicativo
-      description: |
-        Download esito flusso ordinativi relativo ad uno specifico Ente
-      parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: path
-          name: progEsitoApplicativo
-          required: true
-          schema:
-            type: string
-          description: Progressivo assegnato da SIOPE+ all'atto dell'invio del messaggio
-      responses:
-        '200':
           description: Messaggio esito applicativo in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download messaggio di esito applicativo
+      tags:
+      - Esito Applicativo
+  /{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}/ack:
+    get:
+      description: |
+        ENTE: Download Ack Messaggio Esito Applicativo relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progEsitoApplicativo'
+      responses:
+        '200':
           content:
             application/zip:
               schema:
-                type: string
                 format: binary
+                type: string
+          description: Ack messaggio esito applicativo in formato ZIP
+        '400':
+          description: Bad Request
         '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
         '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/giornale':
-    get:
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack messaggio esito applicativo
       tags:
-        - 'Giornale di Cassa'
-      summary: Lista giornali di cassa
+      - Esito Applicativo
+  /{idA2A}/PA/{codEnte}/flusso/:
+    get:
       description: |
-        Lista giornali di cassa relativa ad uno specifico Ente
+        TESORIERE: Lista Flussi Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: query
-          name: dataUploadDa
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di invio iniziale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: dataUploadA
-          schema:
-            type: string
-            format: time
-          description: >-
-            Filtro dei risultati sulla data di invio finale nel formato
-            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-        - in: query
-          name: download
-          schema:
-            type: boolean
-          description: Filtro dei risultati sul fatto che siano stati già scaricati o meno.
-        - in: query
-          name: pagina
-          schema:
-            type: number
-            format: integer
-            default: 1
-          description: numero della pagina dei risultati richiesta
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataUploadDa'
+      - $ref: '#/components/parameters/dataUploadA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
       responses:
         '200':
-          description: Ricerca completata con successo
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numRisultati:
-                    type: number
-                    format: integer
-                    example: '12345'
-                  numPagine:
-                    type: number
-                    format: integer
-                    example: '123'
-                  risultatiPerPagina:
-                    type: number
-                    format: integer
-                    example: '100'
-                  pagina:
-                    type: number
-                    format: integer
-                    example: '1'
-                  risultati:
-                    type: array
-                    items:
-                      properties:
-                        progFlusso:
-                          type: string
-                          description: progressivo assegnato al giornale da SIOPE+
-                          example: '1234567890'
-                        dataUpload:
-                          type: string
-                          format: date
-                          description: >-
-                            data di invio del giornale, nel formato
-                            \"yyyy-MM-dd'T'HH:mm:ss.SSS\"
-                          example: '2016-12-12T15:44:59.789'
-                        download:
-                          type: boolean
-                          description: >-
-                            flag che indica se il giornale sia già stato scaricato o
-                            meno
-                          example: 'false'
-                        location:
-                          type: string
-                          format: url
-                          description: URL a cui reperire il giornale inviato
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
         '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
         '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
-  '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}':
-    get:
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista Flussi Ordinativi relativi ad uno specifico Ente
       tags:
-        - 'Giornale di Cassa'
-      summary: Download giornale di cassa
+      - Flusso Ordinativi
+    post:
       description: |
-        Download giornale di cassa relativo ad uno specifico Ente
+        ENTE: Upload di un Flusso Ordinativi relativo ad uno specifico Ente
       parameters:
-        - in: path
-          name: idA2A
-          required: true
-          schema:
-            type: string
-          description: identificativo A2A del tramite della PA che origina la richiesta
-        - in: path
-          name: codEnte
-          required: true
-          schema:
-            type: string
-          description: codice IPA della PA
-        - in: path
-          name: progGiornale
-          required: true
-          schema:
-            type: string
-          description: >-
-            Progressivo assegnato da SIOPE+ all'atto dell'invio del giornale di
-            cassa
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      requestBody:
+        content:
+          application/zip:
+            schema:
+              format: binary
+              type: string
+        description: Flusso ordinativi in formato ZIP.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Flusso ordinativi inviato con successo
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '413':
+          description: body della richiesta troppo grande
+        '415':
+          description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+            o header valorizzato diversamente oppure body della richiesta non in formato
+            zip'
+        '422':
+          description: "body della richiesta non aderente al suo schema XSD o comunque\
+            \ di complessit\xE0 troppo elevata"
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '460':
+          description: identificativo A2A del tramite della PA oppure codice UNI_UO
+            della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+        '461':
+          description: identificativo A2A del tramite della BT oppure codice ABI della
+            BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Invio flusso ordinativi
+      tags:
+      - Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/ack/:
+    get:
+      description: |
+        ENTE: Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
       responses:
         '200':
-          description: Giornale di cassa in formato ZIP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack flussi ordinativi
+      tags:
+      - Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/esitoflusso/:
+    get:
+      description: |
+        ENTE: Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista esiti flussi ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack/:
+    get:
+      description: |
+        TESORIERE: Lista Ack Esito Flusso Ordinativi relativi ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack esiti flusso ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/{progFlusso}:
+    get:
+      description: |
+        TESORIERE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progFlusso'
+      responses:
+        '200':
           content:
             application/zip:
               schema:
-                type: string
                 format: binary
+                type: string
+          description: Flusso ordinativi in formato ZIP
+        '400':
+          description: Bad Request
         '401':
-          description: identificativo A2A di chi origina la richiesta non ancora abilitato
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
         '406':
-          description: 'assenza dell''header di richiesta "Accept: application/json"'
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: >-
-            richieste più frequenti di quanto consentito dalle regole di
-            throttling
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack flusso ordinativi
+      tags:
+      - Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack:
+    get:
+      description: |
+        ENTE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progFlusso'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Ack flusso ordinativi in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack flusso ordinativi
+      tags:
+      - Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso:
+    get:
+      description: |
+        ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progFlusso'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Esito flusso ordinativi in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download esito flusso ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/:
+    post:
+      description: |
+        TESORIERE: Upload Esito Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progFlusso'
+      requestBody:
+        content:
+          application/zip:
+            schema:
+              format: binary
+              type: string
+        description: Esito flusso ordinativi in formato ZIP.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Flusso ordinativi inviato con successo
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '413':
+          description: body della richiesta troppo grande
+        '415':
+          description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+            o header valorizzato diversamente oppure body della richiesta non in formato
+            zip'
+        '422':
+          description: "body della richiesta non aderente al suo schema XSD o comunque\
+            \ di complessit\xE0 troppo elevata"
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '460':
+          description: identificativo A2A del tramite della PA oppure codice UNI_UO
+            della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+        '461':
+          description: identificativo A2A del tramite della BT oppure codice ABI della
+            BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Invio esito flusso ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/ack:
+    get:
+      description: |
+        TESORIERE: Download Ack Esito Flusso Ordinativi relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progFlusso'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Ack esito flusso ordinativi in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack esito flusso ordinativi
+      tags:
+      - Esito Flusso Ordinativi
+  /{idA2A}/PA/{codEnte}/giornale/:
+    get:
+      description: |
+        ENTE: Lista giornali di cassa relativa ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataUploadDa'
+      - $ref: '#/components/parameters/dataUploadA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista giornali di cassa
+      tags:
+      - Giornale di Cassa
+    post:
+      description: |
+        TESORIERE: Upload Giornale di cassa relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      requestBody:
+        content:
+          application/zip:
+            schema:
+              format: binary
+              type: string
+        description: Giornale di cassa in formato ZIP.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Giornale di cassa inviato con successo
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '413':
+          description: body della richiesta troppo grande
+        '415':
+          description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+            o header valorizzato diversamente oppure body della richiesta non in formato
+            zip'
+        '422':
+          description: "body della richiesta non aderente al suo schema XSD o comunque\
+            \ di complessit\xE0 troppo elevata"
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '460':
+          description: identificativo A2A del tramite della PA oppure codice UNI_UO
+            della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+        '461':
+          description: identificativo A2A del tramite della BT oppure codice ABI della
+            BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Invio giornale di cassa
+      tags:
+      - Giornale di Cassa
+  /{idA2A}/PA/{codEnte}/giornale/ack/:
+    get:
+      description: |
+        TESORIERE: Lista Ack Giornale di cassa relativi ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack giornale di cassa
+      tags:
+      - Giornale di Cassa
+  /{idA2A}/PA/{codEnte}/giornale/{progGiornale}:
+    get:
+      description: |
+        ENTE: Download giornale di cassa relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progGiornale'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Giornale di cassa in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download giornale di cassa
+      tags:
+      - Giornale di Cassa
+  /{idA2A}/PA/{codEnte}/giornale/{progGiornale}/ack:
+    get:
+      description: |
+        TESORIERE: Download Ack Giornale di cassa relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progGiornale'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Ack flusso ordinativi in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
+            \ di throttling"
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack giornale di cassa
+      tags:
+      - Giornale di Cassa
+servers:
+- url: https://a2a.siopeplus.it/v1
+x-common:
+  headers:
+    X-RateLimit-Limit:
+      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+    X-RateLimit-Remaining:
+      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+    X-RateLimit-Reset:
+      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+  json_responses:
+    '400':
+      description: Bad Request
+    '401':
+      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+    '404':
+      description: Not Found
+    '406':
+      description: 'Assenza dell''header di richiesta `Accept: application/json`'
+    '429':
+      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
+        \ throttling"
+      headers:
+        X-RateLimit-Limit:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+        X-RateLimit-Remaining:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+        X-RateLimit-Reset:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+    '503':
+      description: Servizio non disponibile
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+    default:
+      description: Errore non atteso
+  post_responses:
+    '400':
+      description: Bad Request
+    '401':
+      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+    '404':
+      description: Not Found
+    '406':
+      description: 'Assenza dell''header di richiesta `Accept: application/json`'
+    '413':
+      description: body della richiesta troppo grande
+    '415':
+      description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+        o header valorizzato diversamente oppure body della richiesta non in formato
+        zip'
+    '422':
+      description: "body della richiesta non aderente al suo schema XSD o comunque\
+        \ di complessit\xE0 troppo elevata"
+    '429':
+      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
+        \ throttling"
+      headers:
+        X-RateLimit-Limit:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+        X-RateLimit-Remaining:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+        X-RateLimit-Reset:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+    '460':
+      description: identificativo A2A del tramite della PA oppure codice UNI_UO della
+        PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+    '461':
+      description: identificativo A2A del tramite della BT oppure codice ABI della
+        BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+    '503':
+      description: Servizio non disponibile
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+    default:
+      description: Errore non atteso
+  responses:
+    '400':
+      description: Bad Request
+    '401':
+      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+    '404':
+      description: Not Found
+    '429':
+      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
+        \ throttling"
+      headers:
+        X-RateLimit-Limit:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+        X-RateLimit-Remaining:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+        X-RateLimit-Reset:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+    '503':
+      description: Servizio non disponibile
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+    default:
+      description: Errore non atteso
+  zip_responses:
+    '400':
+      description: Bad Request
+    '401':
+      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+    '404':
+      description: Not Found
+    '406':
+      description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+    '429':
+      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
+        \ throttling"
+      headers:
+        X-RateLimit-Limit:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+        X-RateLimit-Remaining:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+        X-RateLimit-Reset:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+    '503':
+      description: Servizio non disponibile
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+    default:
+      description: Errore non atteso
