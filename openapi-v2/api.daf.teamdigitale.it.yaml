@@ -1,22 +1,111 @@
-x-commons:
-  common-responses: &common_responses
-    '400':
-      - $ref: '#/components/responses/400BadRequest'
-    '429':
-      - $ref: '#/components/responses/429TooManyRequests'
-    '503':
-      - $ref: '#/components/responses/503ServiceUnavailable'
-    default:
-      - $ref: '#/components/responses/default'
-
-
-openapi: 3.0.0
-servers:
-  - url: 'https://api.daf.teamdigitale.it/dati-gov/ckan_proxy'
+components:
+  responses:
+    400BadRequest:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+      description: Invalid input
+    403Forbidden:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+      description: Missing authorization key
+    409AlreadyExists:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+      description: Item already exists
+    429TooManyRequests:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+      description: Too Many Requests
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        X-RateLimit-Limit:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+        X-RateLimit-Remaining:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+        X-RateLimit-Reset:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+    503ServiceUnavailable:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/CkanError'
+      description: Service Unavailable
+      headers:
+        Retry-After:
+          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+    CkanResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanReply'
+      description: Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
+      headers:
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+    Error:
+      description: An unexpected status has been returned.
+  schemas:
+    CkanError:
+      properties:
+        error:
+          type: object
+        help:
+          format: url
+          type: string
+        result:
+          anyOf:
+          - object
+          - array
+        status:
+          enum:
+          - false
+          type: boolean
+      required:
+      - result
+      - success
+      - help
+      - error
+      type: object
+    CkanReply:
+      properties:
+        error:
+          type: object
+        help:
+          format: url
+          type: string
+        result:
+          anyOf:
+          - object
+          - array
+        status:
+          enum:
+          - true
+          - false
+          type: boolean
+      required:
+      - result
+      - success
+      - help
+      type: object
+  securitySchemes:
+    ckanapikey:
+      in: header
+      name: Authorization
+      type: apiKey
 info:
-  version: '3'
-  title: DAF CKAN API
-  description: >
+  contact:
+    email: alessandro@teamdigitale.governo.it
+    name: Data Analytics Framework
+    url: https://dataportal.daf.teamdigitale.it/
+  description: |
     API per ricercare e visualizzare gli open data del Data & Analytics Framework in api.daf.teamdigitale.it.
     \
     \
@@ -69,353 +158,243 @@ info:
     # Datamodels
 
     All datamodels used are defined in separate service. LINKS HERE!
-  x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
-  contact:
-    name: "Data Analytics Framework"
-    email: alessandro@teamdigitale.governo.it
-    url: 'https://dataportal.daf.teamdigitale.it/'
-  termsOfService: >-
-    TODO non ho le competenze per scrivere le note legali chiedere a qualcuno che possa aiutare
-    http://geodati.gov.it/geoportale/note-legali
-  x-audience:
-    - public
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-tags:
-  - name: consumers
-    description: Operations available to regular consumers
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: TODO non ho le competenze per scrivere le note legali chiedere a
+    qualcuno che possa aiutare http://geodati.gov.it/geoportale/note-legali
+  title: DAF CKAN API
+  version: '3'
+  x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
+  x-audience:
+  - public
+openapi: 3.0.0
 paths:
-  /package_list:
-    get:
-      tags:
-        - consumers
-      summary: List all datasets within given limit
-      operationId: listInventory
-      description: |
-        List or search all datasets
-      parameters:
-        - in: query
-          name: offset
-          description: 'when limit is given, the offset to start returning packages from'
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: limit
-          description: >-
-            if given, the list of datasets will be broken into pages of at most
-            limit datasets per page and only one page will be returned at a time
-            (optional)
-          schema:
-            type: integer
-            format: int32
-      responses:
-        >>: *common_responses
-        '200':
-          $ref: '#/components/responses/CkanResponse'
-
-
-  /package_search:
-    get:
-      tags:
-        - consumers
-      summary: Search among all datasets
-      operationId: searchInventory
-      description: |
-        List or search all datasets
-      parameters:
-        - in: query
-          name: q
-          description: 'the solr query. For example ``name:pdf-testi``'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: >
-            any filter queries to apply. Note: +site_id:{ckan_site_id} is added
-            to this string prior to the query being executed.
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: >
-            sorting of the search results. Optional. **Default: 'relevance asc,
-            metadata_modified desc'**. As per the solr documentation, this is a
-            comma-separated string of field names and sort-orderings.
-          required: false
-          schema:
-            type: string
-            default: 'relevance asc, metadata_modified desc'
-        - in: query
-          name: rows
-          description: >-
-            the number of matching rows to return. There is a hard limit of 1000
-            datasets per query.
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: start
-          description: >-
-            the offset in the complete result for where the set of returned
-            datasets should begin.
-          schema:
-            type: integer
-        - in: query
-          name: include_drafts
-          description: >-
-            if True, draft datasets will be included in the results. A user will
-            only be returned their own draft datasets, and a sysadmin will be
-            returned all draft datasets. Optional, the default is False.
-          schema:
-            type: boolean
-            default: false
-      responses:
-        >>: *common_responses
-        '200':
-          $ref: '#/components/responses/CkanResponse'
-        '409':
-          description: Conflict (can result e.g. from incorrectly formatted solr query)
-
-
-  /package_show:
-    get:
-      tags:
-        - consumers
-      summary: Get details of one package
-      operationId: showInventory
-      description: |
-        List or search all datasets
-      parameters:
-        - in: query
-          name: id
-          description: the id or name of the dataset
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: include_tracking
-          description: |
-            add tracking information to dataset and resources (default: False)
-          schema:
-            type: boolean
-            default: false
-      responses:
-        >>: *common_responses
-        '200':
-          $ref: '#/components/responses/CkanResponse'
   /organization_list:
     get:
-      tags:
-        - consumers
-      summary: List all groups within given parameters
-      operationId: listOrgs
       description: |
         List or search all datasets
+      operationId: listOrgs
       parameters:
-        - in: query
-          name: sort
-          description: >
-            sorting of the search results. Optional. Default: “name asc” string
-            of field name and sort-order. The allowed fields are ‘name’,
-            ‘package_count’ and ‘title’
-          required: false
-          schema:
-            type: string
-            default: name asc
-        - in: query
-          name: limit
-          description: >
-            if given, the list of organizations will be broken into pages of at
-            most limit organizations per page and only one page will be returned
-            at a time (optional)
-          schema:
-            type: integer
-            format: int32
-        - in: query
-          name: offset
-          description: >
-            when limit is given, the offset to start returning organizations
-            from
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - in: query
-          name: organizations
-          description: >
-            a list of names of the groups to return, if given only groups whose
-            names are in this list will be returned (optional)
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: all_fields
-          description: >
-            return group dictionaries instead of just names. Only core fields
-            are returned - get some more using the include_* options. Returning
-            a list of packages is too expensive, so the packages property for
-            each group is deprecated, but there is a count of the packages in
-            the package_count property. (optional, default: False)
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: include_dataset_count
-          description: >
-            if all_fields, include the full package_count (optional, default:
-            True)
-          schema:
-            type: boolean
-            default: true
-        - in: query
-          name: include_extras
-          description: >
-            if all_fields, include the organization extra fields (optional,
-            default: False)
-          schema:
-            type: boolean
-            default: false
-        - in: query
-          name: include_tags
-          description: >
-            if all_fields, include the organization tags (optional, default:
-            False)
-          schema:
-            type: boolean
-            default: false
-        - in: query
-          name: include_groups
-          description: >
-            if all_fields, include the organizations the organizations are in
-            (optional, default: False)
-          schema:
-            type: boolean
-            default: false
-        - in: query
-          name: include_users
-          description: >
-            if all_fields, include the organization users (optional, default:
-            False).
-          schema:
-            type: boolean
-            default: false
+      - description: |
+          sorting of the search results. Optional. Default: “name asc” string of field name and sort-order. The allowed fields are ‘name’, ‘package_count’ and ‘title’
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: name asc
+          type: string
+      - description: |
+          if given, the list of organizations will be broken into pages of at most limit organizations per page and only one page will be returned at a time (optional)
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: |
+          when limit is given, the offset to start returning organizations from
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+      - description: |
+          a list of names of the groups to return, if given only groups whose names are in this list will be returned (optional)
+        in: query
+        name: organizations
+        required: false
+        schema:
+          type: string
+      - description: |
+          return group dictionaries instead of just names. Only core fields are returned - get some more using the include_* options. Returning a list of packages is too expensive, so the packages property for each group is deprecated, but there is a count of the packages in the package_count property. (optional, default: False)
+        in: query
+        name: all_fields
+        required: false
+        schema:
+          type: boolean
+      - description: |
+          if all_fields, include the full package_count (optional, default: True)
+        in: query
+        name: include_dataset_count
+        schema:
+          default: true
+          type: boolean
+      - description: |
+          if all_fields, include the organization extra fields (optional, default: False)
+        in: query
+        name: include_extras
+        schema:
+          default: false
+          type: boolean
+      - description: |
+          if all_fields, include the organization tags (optional, default: False)
+        in: query
+        name: include_tags
+        schema:
+          default: false
+          type: boolean
+      - description: |
+          if all_fields, include the organizations the organizations are in (optional, default: False)
+        in: query
+        name: include_groups
+        schema:
+          default: false
+          type: boolean
+      - description: |
+          if all_fields, include the organization users (optional, default: False).
+        in: query
+        name: include_users
+        schema:
+          default: false
+          type: boolean
       responses:
-        >>: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
-
-
-components:
-  responses:
-    CkanResponse:
+        '400':
+        - $ref: '#/components/responses/400BadRequest'
+        '429':
+        - $ref: '#/components/responses/429TooManyRequests'
+        '503':
+        - $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+        - $ref: '#/components/responses/default'
+      summary: List all groups within given parameters
+      tags:
+      - consumers
+  /package_list:
+    get:
       description: |
-        Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
-      headers:
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Reset:
-          $ref: '#/components/headers/X-RateLimit-Reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanReply'
-    400BadRequest:
-      description: |
-        Invalid input
-      application/json:
+        List or search all datasets
+      operationId: listInventory
+      parameters:
+      - description: when limit is given, the offset to start returning packages from
+        in: query
+        name: offset
+        required: false
         schema:
-          $ref: '#/components/schemas/CkanError'
-    403Forbidden:
-      description: |
-        Missing authorization key
-      application/json:
+          type: integer
+      - description: if given, the list of datasets will be broken into pages of at
+          most limit datasets per page and only one page will be returned at a time
+          (optional)
+        in: query
+        name: limit
         schema:
-          $ref: '#/components/schemas/CkanError'
-    409AlreadyExists:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+        - $ref: '#/components/responses/400BadRequest'
+        '429':
+        - $ref: '#/components/responses/429TooManyRequests'
+        '503':
+        - $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+        - $ref: '#/components/responses/default'
+      summary: List all datasets within given limit
+      tags:
+      - consumers
+  /package_search:
+    get:
       description: |
-        Item already exists
-      application/json:
+        List or search all datasets
+      operationId: searchInventory
+      parameters:
+      - description: the solr query. For example ``name:pdf-testi``
+        in: query
+        name: q
+        required: false
         schema:
-          $ref: '#/components/schemas/CkanError'
-    429TooManyRequests:
-      description: |
-        Too Many Requests
-      headers:
-        X-RateLimit-Limit:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
-        X-RateLimit-Remaining:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
-        X-RateLimit-Reset:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
-        Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
-    503ServiceUnavailable:
-      description: |
-        Service Unavailable
-      headers:
-        Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
-    Error:
-      description: |
-        An unexpected status has been returned.
-
-  securitySchemes:
-    ckanapikey:
-      type: apiKey
-      name: Authorization
-      in: header
-  schemas:
-    CkanError:
-      type: object
-      required:
-        - result
-        - success
-        - help
-        - error
-      properties:
-        result:
-          anyOf:
-            - object
-            - array
-        error:
-          type: object
-        help:
+          default: '*:*'
           type: string
-          format: url
-        status:
-          type: boolean
-          enum:
-            - false
-    CkanReply:
-      type: object
-      required:
-        - result
-        - success
-        - help
-      properties:
-        result:
-          anyOf:
-            - object
-            - array
-        error:
-          type: object
-        help:
+      - description: |
+          any filter queries to apply. Note: +site_id:{ckan_site_id} is added to this string prior to the query being executed.
+        in: query
+        name: fq
+        schema:
           type: string
-          format: url
-        status:
+      - description: |
+          sorting of the search results. Optional. **Default: 'relevance asc, metadata_modified desc'**. As per the solr documentation, this is a comma-separated string of field names and sort-orderings.
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: relevance asc, metadata_modified desc
+          type: string
+      - description: the number of matching rows to return. There is a hard limit
+          of 1000 datasets per query.
+        in: query
+        name: rows
+        required: false
+        schema:
+          type: integer
+      - description: the offset in the complete result for where the set of returned
+          datasets should begin.
+        in: query
+        name: start
+        schema:
+          type: integer
+      - description: if True, draft datasets will be included in the results. A user
+          will only be returned their own draft datasets, and a sysadmin will be returned
+          all draft datasets. Optional, the default is False.
+        in: query
+        name: include_drafts
+        schema:
+          default: false
           type: boolean
-          enum:
-            - true
-            - false
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+        - $ref: '#/components/responses/400BadRequest'
+        '409':
+          description: Conflict (can result e.g. from incorrectly formatted solr query)
+        '429':
+        - $ref: '#/components/responses/429TooManyRequests'
+        '503':
+        - $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+        - $ref: '#/components/responses/default'
+      summary: Search among all datasets
+      tags:
+      - consumers
+  /package_show:
+    get:
+      description: |
+        List or search all datasets
+      operationId: showInventory
+      parameters:
+      - description: the id or name of the dataset
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: |
+          add tracking information to dataset and resources (default: False)
+        in: query
+        name: include_tracking
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          $ref: '#/components/responses/CkanResponse'
+        '400':
+        - $ref: '#/components/responses/400BadRequest'
+        '429':
+        - $ref: '#/components/responses/429TooManyRequests'
+        '503':
+        - $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+        - $ref: '#/components/responses/default'
+      summary: Get details of one package
+      tags:
+      - consumers
+servers:
+- url: https://api.daf.teamdigitale.it/dati-gov/ckan_proxy
+tags:
+- description: Operations available to regular consumers
+  name: consumers

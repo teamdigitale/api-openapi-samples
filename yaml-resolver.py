@@ -3,14 +3,15 @@ import yaml
 from sys import argv
 
 def should_use_block(value):
-    for c in "\n": #u"\u000a\u000d\u001c\u001d\u001e\u0085\u2028\u2029":
+    for c in u"\u000a\u000d\u001c\u001d\u001e\u0085\u2028\u2029":
         if c in value:
             return True
     return False
 
 def my_represent_scalar(self, tag, value, style=None):
     if should_use_block(value):
-         style='|'
+        style='|'
+        import ipdb; ipdb.set_trace()
     else:
         style = self.default_style
 
@@ -31,8 +32,11 @@ def main(src_file, dst_file):
 
   with open(src_file) as fh_src, open(dst_file, 'w') as fh_dst:
     ret = yaml.load(fh_src)
+
+    # Remove x-commons containing references and aliases.
     del ret['x-commons']
-    content = yaml.dump(ret, default_flow_style=False)
+
+    content = yaml.dump(ret, default_flow_style=False, allow_unicode=True)
     fh_dst.write(content)
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ servers:
 info:
   version: '3'
   title: DAF CKAN API
-  description: >
+  description: |
     API per ricercare e visualizzare gli open data del Data & Analytics Framework in api.daf.teamdigitale.it.
     \
     \
@@ -111,7 +111,7 @@ paths:
             type: integer
             format: int32
       responses:
-        >>: *common_responses
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
 
@@ -174,7 +174,7 @@ paths:
             type: boolean
             default: false
       responses:
-        >>: *common_responses
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
         '409':
@@ -204,7 +204,7 @@ paths:
             type: boolean
             default: false
       responses:
-        >>: *common_responses
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
   /organization_list:
@@ -304,7 +304,7 @@ paths:
             type: boolean
             default: false
       responses:
-        >>: *common_responses
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
 
@@ -312,7 +312,7 @@ paths:
 components:
   responses:
     CkanResponse:
-      description: |
+      description: >-
         Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
       headers:
         X-RateLimit-Limit:
@@ -326,25 +326,25 @@ components:
           schema:
             $ref: '#/components/schemas/CkanReply'
     400BadRequest:
-      description: |
+      description: >-
         Invalid input
       application/json:
         schema:
           $ref: '#/components/schemas/CkanError'
     403Forbidden:
-      description: |
+      description: >-
         Missing authorization key
       application/json:
         schema:
           $ref: '#/components/schemas/CkanError'
     409AlreadyExists:
-      description: |
+      description: >-
         Item already exists
       application/json:
         schema:
           $ref: '#/components/schemas/CkanError'
     429TooManyRequests:
-      description: |
+      description: >-
         Too Many Requests
       headers:
         X-RateLimit-Limit:
@@ -359,7 +359,7 @@ components:
         schema:
           $ref: '#/components/schemas/CkanError'
     503ServiceUnavailable:
-      description: |
+      description: >-
         Service Unavailable
       headers:
         Retry-After:
@@ -368,7 +368,7 @@ components:
         schema:
           $ref: '#/components/schemas/CkanError'
     Error:
-      description: |
+      description: >-
         An unexpected status has been returned.
 
   securitySchemes:
