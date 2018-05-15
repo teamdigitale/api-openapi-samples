@@ -1,0 +1,237 @@
+---
+openapi: 3.0.0
+info:
+  title: Muoversi in Lombardia
+  description: |-
+    Il servizio fornisce una soluzione di viaggio intermodale utilizzando il trasporto pubblico in Lombardia
+    \
+    \
+    #### Documentazione
+    Il servizio mette a disposizione informazioni georeferenziate relative agli orari
+    del Trasporto Pubblico Locale in Regione Lombardia, restituendo delle soluzioni
+    di viaggio partenza/arrivo personalizzate sia per modalità di trasporto (bus, treno, metro etc.)
+    che per numero e tempi di interscambio.
+
+
+    #### Note
+    Le API vengono erogate all'interno dell'[Ecosistema Digitale E015](http://www.e015.regione.lombardia.it/)
+     creato dalla Regione Lombardia per l'Expo.
+
+    La revisione delle API è prevista entro il 31/12/2020.
+    In assenza di revisione, verranno dismesse entro il 31/03/2021.
+
+    #### Informazioni tecniche ed esempi
+
+    E' possibile verificare il corretto funzionamento del servizio interrogando ogni 300 secondi
+    l'indirizzo seguente, con:
+
+    ```
+    curl 'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search/?param=milano&maxResult=1'
+    ```
+  contact:
+    name: Nome Cognome
+    url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
+    email: nome.cognome@regione.lombardia.it
+  version: 1.0.0
+  termsOfService: >-
+    http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
+servers:
+- url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
+  description:
+paths:
+  /e015Search:
+    get:
+      description: Sulla base del testo inserito per effettuare la ricerca, il servizio
+        restituisce una lista di punti, ognuno dei quali corredato da una descrizione,
+        una tipologia e la coppia di coordinate che ne individua la posizione.
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+    parameters:
+    - name: param
+      in: query
+    - name: maxResult
+      in: query
+  /e015Solution:
+    get:
+      description: Sulla base del testo inserito per effettuare la ricerca, il servizio
+        restituisce una lista di punti, ognuno dei quali corredato da una descrizione,
+        una tipologia e la coppia di coordinate che ne individua la posizione.
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+    parameters:
+    - name: param
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/SolutionRequest'
+      example: >-
+        {%22richiesta%22:{%22from%22:%22Milano,Via%20Torquato%20Taramelli,%2024%22,%20%22fromX%22:%20%229.19399499%22,%20%22fromY%22:%20%2245.49122488%22,%20%22to%22:%20%22Busto%20Arsizio%20Fs,%20Stazione%22,%20%22toX%22:%20%228.864713%22,%20%22toY%22:%20%2245.615788%22,%20%22date%22:%20%2220/12/2017%22,%20%22when%22:%20%2211:20%22,%20%22options%22:%20[%221%22,%222%22,%223%22,%224%22,%225%22,%226%22],%20%22changeNumber%22:%20%22-1%22,%20%22durationChange%22:%20%22-1%22%20},%20%22lang%22:%20%22it%22%20}
+    - name: maxResult
+      in: query
+components:
+  schemas:
+    ResponseObject:
+      properties:
+        stato:
+          enum:
+          - -1
+          - 0
+          type: string
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+        error:
+          type: array
+          items: {}
+    Errore:
+      title: A Errore
+      description: The root of the Errore type's schema.
+      type: object
+      properties:
+        codice:
+          type: string
+        descrizione:
+          type: string
+    Point:
+      title: A Point
+      description: The root of the Point type's schema.
+      type: object
+      properties:
+        label:
+          type: string
+        type:
+          type: string
+        x:
+          type: string
+        y:
+          type: string
+    SolutionRequest:
+      title: A SolutionRequest
+      description: The root of the SolutionRequest type's schema.
+      type: object
+      properties:
+        richiesta:
+          type: object
+          properties:
+            from:
+              type: string
+            fromX:
+              type: string
+            fromY:
+              type: string
+            to:
+              type: string
+            toX:
+              type: string
+            toY:
+              type: string
+            date:
+              type: string
+            when:
+              type: string
+            options:
+              type: array
+              items: {}
+            changeNumber:
+              type: string
+            durationChange:
+              type: string
+        lang:
+          type: string
+    Fermata:
+      title: A Fermata
+      description: The root of the Fermata type's schema.
+      type: object
+      properties:
+        idFermata:
+          type: string
+        nome:
+          type: string
+        arrivo:
+          type: string
+        partenza:
+          type: string
+        x:
+          type: string
+        y:
+          type: string
+    Tratta:
+      title: A Tratta
+      description: The root of the Tratta type's schema.
+      type: object
+      properties:
+        idTratta:
+          type: string
+        durata:
+          type: string
+        linea:
+          type: string
+        gestore:
+          type: string
+        mezzo:
+          type: string
+        partenza:
+          type: string
+        oraPartenza:
+          type: string
+        xPartenza:
+          type: string
+        yPartenza:
+          type: string
+        arrivo:
+          type: string
+        oraArrivo:
+          type: string
+        xArrivo:
+          type: string
+        yArrivo:
+          type: string
+        note:
+          type: string
+        listaFermate:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fermata'
+    Percorso:
+      title: A Percorso
+      description: The root of the Percorso type's schema.
+      type: object
+      properties:
+        idPercorso:
+          type: string
+        durata:
+          type: string
+        numeroCambi:
+          type: string
+        mezziPercorso:
+          type: array
+          items: {}
+        partenza:
+          type: string
+        oraPartenza:
+          type: string
+        xPartenza:
+          type: string
+        yPartenza:
+          type: string
+        arrivo:
+          type: string
+        oraArrivo:
+          type: string
+        xArrivo:
+          type: string
+        yArrivo:
+          type: string
+        listaTratte:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tratta'
