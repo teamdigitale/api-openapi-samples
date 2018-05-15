@@ -21,6 +21,8 @@ x-common:
         throttling
       headers:
         <<: *common_headers
+        Retry-After:
+          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
     '503':
       description: >-
         Servizio non disponibile
@@ -81,15 +83,20 @@ info:
     - Agenzia per l'Italia Digitale.
 
     #### Note
-    La documentazione ufficiale è disponibile al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche e Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)
+    La documentazione ufficiale è descritta nel documento
+    "[Regole tecniche](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)
+     per il colloquio telematico di Amministrazioni pubbliche e Tesorieri con SIOPE+"
 
-    #### Informazioni tecniche ed esempi
-    TBD
+    L'utilizzo di SIOPE+ è permesso:
 
-  termsOfService: 'https://en.wikipedia.org/wiki/Terms_of_service'
+      - in conformità alla [normativa di riferimento indicata nel sito](https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html)
+      - nel rispetto delle summenzionate "Regole tecniche"
+
+  termsOfService: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
   contact:
     email: siopeplus@bancaditalia.it
-    name: SIOPEPLUS
+    name: >-
+      Banca d'Italia - SIOPEPLUS
     url: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
 
   license:
