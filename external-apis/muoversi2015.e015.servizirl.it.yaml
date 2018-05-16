@@ -129,7 +129,7 @@ components:
           minimum: -180
           maximum: 180
         y:
-         description: >-
+          description: >-
             Coordinata y del punto espressa nel sistema di riferimento WGS84
           type: number
           format: double
