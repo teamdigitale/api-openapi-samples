@@ -1,3 +1,10 @@
+# swagger/openapi stuff
+lextab.py
+yacctab.py
+
+# ide
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -99,6 +106,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
-# ide
-.vscode

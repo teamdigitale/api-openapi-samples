@@ -46,9 +46,9 @@ paths:
           name: name
           required: false
           type: string
-        - $ref: 'schema/components.yaml#x-components/parameters/limit'
-        - $ref: 'schema/components.yaml#x-components/parameters/offset'
-        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+        - $ref: 'schema/components.yaml#components/parameters/limit'
+        - $ref: 'schema/components.yaml#components/parameters/offset'
+        - $ref: 'schema/components.yaml#components/parameters/sort'
       responses:
         '200':
           description: >
@@ -96,11 +96,11 @@ paths:
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: |
@@ -126,9 +126,9 @@ paths:
           schema:
             $ref: '#/definitions/Table'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - admins
       operationId: uploadDictionary
@@ -162,11 +162,11 @@ paths:
           schema:
             $ref: '#/definitions/Dictionary'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: |
@@ -197,9 +197,9 @@ paths:
           name: name
           required: false
           type: string
-        - $ref: 'schema/components.yaml#x-components/parameters/limit'
-        - $ref: 'schema/components.yaml#x-components/parameters/offset'
-        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+        - $ref: 'schema/components.yaml#components/parameters/limit'
+        - $ref: 'schema/components.yaml#components/parameters/offset'
+        - $ref: 'schema/components.yaml#components/parameters/sort'
       responses:
         '200':
           description: |
@@ -214,11 +214,11 @@ paths:
           schema:
             $ref: '#/definitions/Entry'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: |
@@ -262,15 +262,15 @@ paths:
           schema:
             $ref: '#/definitions/Entries'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         '429':
-          $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
+          $ref: 'schema/components.yaml#components/responses/429TooManyRequests'
         '503':
-          $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
+          $ref: 'schema/components.yaml#components/responses/503ServiceUnavailable'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: Retrieve an entry from a Table.
@@ -293,9 +293,9 @@ paths:
           name: name
           required: false
           type: string
-        - $ref: 'schema/components.yaml#x-components/parameters/limit'
-        - $ref: 'schema/components.yaml#x-components/parameters/offset'
-        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+        - $ref: 'schema/components.yaml#components/parameters/limit'
+        - $ref: 'schema/components.yaml#components/parameters/offset'
+        - $ref: 'schema/components.yaml#components/parameters/sort'
       responses:
         '200':
           description: |
@@ -310,11 +310,11 @@ paths:
           schema:
             $ref: '#/definitions/Entries'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: |
@@ -352,15 +352,15 @@ paths:
           schema:
             $ref: '#/definitions/Entries'
         '400':
-          $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+          $ref: 'schema/components.yaml#components/responses/400BadRequest'
         '404':
-          $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+          $ref: 'schema/components.yaml#components/responses/404NotFound'
         '429':
-          $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
+          $ref: 'schema/components.yaml#components/responses/429TooManyRequests'
         '503':
-          $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
+          $ref: 'schema/components.yaml#components/responses/503ServiceUnavailable'
         default:
-          $ref: 'schema/components.yaml#x-components/responses/default'
+          $ref: 'schema/components.yaml#components/responses/default'
       tags:
         - public
       description: Retrieve an entry from a Table.
@@ -376,9 +376,9 @@ paths:
           in: query
           name: dictionary_name
           type: string
-        - $ref: 'schema/components.yaml#x-components/parameters/limit'
-        - $ref: 'schema/components.yaml#x-components/parameters/offset'
-        - $ref: 'schema/components.yaml#x-components/parameters/sort'
+        - $ref: 'schema/components.yaml#components/parameters/limit'
+        - $ref: 'schema/components.yaml#components/parameters/offset'
+        - $ref: 'schema/components.yaml#components/parameters/sort'
       responses:
         '200':
           description: |
@@ -492,7 +492,7 @@ definitions:
       - key
       - data
   Error:
-    $ref: 'schema/components.yaml#x-components/schemas/Error'
+    $ref: 'schema/components.yaml#components/schemas/Error'
   Table:
     description: |
       Versioned dictionary.
@@ -528,7 +528,7 @@ definitions:
       - ttl
   TableData:
     description: >
-      Dictionary data, freely inspired by
+      Dictionary data, freely inspired by 
       https://github.com/italia/daf-ontologie-vocabolari-controllati/
     properties:
       data:
@@ -592,7 +592,7 @@ x-components:
       required: true
       type: string
     limit:
-      $ref: 'schema/components.yaml#x-components/parameters/limit'
+      $ref: 'schema/components.yaml#components/parameters/limit'
     name:
       description: The indexed key to search with.
       example: Latina
@@ -601,9 +601,9 @@ x-components:
       required: false
       type: string
     offset:
-      $ref: 'schema/components.yaml#x-components/parameters/offset'
+      $ref: 'schema/components.yaml#components/parameters/offset'
     sort:
-      $ref: 'schema/components.yaml#x-components/parameters/sort'
+      $ref: 'schema/components.yaml#components/parameters/sort'
     table_uuid_path:
       description: The table uuid
       example: 2b356821-868e-4274-9c8e-ca119dd097df
@@ -620,20 +620,20 @@ x-components:
       type: integer
   responses:
     400BadRequest:
-      $ref: 'schema/components.yaml#x-components/responses/400BadRequest'
+      $ref: 'schema/components.yaml#components/responses/400BadRequest'
     404NotFound:
-      $ref: 'schema/components.yaml#x-components/responses/404NotFound'
+      $ref: 'schema/components.yaml#components/responses/404NotFound'
     429TooManyRequests:
-      $ref: 'schema/components.yaml#x-components/responses/429TooManyRequests'
+      $ref: 'schema/components.yaml#components/responses/429TooManyRequests'
     503ServiceUnavailable:
-      $ref: 'schema/components.yaml#x-components/responses/503ServiceUnavailable'
+      $ref: 'schema/components.yaml#components/responses/503ServiceUnavailable'
     default:
-      $ref: 'schema/components.yaml#x-components/responses/default'
+      $ref: 'schema/components.yaml#components/responses/default'
   headers:
     X-RateLimit-Limit:
-      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Limit'
+      $ref: 'schema/components.yaml#components/headers/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Remaining'
+      $ref: 'schema/components.yaml#components/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'schema/components.yaml#x-components/headers/X-RateLimit-Reset'
+      $ref: 'schema/components.yaml#components/headers/X-RateLimit-Reset'
 
