@@ -312,7 +312,6 @@ components:
       $ref: 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/sort'
 
   headers:
-    # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
     X-RateLimit-Limit:
       $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
     X-RateLimit-Remaining:

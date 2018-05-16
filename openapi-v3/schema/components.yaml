@@ -9,7 +9,6 @@ openapi: 3.0.0
 components:
   parameters:
     # Generic parameters for pagination defined in
-    # http://zalando.github.io/restful-api-guidelines/index.html#137
     cursor:
       name: cursor
       in: query
@@ -188,7 +187,7 @@ components:
             it SHOULD provide human-readable documentation for the problem type
             (e.g., using HTML).
           default: 'about:blank'
-          example: 'https://zalando.github.io/problem/constraint-violation'
+          example: 'https://tools.ietf.org/html/rfc7231#section-6.6.4'
         title:
           type: string
           description: |

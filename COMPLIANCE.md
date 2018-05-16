@@ -68,7 +68,7 @@ Your API should throttle clients always returning the [following headers](http:/
 
 ```
   headers:
-    # Headers conform to http://zalando.github.io/restful-api-guidelines/index.html#132
+    # Headers conform to http://lg-modellointeroperabilita.readthedocs.io/it/latest/doc/doc_02_cap_04.html#throttling-ed-indisponibilita-del-servizio
     X-RateLimit-Limit:
       $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
     X-RateLimit-Remaining:
@@ -91,6 +91,8 @@ You can use the pre-built responses in errors.
       $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
     X-RateLimit-Reset:
       $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+    Retry-After:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
   content:
     application/problem+json:
       schema:
