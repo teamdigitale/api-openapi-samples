@@ -1,5 +1,5 @@
 
-x-common:
+x-commons:
   headers: &common_headers
     X-RateLimit-Limit:
       $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'

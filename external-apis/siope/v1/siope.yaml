@@ -46,8 +46,8 @@ components:
         format: date-time
         type: string
     download:
-      description: "Filtro dei risultati sul fatto che siano stati gi\xE0 scaricati\
-        \ o meno."
+      description: Filtro dei risultati sul fatto che siano stati già scaricati o
+        meno.
       in: query
       name: download
       schema:
@@ -146,8 +146,7 @@ components:
           format: date-time
           type: string
         download:
-          description: "flag che indica se il flusso sia gi\xE0 stato scaricato o\
-            \ meno"
+          description: flag che indica se il flusso sia già stato scaricato o meno
           example: 'false'
           type: boolean
         location:
@@ -167,8 +166,7 @@ components:
           format: date-time
           type: string
         download:
-          description: "flag che indica se il flusso sia gi\xE0 stato scaricato o\
-            \ meno"
+          description: flag che indica se il flusso sia già stato scaricato o meno
           example: 'false'
           type: boolean
         location:
@@ -183,23 +181,33 @@ components:
 info:
   contact:
     email: siopeplus@bancaditalia.it
-    name: SIOPEPLUS
+    name: Banca d'Italia - SIOPEPLUS
     url: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
-  description: "SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni\
-    \ pubbliche e tesorieri.\n\n#### Documentazione\nSIOPE+ \xE8 l'infrastruttura\
-    \ che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere\n\
-    con l'obiettivo di migliorare la qualit\xE0 dei dati per il monitoraggio della\
-    \ spesa pubblica,\nrilevare i tempi di pagamento dei debiti commerciali e aumentare\
-    \ l'efficienza del sistema dei pagamenti pubblici.\n\nE' stato sviluppato dalla\
-    \ Banca d'Italia in collaborazione con:\n- Ragioneria Generale di Stato;\n- Agenzia\
-    \ per l'Italia Digitale.\n\n#### Note\nLa documentazione ufficiale \xE8 disponibile\
-    \ al link: [Regole tecniche per di colloquio telematico di Amministrazioni pubbliche\
-    \ e Tesorieri con SIOPE+](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)\n\
-    \n#### Informazioni tecniche ed esempi\nTBD\n"
+  description: |
+    SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
+
+    #### Documentazione
+    SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere
+    con l'obiettivo di migliorare la qualità dei dati per il monitoraggio della spesa pubblica,
+    rilevare i tempi di pagamento dei debiti commerciali e aumentare l'efficienza del sistema dei pagamenti pubblici.
+
+    E' stato sviluppato dalla Banca d'Italia in collaborazione con:
+    - Ragioneria Generale di Stato;
+    - Agenzia per l'Italia Digitale.
+
+    #### Note
+    La documentazione ufficiale è descritta nel documento
+    "[Regole tecniche](http://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/SIOPE/SIOPE/Regole_di_Colloquio.pdf)
+     per il colloquio telematico di Amministrazioni pubbliche e Tesorieri con SIOPE+"
+
+    L'utilizzo di SIOPE+ è permesso:
+
+      - in conformità alla [normativa di riferimento indicata nel sito](https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html)
+      - nel rispetto delle summenzionate "Regole tecniche"
   license:
     name: GPL v3.0
     url: https://www.gnu.org/licenses/gpl-3.0.txt
-  termsOfService: https://en.wikipedia.org/wiki/Terms_of_service
+  termsOfService: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
   title: SIOPE+ API
   version: 1.0.1
 openapi: 3.0.0
@@ -231,9 +239,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -277,9 +287,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -323,9 +335,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -369,9 +383,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -415,9 +431,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -477,12 +495,14 @@ paths:
             o header valorizzato diversamente oppure body della richiesta non in formato
             zip'
         '422':
-          description: "body della richiesta non aderente al suo schema XSD o comunque\
-            \ di complessit\xE0 troppo elevata"
+          description: body della richiesta non aderente al suo schema XSD o comunque
+            di complessità troppo elevata
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -532,9 +552,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -576,9 +598,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -620,9 +644,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -666,9 +692,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -728,12 +756,14 @@ paths:
             o header valorizzato diversamente oppure body della richiesta non in formato
             zip'
         '422':
-          description: "body della richiesta non aderente al suo schema XSD o comunque\
-            \ di complessit\xE0 troppo elevata"
+          description: body della richiesta non aderente al suo schema XSD o comunque
+            di complessità troppo elevata
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -783,9 +813,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -829,9 +861,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -875,9 +909,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -919,9 +955,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -961,9 +999,11 @@ paths:
         '404':
           description: Not Found
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1005,9 +1045,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1069,12 +1111,14 @@ paths:
             o header valorizzato diversamente oppure body della richiesta non in formato
             zip'
         '422':
-          description: "body della richiesta non aderente al suo schema XSD o comunque\
-            \ di complessit\xE0 troppo elevata"
+          description: body della richiesta non aderente al suo schema XSD o comunque
+            di complessità troppo elevata
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1122,9 +1166,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1168,9 +1214,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1230,12 +1278,14 @@ paths:
             o header valorizzato diversamente oppure body della richiesta non in formato
             zip'
         '422':
-          description: "body della richiesta non aderente al suo schema XSD o comunque\
-            \ di complessit\xE0 troppo elevata"
+          description: body della richiesta non aderente al suo schema XSD o comunque
+            di complessità troppo elevata
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1285,9 +1335,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/json`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1329,9 +1381,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1373,9 +1427,11 @@ paths:
         '406':
           description: 'Assenza dell''header di richiesta `Accept: application/zip`'
         '429':
-          description: "richieste pi\xF9 frequenti di quanto consentito dalle regole\
-            \ di throttling"
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
           headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
             X-RateLimit-Limit:
               $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
             X-RateLimit-Remaining:
@@ -1394,128 +1450,3 @@ paths:
       - Giornale di Cassa
 servers:
 - url: https://a2a.siopeplus.it/v1
-x-common:
-  headers:
-    X-RateLimit-Limit:
-      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
-    X-RateLimit-Remaining:
-      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
-    X-RateLimit-Reset:
-      $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
-  json_responses:
-    '400':
-      description: Bad Request
-    '401':
-      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
-    '404':
-      description: Not Found
-    '406':
-      description: 'Assenza dell''header di richiesta `Accept: application/json`'
-    '429':
-      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
-        \ throttling"
-      headers:
-        X-RateLimit-Limit:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
-        X-RateLimit-Remaining:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
-        X-RateLimit-Reset:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
-    '503':
-      description: Servizio non disponibile
-      headers:
-        Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
-    default:
-      description: Errore non atteso
-  post_responses:
-    '400':
-      description: Bad Request
-    '401':
-      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
-    '404':
-      description: Not Found
-    '406':
-      description: 'Assenza dell''header di richiesta `Accept: application/json`'
-    '413':
-      description: body della richiesta troppo grande
-    '415':
-      description: 'assenza dell''header della richiesta `Content-Type: application/zip`
-        o header valorizzato diversamente oppure body della richiesta non in formato
-        zip'
-    '422':
-      description: "body della richiesta non aderente al suo schema XSD o comunque\
-        \ di complessit\xE0 troppo elevata"
-    '429':
-      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
-        \ throttling"
-      headers:
-        X-RateLimit-Limit:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
-        X-RateLimit-Remaining:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
-        X-RateLimit-Reset:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
-    '460':
-      description: identificativo A2A del tramite della PA oppure codice UNI_UO della
-        PA, entrambi specificati nel messaggio inviato, non ancora abilitato
-    '461':
-      description: identificativo A2A del tramite della BT oppure codice ABI della
-        BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
-    '503':
-      description: Servizio non disponibile
-      headers:
-        Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
-    default:
-      description: Errore non atteso
-  responses:
-    '400':
-      description: Bad Request
-    '401':
-      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
-    '404':
-      description: Not Found
-    '429':
-      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
-        \ throttling"
-      headers:
-        X-RateLimit-Limit:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
-        X-RateLimit-Remaining:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
-        X-RateLimit-Reset:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
-    '503':
-      description: Servizio non disponibile
-      headers:
-        Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
-    default:
-      description: Errore non atteso
-  zip_responses:
-    '400':
-      description: Bad Request
-    '401':
-      description: Identificativo A2A di chi origina la richiesta non ancora abilitato
-    '404':
-      description: Not Found
-    '406':
-      description: 'Assenza dell''header di richiesta `Accept: application/zip`'
-    '429':
-      description: "richieste pi\xF9 frequenti di quanto consentito dalle regole di\
-        \ throttling"
-      headers:
-        X-RateLimit-Limit:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
-        X-RateLimit-Remaining:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
-        X-RateLimit-Reset:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
-    '503':
-      description: Servizio non disponibile
-      headers:
-        Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
-    default:
-      description: Errore non atteso
