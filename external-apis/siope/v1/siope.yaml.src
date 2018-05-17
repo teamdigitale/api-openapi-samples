@@ -1,4 +1,3 @@
-
 x-commons:
   headers: &common_headers
     X-RateLimit-Limit:

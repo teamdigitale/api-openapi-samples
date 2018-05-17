@@ -34,7 +34,8 @@ def main(src_file, dst_file):
     ret = yaml.load(fh_src)
 
     # Remove x-commons containing references and aliases.
-    del ret['x-commons']
+    if 'x-commons' in ret:
+        del ret['x-commons']
 
     content = yaml.dump(ret, default_flow_style=False, allow_unicode=True)
     fh_dst.write(content)

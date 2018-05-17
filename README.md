@@ -22,6 +22,12 @@ To convert all v3 files to v2, use:
         find openapi-v3/ -name \*.yaml \
           -exec bash -c 'I="{}"; ./bin/api-spec-converter.sh "$I" -f openapi_3 -t swagger_2 -s yaml > "${I//v3/v2}" ' \;
 
+## Processing yaml.src
+
+Some specs may be defined using yaml references (eg. to avoid repeating common headers and responses).
+While that's valid yaml, explicit is better than implicit. Those files should be *exploded* with:
+
+        make yaml
 
 ## Generating JSONSchema from existing json
 

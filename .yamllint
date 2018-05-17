@@ -6,6 +6,6 @@ rules:
   indentation:
     indent-sequences: consistent
   line-length:
-    max: 120
+    max: 180
 
 
