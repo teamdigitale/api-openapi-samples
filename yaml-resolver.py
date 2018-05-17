@@ -11,7 +11,7 @@ def should_use_block(value):
 def my_represent_scalar(self, tag, value, style=None):
     if should_use_block(value):
         style='|'
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
     else:
         style = self.default_style
 

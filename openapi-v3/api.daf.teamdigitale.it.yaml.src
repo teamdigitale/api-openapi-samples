@@ -65,10 +65,6 @@ info:
          -u "$USER:$PASSWORD"
     ```
 
-
-    # Datamodels
-
-    All datamodels used are defined in separate service. LINKS HERE!
   x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
   contact:
     name: "Data Analytics Framework"

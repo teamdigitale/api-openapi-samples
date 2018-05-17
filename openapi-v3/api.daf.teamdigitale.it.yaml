@@ -153,11 +153,6 @@ info:
     ``curl "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_show?id=abitazioni"
          -u "$USER:$PASSWORD"
     ```
-
-
-    # Datamodels
-
-    All datamodels used are defined in separate service. LINKS HERE!
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
