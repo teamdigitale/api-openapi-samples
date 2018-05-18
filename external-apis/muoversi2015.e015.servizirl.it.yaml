@@ -36,7 +36,7 @@ info:
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
-  description:
+  description: Server accessibile dall'ecosistema E015
 paths:
   /e015Search:
     get:
@@ -45,6 +45,7 @@ paths:
         una tipologia e la coppia di coordinate che ne individua la posizione.
       responses:
         200:
+          description: I luoghi corrspondenti a una ricerca.
           content:
             application/json:
               schema:
@@ -52,6 +53,9 @@ paths:
     parameters:
     - name: param
       in: query
+      required: true
+      schema:
+        type: string
     - name: maxResult
       in: query
       schema:
@@ -65,6 +69,7 @@ paths:
         una tipologia e la coppia di coordinate che ne individua la posizione.
       responses:
         200:
+          description: Una lista di soluzioni di viaggio.
           content:
             application/json:
               schema:
@@ -92,6 +97,7 @@ paths:
         una tipologia e la coppia di coordinate che ne individua la posizione.
       responses:
         200:
+          description: La lista con gli orari di passaggio del mezzo.
           content:
             application/json:
               schema:
@@ -101,6 +107,8 @@ paths:
     parameters:
     - name: param
       in: query
+      schema:
+        type: string
 
 components:
   schemas:
@@ -126,7 +134,7 @@ components:
           type: string
         descrizione:
           type: string
-      examples:
+      example:
       - { "codice": "ER001", "descrizione": "Formato della stringa del campo param non valida: il numero di caratteri deve essere compreso tra 2 e 100" }
       - { "codice": "ER900", "descrizione": "Request Not Valid" }
     Point:
@@ -183,7 +191,7 @@ components:
               type: number
               default: -1
               minimum: -1
-              maximim: 3
+              maximum: 3
             durationChange:
               type: string
         lang:
@@ -548,26 +556,28 @@ components:
         stato: '0'
     TimetableRequest:
       properties:
-        lang: null
+        lang:
+          type: string
         richiesta:
-          date:
-            description: 'Data in formato `dd/mm/yyyy`'
-            type: string
-          when:
-            description: 'Ora in formato `hh:mm`'
-            type: string
-          options:
-            description: 'Se non ammissibile, ritorna `ER013`'
-            type: array
-            items:
+          properties:
+            date:
+              description: 'Data in formato `dd/mm/yyyy`'
+              type: string
+            when:
+              description: 'Ora in formato `hh:mm`'
+              type: string
+            options:
+              description: 'Se non ammissibile, ritorna `ER013`'
+              type: array
+              items:
+                type: number
+                minimum: 1
+                maximum: 6
+            tipoData:
               type: number
-              minimum: 1
-              maximum: 6
-          tipoData:
-            type: number
-            description: "0=data e orario si riferiscono alla partenza (default)\n1=data e orario si riferiscono all’arrivo"
-          stop:
-            type: string
+              description: "0=data e orario si riferiscono alla partenza (default)\n1=data e orario si riferiscono all’arrivo"
+            stop:
+              type: string
       example:
         lang: it
         richiesta:
@@ -582,21 +592,21 @@ components:
           - '5'
           - '6'
           tipoData: '0'
-        Orario:
-          properties:
-            time:
-              type: string
-            line:
-              type: string
-            run:
-              type: string
-            transport:
-              type: string
-          example:
-            time: '14:20'
-            line: '52 A'
-            run: 'MILANO, Greco Pirelli, Stazione'
-            transport: '3'
+    Orario:
+      properties:
+        time:
+          type: string
+        line:
+          type: string
+        run:
+          type: string
+        transport:
+          type: string
+      example:
+        time: '14:20'
+        line: '52 A'
+        run: 'MILANO, Greco Pirelli, Stazione'
+        transport: '3'
     TimetableFermata:
       properties:
         id:
@@ -616,7 +626,8 @@ components:
       properties:
         stato:
           type: string
-        lang: null
+        lang:
+          type: string
         richiesta:
           $ref: '#/components/schemas/TimetableRequest'
         listaOrari:
@@ -651,3 +662,4 @@ components:
         - codice: ER011
           descrizione: 'Formato campo date non valido: inserire una data nel formato dd/mm/aaaa'
         listaFermate: []
+

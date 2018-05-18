@@ -150,7 +150,8 @@ info:
 
       * mostra il dataset __abitazioni__
 
-    ``curl "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_show?id=abitazioni"
+    ```
+    curl "https://api.daf.teamdigitale.it/dati-gov/ckan_proxy/package_show?id=abitazioni"
          -u "$USER:$PASSWORD"
     ```
   license:
