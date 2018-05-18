@@ -21,16 +21,16 @@ info:
 
     #### Informazioni tecniche ed esempi
 
-    E' possibile verificare il corretto funzionamento del servizio interrogando ogni 300 secondi
-    l'indirizzo seguente, con:
+    I sistemi abilitati possono verificare il corretto funzionamento del servizio interrogando ogni 300 secondi
+    l'indirizzo seguente:
 
     ```
-    curl 'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search/?param=milano&maxResult=1'
+    'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search?param=milano&maxResult=1'
     ```
   contact:
-    name: Nome Cognome
+    name: Technical Management Board di E015
     url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
-    email: nome.cognome@regione.lombardia.it
+    email: e015-tmb@regione.lombardia.it
   version: 1.0.0
   termsOfService: >-
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
