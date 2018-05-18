@@ -71,8 +71,7 @@ info:
     email: alessandro@teamdigitale.governo.it
     url: 'https://dataportal.daf.teamdigitale.it/'
   termsOfService: >-
-    TODO non ho le competenze per scrivere le note legali chiedere a qualcuno che possa aiutare
-    http://geodati.gov.it/geoportale/note-legali
+    https://dataportal.daf.teamdigitale.it/lineeguida
   x-audience:
     - public
   license:

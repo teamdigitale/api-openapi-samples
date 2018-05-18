@@ -204,6 +204,11 @@ info:
 
       - in conformità alla [normativa di riferimento indicata nel sito](https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html)
       - nel rispetto delle summenzionate "Regole tecniche"
+
+
+    #### Informazioni tecniche ed esempi
+    ##### Autenticazione
+    L'accesso a SIOPE+ avviene previa autenticazione con certificato TLS.
   license:
     name: GPL v3.0
     url: https://www.gnu.org/licenses/gpl-3.0.txt

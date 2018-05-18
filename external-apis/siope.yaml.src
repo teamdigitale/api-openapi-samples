@@ -91,6 +91,11 @@ info:
       - in conformità alla [normativa di riferimento indicata nel sito](https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html)
       - nel rispetto delle summenzionate "Regole tecniche"
 
+
+    #### Informazioni tecniche ed esempi
+    ##### Autenticazione
+    L'accesso a SIOPE+ avviene previa autenticazione con certificato TLS.
+
   termsOfService: 'https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html'
   contact:
     email: siopeplus@bancaditalia.it
