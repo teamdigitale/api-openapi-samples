@@ -3,15 +3,33 @@ openapi: 3.0.0
 info:
   title: Aree Protette
   description: |-
-    Il servizio fornisce informazioni sui Parchi, riserve naturali e monumenti naturali della Regione Lombardia inseriti tramite il gestionale Parchi e Riserve. Le informazioni restituite rispettano il tracciato del glossario venue.
+    Il servizio fornisce informazioni sui Parchi, riserve e monumenti naturali della Lombardia.
 
-    ####
-    ####
-    ####
+    #### Documentazione
+    Il servizio fornisce informazioni sui Parchi, riserve naturali e monumenti naturali della Regione Lombardia
+    censiti tramite il servizio Parchi e Riserve. Le informazioni restituite rispettano il tracciato standard del glossario E015 `venue`.
+
+    #### Note
+    Le API vengono erogate all'interno dell'[Ecosistema Digitale E015](http://www.e015.regione.lombardia.it/)
+     creato dalla Regione Lombardia per l'Expo e possono essere fruite solamente all'interno dell'ecosistema.
+
+    #### Informazioni tecniche ed esempi
+
+    I sistemi abilitati possono verificare il corretto funzionamento del servizio interrogando ogni 300 secondi
+    l'indirizzo seguente:
+
+    ```
+    'https://cercaareeprotette.e015.servizirl.it/e015_aree_protette/api/v1/venuesPAR:672'
+    ```
+
   version: 1.0.0
   termsOfService: 'http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_aree_protette.pdf?download=1&download=1'
+  contact:
+    name: Technical Management Board di E015
+    url: 'http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/aree-protette'
+    email: e015-tmb@regione.lombardia.it
 servers:
-- url: https://cercaareeprotette.e015.servizirl.it/e015_aree_protette/api/v1/venues/
+- url: 'https://cercaareeprotette.e015.servizirl.it/e015_aree_protette/api/v1/venues'
   description: Server accessibile previa autenticazione TLS all'interno del sistema
     E015
 paths:
@@ -24,7 +42,7 @@ paths:
       responses:
         200:
           description: |-
-            Il metodo restituisce un elemento di tipo Venues. All’interno dell’elemento Description contenuto in <Venues> sono inserite informazioni  di paginazione
+            Il metodo restituisce un elemento di tipo Venues. All’interno dell’elemento Description contenuto in `Venues` sono inserite informazioni  di paginazione
           content:
             application/json:
               schema:
@@ -196,7 +214,7 @@ paths:
     - $ref: '#/components/parameters/callback'
   /venueServices:
     get:
-      summary: Restituisce l’elenco dei servizi disponibili per reserve e monumenti.
+      summary: Restituisce l’elenco dei servizi disponibili per riserve e monumenti.
       responses:
         200:
           description: Ritorna un elenco multilingua di servizi.
@@ -398,4 +416,3 @@ components:
           type: string
         type:
           type: string
-
