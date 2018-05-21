@@ -8,11 +8,11 @@ info:
 
     #### Documentazione
     Il catalogo è una base di dati d'interesse nazionale, istituita dall' [art. 59 del Codice dell'Amministrazione Digitale](https://cad.readthedocs.io/it/v2017-12-13/_rst/capo5_sezione2_art59.html).
-    La ricerca (ad esempio, di dati cartografici su "Latina") ritorna una serie di informazioni che includono:
+    La ricerca (ad esempio, di dati territoriali su "Latina") ritorna una serie di informazioni che includono:
 
       - la descrizione dei dati, eg. *Cartografia catastale in scala 1:2000*
-      - le coordinate geografiche
-      - la data di ultima revisione dei dati
+      - la copertura geografica
+      - la data di creazione e/o pubblicazione e/o ultima modifica dei dati
       - i contatti dell'ente che li pubblica, eg. *Agenzia delle Entrate Direzione Centrale Catasto* con la relativa email
 
     #### Note
@@ -99,13 +99,13 @@ paths:
           curl http://geodati.gov.it/RNDT/rest/find/document?searchText=INSPIRETheme:Idrografia&start=1&max=5&f=pjson
           ```
 
-          For an exact match use double quotes. For example, see the syntax for two terms, `carta` and `geografica`:
+          For an exact match use double quotes. For example, see the syntax for two terms, `carta` and `geologica`:
 
           - Exact: `searchText=title:"carta geologica"`
           - Any: `searchText=title:carta geologica`
           - All: `searchText=title:carta AND geologica`
 
-          example: INSPIRETheme:Idrografia
+          example: `searchText=INSPIRETheme:Idrografia`
         schema:
           type: string
 
