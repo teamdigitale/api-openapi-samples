@@ -50,6 +50,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Search'
+        default:
+          description: Errore non atteso
     parameters:
     - name: param
       in: query

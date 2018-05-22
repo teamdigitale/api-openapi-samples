@@ -81,6 +81,8 @@ paths:
                       - {type: flora, uri: '#441', value: fiore roby (roby_flower)}
                       - {type: fauna, uri: '#2', value: Airone azzurro maggiore (Ardea herodias ARDEIDAE)}
                       - {type: fauna, uri: '#343', value: animale roby (roby animal)}
+        default:
+          description: Errore non atteso
     parameters:
     - '$ref': 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/limit'
     - '$ref': 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/offset'
@@ -203,6 +205,8 @@ paths:
                         type: superficie
                       - value: 950 m
                         type: altitudine
+        default:
+          description: Errore non atteso
     parameters:
     - name: id_venue
       in: path
@@ -236,6 +240,9 @@ paths:
                     - value: Info point
                       lang: it
                       type: accoglienza
+
+        default:
+          description: Errore non atteso
     parameters:
     - $ref: '#/components/parameters/lang'
     - $ref: '#/components/parameters/f'
