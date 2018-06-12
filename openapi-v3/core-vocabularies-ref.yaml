@@ -115,6 +115,8 @@ paths:
         line with the expected line count. If the schema does not match
         previous version, an error is returned.
       operationId: uploadDictionary
+      parameters:
+        - $ref: "#/components/parameters/dictionary_name_path"
       requestBody:
         description: |-
           Use MarkDown here!
@@ -172,7 +174,7 @@ paths:
       summary: Get entries from a dictionary.
       description: |
         Retrieve paged entries from a Table.
-      operationId: getDictionary
+      operationId: getDictionaryVersion
       tags:
       - public
       parameters:
@@ -422,7 +424,7 @@ components:
   schemas:
 
     Problem:
-      $ref: 'https://teamdigitale.github.io/openapi/schemas/problem.yaml#Problem'
+      $ref: 'https://teamdigitale.github.io/openapi/schemas/problem.yaml#/Problem'
 
     Dictionaries:
       required:
