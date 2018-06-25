@@ -1,128 +1,86 @@
+x-commons:
+  common-responses: &common_responses
+    '400':
+      $ref: '#/components/responses/400BadRequest'
+    '429':
+      $ref: '#/components/responses/429TooManyRequests'
+    '503':
+      $ref: '#/components/responses/503ServiceUnavailable'
+    default:
+      $ref: '#/components/responses/default'
+  common-headers: &common_headers
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+
 openapi: 3.0.0
 servers:
   - url: 'http://dati.mit.gov.it/catalog/api/3/action'
-x-origin:
-  - url: >-
-      https://raw.githubusercontent.com/teamdigitale/api-openapi-samples/ckan-v3-stubs/openapi-v2/api.daf.teamdigitale.it.yml
-    format: swagger
-    version: '2.0'
-    converter:
-      url: 'https://github.com/mermade/swagger2openapi'
-      version: 2.11.5
 info:
   description: >
-    Simple API to manage open data sets in api.daf.teamdigitale.it.
+    API per ricercare e visualizzare gli open data del Ministero delle Infrastrutture e dei Trasporti.
 
 
-    # Important note
+    #### Documentazione
+    Il portale dei dati aperti dati.mit.gov.it è realizzato e manutenuto dal Ministero delle infrastrutture
+    e dei trasporti con il coordinamento della Direzione generale per i Sistemi Informativi e Statistici.
 
-    This is not a traditional rest API in the strict sense. **It does not use
-    PUT or DELETE http methods**. Instead, it does everything with GET or POST
-    methods. This means that the color coding in the (swagger) documentation is
-    misleading.
-
-
-    # Open and limited access functions
+    Tramite queste API è possibile ricercare e
+    visualizzare gli open data nazionali presenti sul portale.
 
 
-    Functions which can be used **without authorization are grouped under
-    _consumers_**.
+    #### Note
 
-    Some API functions **require authorization (grouped under _admins_)**. With
-    these methods you will need API key provided by CKAN system.
+    Per ulteriori informazioni si veda la pagina [crediti di opencantieri](http://opencantieri.mit.gov.it/crediti)
 
+    #### Informazioni tecniche ed esempi
 
-    **In every API call you need to provide APInf platform specific API-key**.
-    You can get that by creating account. After logging in, your API key is
-    visible in every API profile page (top right corner).
+    Queste API non sono strettamente REST e **non utilizzano i metodi PUT e DELETE**,
+    ma solamente i metodi GET e POST.
 
-    <center>
+    ##### Autenticazione
 
-    ![Imgur](https://i.imgur.com/bEGmr2s.png)
+    Le API esposte non richiedono autenticazione e permettono solamente il download dei dati.
 
-    </center>
+    ##### Esempi
+    Query di esempio:
 
+      * elenca i dataset
+    ```
+    curl "http://dati.mit.gov.it/catalog/api/3/action/package_list?limit=5"
+    ```
 
-    # A few simple examples
+      * mostra il dataset __abitazioni__
 
+    ```
+    curl "http://dati.mit.gov.it/catalog/api/3/action/package_show?id=digiroa"
+    ```
 
-    **Simple example to list datasets** is:
-
-
-    ``curl -X GET
-    "http://dati.mit.gov.it/catalog/api/3/action/package_list" -H
-    "X-API-Key: YOUR APINF API KEY"``
-
-
-    which returns JSON formatted list of datasets.
-
-
-    **Simple example to view details of one dataset** is:
-
-
-    ``curl -X GET
-    "http://dati.mit.gov.it/catalog/api/3/action/package_show?id=digiroad"
-    -H  "X-API-Key: YOUR APINF API KEY"``
-
-
-    which returns JSON formatted detailed infomation about identified dataset.
-
-
-
-    # Authentication and API keys
-
-
-    There's two kind of keys:
-
-    - **X-API-Key**. APInf Platform API key used in analytics. This required in
-    all API calls. You can get that by creating account. After logging in, your
-    API key is visible in every API profile page (right top corner).
-
-    - **Authorization**. To authorize user to do admin operations in CKAN
-    system. This key can be obtained by signing up to https://beta.avoindata.fi.
-
-
-    Some API functions require authorization (grouped under _admins_). The API
-    uses the same authorization functions and configuration as the web
-    interface, so if a user is authorized to do something in the web interface
-    they’ll be authorized to do it via the API as well.
-
-
-    When calling an API function that requires authorization, you must
-    authenticate yourself by providing your API key with your HTTP request. To
-    find your API key, login to the CKAN site using its web interface and visit
-    your user profile page. In SwaggerUI, you need to input CKAN authorization
-    API-key to _Authorization_ value field. Open authentication dialog by
-    clicking _Authorize_ button.
-
-
-    # Datamodels
-
-
-    All datamodels used are defined in separate service. LINKS HERE!
   version: '3'
-  title: XXX MIT CKAN API
+  title: Opendata MIT
   x-api-id: 28a40681-4c28-45c9-9bda-7e55d1d6ec68
   contact:
     name: "Ministero Infrastrutture e Trasporti"
-    email: WRITEME
-    url: 'vedi responsabile pubblicazione in geodati'
+    email: opendata@mit.gov.it
+    url: 'http://opencantieri.mit.gov.it/crediti'
   termsOfService: >-
-    TODO ereditare la parte sensata da
-    http://geodati.gov.it/geoportale/note-legali
+    http://www.mit.gov.it/note-legali
   x-audience:
     - public
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: consumers
-    description: Operations available to regular consumers
+  - name: public
+    description: Operations available to all citizens
 paths:
   /package_list:
     get:
       tags:
-        - consumers
+        - public
       summary: List all datasets within given limit
       operationId: listInventory
       description: |
@@ -144,17 +102,14 @@ paths:
             type: integer
             format: int32
       responses:
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
-        '400':
-          - $ref: '#/components/responses/400BadRequest'
-        default:
-          - $ref: '#/components/responses/default'
 
   /package_search:
     get:
       tags:
-        - consumers
+        - public
       summary: Search among all datasets
       operationId: searchInventory
       description: |
@@ -209,19 +164,15 @@ paths:
             type: boolean
             default: false
       responses:
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
-        '400':
-          - $ref: '#/components/responses/400BadRequest'
         '409':
           description: Conflict (can result e.g. from incorrectly formatted solr query)
-        default:
-          - $ref: '#/components/responses/default'
-
   /package_show:
     get:
       tags:
-        - consumers
+        - public
       summary: Get details of one package
       operationId: showInventory
       description: |
@@ -241,16 +192,13 @@ paths:
             type: boolean
             default: false
       responses:
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
-        '400':
-          - $ref: '#/components/responses/400BadRequest'
-        default:
-          - $ref: '#/components/responses/default'
   /organization_list:
     get:
       tags:
-        - consumers
+        - public
       summary: List all groups within given parameters
       operationId: listOrgs
       description: |
@@ -344,18 +292,106 @@ paths:
             type: boolean
             default: false
       responses:
+        <<: *common_responses
         '200':
           $ref: '#/components/responses/CkanResponse'
-        '400':
-          - $ref: '#/components/responses/400BadRequest'
-        default:
-          - $ref: '#/components/responses/default'
+  /user_list:
+    get:
+      tags:
+        - consumers
+      summary: List all groups within given parameters
+      description: |
+        List or search all datasets
+      operationId: listUsers
+      parameters:
+        - name: sort
+          in: query
+          description: |
+            sorting of the search results. Optional. Default: “name asc” string of field name and sort-order. The allowed fields are ‘name’, ‘package_count’ and ‘title’
+          required: false
+          schema:
+            default: name asc
+            type: string
+        - name: limit
+          in: query
+          description: |
+            if given, the list of organizations will be broken into pages of at most limit organizations per page and only one page will be returned at a time (optional)
+          schema:
+            format: int32
+            type: integer
+        - name: offset
+          in: query
+          description: |
+            when limit is given, the offset to start returning organizations from
+          required: false
+          schema:
+            format: int32
+            type: integer
+        - name: organizations
+          in: query
+          description: |
+            a list of names of the groups to return, if given only groups whose names are in this list will be returned (optional)
+          required: false
+          schema:
+            type: string
+        - name: all_fields
+          in: query
+          description: |
+            return group dictionaries instead of just names. Only core fields are returned
+            - get some more using the include_* options. Returning a list of packages is too
+            expensive, so the packages property for each group is deprecated, but there is a
+            count of the packages in the package_count property. (optional, default: False)
+          required: false
+          schema:
+            type: boolean
+        - name: include_dataset_count
+          in: query
+          description: |
+            if all_fields, include the full package_count (optional, default: True)
+          schema:
+            default: true
+            type: boolean
+        - name: include_extras
+          in: query
+          description: |
+            if all_fields, include the organization extra fields (optional, default: False)
+          schema:
+            default: false
+            type: boolean
+        - name: include_tags
+          in: query
+          description: |
+            if all_fields, include the organization tags (optional, default: False)
+          schema:
+            default: false
+            type: boolean
+        - name: include_groups
+          in: query
+          description: |
+            if all_fields, include the organizations the organizations are in (optional, default: False)
+          schema:
+            default: false
+            type: boolean
+        - name: include_users
+          in: query
+          description: |
+            if all_fields, include the organization users (optional, default: False).
+          schema:
+            default: false
+            type: boolean
+      responses:
+        <<: *common_responses
+        200:
+          $ref: '#/components/responses/CkanResponse'
+
 
 components:
   responses:
     CkanResponse:
       description: |
         Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
+      headers:
+        <<: *common_headers
       content:
         application/json:
           schema:
@@ -363,24 +399,52 @@ components:
     400BadRequest:
       description: |
         Invalid input
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     403Forbidden:
       description: |
         Missing authorization key
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     409AlreadyExists:
       description: |
         Item already exists
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
-    Error:
-      description: |
-        An unexpected status has been returned.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+    429TooManyRequests:
+      description: >-
+        Too Many Requests
+      headers:
+        <<: *common_headers
+        Retry-After:
+          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+    503ServiceUnavailable:
+      description: >-
+        Service Unavailable
+      headers:
+        Retry-After:
+          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+    default:
+      description: >-
+        Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
 
   securitySchemes:
     ckanapikey:
@@ -398,8 +462,8 @@ components:
       properties:
         result:
           anyOf:
-            - object
-            - array
+            - type: object
+            - type: array
         error:
           type: object
         help:
@@ -418,8 +482,8 @@ components:
       properties:
         result:
           anyOf:
-            - object
-            - array
+            - type: object
+            - type: array
         error:
           type: object
         help:
