@@ -105,10 +105,9 @@ info:
     email: alessandro@teamdigitale.governo.it
     name: Data Analytics Framework
     url: https://dataportal.daf.teamdigitale.it/
+  x-project: daf
+  x-summary: API per ricercare e visualizzare gli open data del Data & Analytics Framework in api.daf.teamdigitale.it.
   description: |
-    API per ricercare e visualizzare gli open data del Data & Analytics Framework in api.daf.teamdigitale.it.
-
-
     #### Documentazione
     Il Data & Analytics Framework (DAF) è il progetto istituito tramite
     la Piattaforma Digitale Nazionale Dati - [art. 50-ter del Codice dell'Amministrazione Digitale](http://cad.readthedocs.io/it/v2017-12-13/_rst/capo5_sezione1_art50-ter.html)
