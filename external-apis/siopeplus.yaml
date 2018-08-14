@@ -183,9 +183,8 @@ info:
     email: siopeplus@bancaditalia.it
     name: Banca d'Italia - SIOPEPLUS
     url: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
+  x-summary: SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
   description: |
-    SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
-
     #### Documentazione
     SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere
     con l'obiettivo di migliorare la qualità dei dati per il monitoraggio della spesa pubblica,

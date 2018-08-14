@@ -2,9 +2,9 @@
 openapi: 3.0.0
 info:
   title: Aree Protette
-  description: |-
+  x-summary: >-
     Il servizio fornisce informazioni sui Parchi, riserve e monumenti naturali della Lombardia.
-
+  description: |-
     #### Documentazione
     Il servizio fornisce informazioni sui Parchi, riserve naturali e monumenti naturali della Regione Lombardia
     censiti tramite il servizio Parchi e Riserve. Le informazioni restituite rispettano il tracciato standard del glossario E015 `venue`.

@@ -27,6 +27,7 @@ info:
   version: "0.0.1"
   title: |
     Just an API
+  x-summary: An one-liner headline to be used in catalogs.
   description: |
     A short description of the application.
     [CommonMark](http://spec.commonmark.org/) syntax

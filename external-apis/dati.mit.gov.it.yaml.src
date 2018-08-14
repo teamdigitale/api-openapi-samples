@@ -20,10 +20,9 @@ openapi: 3.0.0
 servers:
   - url: 'http://dati.mit.gov.it/catalog/api/3/action'
 info:
-  description: >
+  x-summary: >-
     API per ricercare e visualizzare gli open data del Ministero delle Infrastrutture e dei Trasporti.
-
-
+  description: >
     #### Documentazione
     Il portale dei dati aperti dati.mit.gov.it è realizzato e manutenuto dal Ministero delle infrastrutture
     e dei trasporti con il coordinamento della Direzione generale per i Sistemi Informativi e Statistici.

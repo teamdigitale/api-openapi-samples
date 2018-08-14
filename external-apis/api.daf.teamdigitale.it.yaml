@@ -22,13 +22,27 @@ components:
       description: Too Many Requests
       headers:
         Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+          description: |-
+            Retry contacting the endpoint *at least* after seconds.
+            See https://tools.ietf.org/html/rfc7231#section-7.1.3
+          schema:
+            format: int32
+            type: integer
         X-RateLimit-Limit:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+          description: The number of allowed requests in the current period
+          schema:
+            format: int32
+            type: integer
         X-RateLimit-Remaining:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+          description: The number of remaining requests in the current period
+          schema:
+            format: int32
+            type: integer
         X-RateLimit-Reset:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+          description: The number of seconds left in the current period
+          schema:
+            format: int32
+            type: integer
     503ServiceUnavailable:
       application/json:
         schema:
@@ -36,7 +50,12 @@ components:
       description: Service Unavailable
       headers:
         Retry-After:
-          $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+          description: |-
+            Retry contacting the endpoint *at least* after seconds.
+            See https://tools.ietf.org/html/rfc7231#section-7.1.3
+          schema:
+            format: int32
+            type: integer
     CkanResponse:
       content:
         application/json:
@@ -105,8 +124,6 @@ info:
     email: alessandro@teamdigitale.governo.it
     name: Data Analytics Framework
     url: https://dataportal.daf.teamdigitale.it/
-  x-project: daf
-  x-summary: API per ricercare e visualizzare gli open data del Data & Analytics Framework in api.daf.teamdigitale.it.
   description: |
     #### Documentazione
     Il Data & Analytics Framework (DAF) è il progetto istituito tramite
@@ -162,6 +179,9 @@ info:
   x-api-id: 3ab5b162-132b-49fa-96c2-c81557823cda
   x-audience:
   - public
+  x-project: daf
+  x-summary: API per ricercare e visualizzare gli open data del Data & Analytics Framework
+    in api.daf.teamdigitale.it.
 openapi: 3.0.0
 paths:
   /organization_list:

@@ -2,9 +2,8 @@
 openapi: 3.0.0
 info:
   title: Muoversi in Lombardia
+  x-summary: Il servizio fornisce una soluzione di viaggio intermodale utilizzando il trasporto pubblico in Lombardia.
   description: |-
-    Il servizio fornisce una soluzione di viaggio intermodale utilizzando il trasporto pubblico in Lombardia.
-
     #### Documentazione
     Il servizio mette a disposizione informazioni georeferenziate relative agli orari
     del Trasporto Pubblico Locale in Regione Lombardia, restituendo delle soluzioni

@@ -147,8 +147,6 @@ info:
     name: Ministero Infrastrutture e Trasporti
     url: http://opencantieri.mit.gov.it/crediti
   description: |
-    API per ricercare e visualizzare gli open data del Ministero delle Infrastrutture e dei Trasporti.
-
     #### Documentazione Il portale dei dati aperti dati.mit.gov.it è realizzato e manutenuto dal Ministero delle infrastrutture e dei trasporti con il coordinamento della Direzione generale per i Sistemi Informativi e Statistici.
     Tramite queste API è possibile ricercare e visualizzare gli open data nazionali presenti sul portale.
 
@@ -175,6 +173,8 @@ info:
   x-api-id: 28a40681-4c28-45c9-9bda-7e55d1d6ec68
   x-audience:
   - public
+  x-summary: API per ricercare e visualizzare gli open data del Ministero delle Infrastrutture
+    e dei Trasporti.
 openapi: 3.0.0
 paths:
   /organization_list:

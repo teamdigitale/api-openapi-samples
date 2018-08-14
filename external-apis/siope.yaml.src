@@ -69,9 +69,9 @@ openapi: 3.0.0
 info:
   version: 1.0.1
   title: 'SIOPE+ API'
-  description: |
+  x-summary: >-
     SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
-
+  description: |
     #### Documentazione
     SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere
     con l'obiettivo di migliorare la qualità dei dati per il monitoraggio della spesa pubblica,
