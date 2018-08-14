@@ -29,7 +29,7 @@ info:
 
     Query:
     ```
-    http 'http://geodati.gov.it/RNDT/rest/find/document?limit=5&searchText=natura&f=json'
+    http 'http://geodati.gov.it/RNDT/rest/find/document?max=5&searchText=natura&f=json'
     ```
 
   termsOfService: 'http://geodati.gov.it/geoportale/note-legali'
