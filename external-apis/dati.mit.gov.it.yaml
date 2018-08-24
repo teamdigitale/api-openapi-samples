@@ -1,146 +1,4 @@
-components:
-  responses:
-    400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: |
-        Invalid input
-    403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: |
-        Missing authorization key
-    409AlreadyExists:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: |
-        Item already exists
-    429TooManyRequests:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: Too Many Requests
-      headers:
-        Retry-After:
-          description: |-
-            Retry contacting the endpoint *at least* after seconds.
-            See https://tools.ietf.org/html/rfc7231#section-7.1.3
-          schema:
-            format: int32
-            type: integer
-        X-RateLimit-Limit:
-          description: The number of allowed requests in the current period
-          schema:
-            format: int32
-            type: integer
-        X-RateLimit-Remaining:
-          description: The number of remaining requests in the current period
-          schema:
-            format: int32
-            type: integer
-        X-RateLimit-Reset:
-          description: The number of seconds left in the current period
-          schema:
-            format: int32
-            type: integer
-    503ServiceUnavailable:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: Service Unavailable
-      headers:
-        Retry-After:
-          description: |-
-            Retry contacting the endpoint *at least* after seconds.
-            See https://tools.ietf.org/html/rfc7231#section-7.1.3
-          schema:
-            format: int32
-            type: integer
-    CkanResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanReply'
-      description: |
-        Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
-      headers:
-        X-RateLimit-Limit:
-          description: The number of allowed requests in the current period
-          schema:
-            format: int32
-            type: integer
-        X-RateLimit-Remaining:
-          description: The number of remaining requests in the current period
-          schema:
-            format: int32
-            type: integer
-        X-RateLimit-Reset:
-          description: The number of seconds left in the current period
-          schema:
-            format: int32
-            type: integer
-    default:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CkanError'
-      description: Unexpected error
-  schemas:
-    CkanError:
-      properties:
-        error:
-          type: object
-        help:
-          format: url
-          type: string
-        result:
-          anyOf:
-          - type: object
-          - type: array
-        status:
-          enum:
-          - false
-          type: boolean
-      required:
-      - result
-      - success
-      - help
-      - error
-      type: object
-    CkanReply:
-      properties:
-        error:
-          type: object
-        help:
-          format: url
-          type: string
-        result:
-          anyOf:
-          - type: object
-          - type: array
-        status:
-          enum:
-          - true
-          - false
-          type: boolean
-      required:
-      - result
-      - success
-      - help
-      type: object
-  securitySchemes:
-    ckanapikey:
-      in: header
-      name: Authorization
-      type: apiKey
+openapi: 3.0.0
 info:
   contact:
     email: opendata@mit.gov.it
@@ -175,7 +33,11 @@ info:
   - public
   x-summary: API per ricercare e visualizzare gli open data del Ministero delle Infrastrutture
     e dei Trasporti.
-openapi: 3.0.0
+servers:
+- url: http://dati.mit.gov.it/catalog/api/3/action
+tags:
+- description: Operations available to all citizens
+  name: public
 paths:
   /organization_list:
     get:
@@ -482,8 +344,6 @@ paths:
           default: false
           type: boolean
       responses:
-        200:
-          $ref: '#/components/responses/CkanResponse'
         '400':
           $ref: '#/components/responses/400BadRequest'
         '429':
@@ -492,11 +352,151 @@ paths:
           $ref: '#/components/responses/503ServiceUnavailable'
         default:
           $ref: '#/components/responses/default'
+        200:
+          $ref: '#/components/responses/CkanResponse'
       summary: List all groups within given parameters
       tags:
       - consumers
-servers:
-- url: http://dati.mit.gov.it/catalog/api/3/action
-tags:
-- description: Operations available to all citizens
-  name: public
+components:
+  responses:
+    400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: |
+        Invalid input
+    403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: |
+        Missing authorization key
+    409AlreadyExists:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: |
+        Item already exists
+    429TooManyRequests:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: Too Many Requests
+      headers:
+        Retry-After:
+          description: |-
+            Retry contacting the endpoint *at least* after seconds.
+            See https://tools.ietf.org/html/rfc7231#section-7.1.3
+          schema:
+            format: int32
+            type: integer
+        X-RateLimit-Limit:
+          description: The number of allowed requests in the current period
+          schema:
+            format: int32
+            type: integer
+        X-RateLimit-Remaining:
+          description: The number of remaining requests in the current period
+          schema:
+            format: int32
+            type: integer
+        X-RateLimit-Reset:
+          description: The number of seconds left in the current period
+          schema:
+            format: int32
+            type: integer
+    503ServiceUnavailable:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: Service Unavailable
+      headers:
+        Retry-After:
+          description: |-
+            Retry contacting the endpoint *at least* after seconds.
+            See https://tools.ietf.org/html/rfc7231#section-7.1.3
+          schema:
+            format: int32
+            type: integer
+    CkanResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanReply'
+      description: |
+        Standard Ckan Reply. See http://docs.ckan.org/en/latest/api/index.html.
+      headers:
+        X-RateLimit-Limit:
+          description: The number of allowed requests in the current period
+          schema:
+            format: int32
+            type: integer
+        X-RateLimit-Remaining:
+          description: The number of remaining requests in the current period
+          schema:
+            format: int32
+            type: integer
+        X-RateLimit-Reset:
+          description: The number of seconds left in the current period
+          schema:
+            format: int32
+            type: integer
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+      description: Unexpected error
+  schemas:
+    CkanError:
+      properties:
+        error:
+          type: object
+        help:
+          format: url
+          type: string
+        result:
+          anyOf:
+          - type: object
+          - type: array
+        status:
+          enum:
+          - false
+          type: boolean
+      required:
+      - result
+      - success
+      - help
+      - error
+      type: object
+    CkanReply:
+      properties:
+        error:
+          type: object
+        help:
+          format: url
+          type: string
+        result:
+          anyOf:
+          - type: object
+          - type: array
+        status:
+          enum:
+          - true
+          - false
+          type: boolean
+      required:
+      - result
+      - success
+      - help
+      type: object
+  securitySchemes:
+    ckanapikey:
+      in: header
+      name: Authorization
+      type: apiKey

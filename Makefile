@@ -4,12 +4,13 @@ YAMLGEN=$(patsubst %.yaml.src,%.yaml,$(YAMLSRC))
 
 yaml: $(YAMLGEN)
 
+.ONESHELL:
 %.yaml: %.yaml.src
-	. .tox/python/bin/activate
+	. .tox/py36/bin/activate
 	yamllint $<
-	python ./yaml-resolver.py $< $@
+	python -m openapi_resolver $< $@
 
 
 yamllint: $(YAML)
-	. .tox/python/bin/activate
+	. .tox/py36/bin/activate
 	yamllint $?
