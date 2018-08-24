@@ -2,3 +2,4 @@ openapi-spec-validator
 ansicolors
 jsonschema
 json_schema_generator
+openapi_resolver>=0.0.2

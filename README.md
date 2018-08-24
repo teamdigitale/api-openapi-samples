@@ -34,8 +34,21 @@ While that's valid yaml, explicit is better than implicit. Those files should be
 See https://github.com/perenecabuto/json_schema_generator
 
 
+## Resolve and bundle openapi specs
+
+With nodejs
+
+	npm install -g swagger-cli
+	swagger-cli bundle -t yaml openapi.yaml
+
+With python
+
+	pip install openapi_resolver
+        python -m openapi_resolver openapi.yaml
+
 ## API Tools
 
   - SwaggerHub OpenAPI v3, v2 editor https://editor.swagger.io
   - OpenAPI v3, v2 editor by Red Hat https://github.com/apicurio/apicurio-studio
+  - OpenAPI converter online https://mermade.org.uk/api/v1/convert
 
