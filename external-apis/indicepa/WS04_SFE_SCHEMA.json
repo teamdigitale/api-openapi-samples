@@ -1,0 +1,78 @@
+{ 
+ "$schema": "http://json-schema.org/draft-03/schema#",
+ "name": "WS04Response",
+ "type": "object",
+ "properties": {
+  "result": {
+   "type": "object",
+   "properties": {
+    "cod_err": {
+     "type": "number",
+     "description": "Codice di ritorno",
+     "required": true
+    },
+    "desc_err": {
+     "type": "string",
+     "description": "Descrizione errore",
+     "required": false
+    },
+    "num_items": {
+     "type": "number",
+     "description": "Numero di occorrenze trovate",
+     "minimum": 0,
+     "required": true
+    }
+   }
+  },
+  "data":{
+   "type": "array",
+   "items":{
+    "type": "object",
+    "properties":{
+     "cod_amm":{
+      "type": "string",
+      "description": "Codice Ente accreditato in IPA",
+      "required": true
+     },
+	 "stato_canale":{
+      "type": "string",
+      "description": "Stato del canale di fatturazione",
+      "required": false
+     },
+	 "cod_uni_ou":{
+      "type": "string",
+      "description": "Codice Univoco dell'Ufficio di fatturazione elettronica",
+      "required": true
+     },
+	 "cod_aoo":{
+      "type": "string",
+      "description": "Codice AOO",
+      "required": false
+     },
+	 "des_ou":{
+      "type": "string",
+      "description": "Nome dell'UO",
+      "required": false
+     },
+	 "cf":{
+      "type": "string",
+      "description": "Codice fiscale del servizio di fatturazione elettronica",
+      "required": true
+     },
+	 "dt_verifca_cf":{
+      "type": "string",
+      "description": "Data di validazione del cf",
+      "required": false
+     },
+	 "dat_val_canale_trasm_sfe":{
+      "type": "string",
+      "description": "Data di inizio validità del servizio di fatturazione",
+      "required": false
+     }
+     
+    }
+   },
+   "required": false
+  }
+ }
+}

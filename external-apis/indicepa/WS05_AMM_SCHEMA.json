@@ -1,0 +1,164 @@
+{ 
+ "$schema": "http://json-schema.org/draft-03/schema#",
+ "name": "WS05Response",
+ "type": "object",
+ "properties": {
+  "result": {
+   "type": "object",
+   "properties": {
+    "cod_err": {
+     "type": "number",
+     "description": "Codice di ritorno",
+     "required": true
+    },
+    "desc_err": {
+     "type": "string",
+     "description": "Descrizione errore",
+     "required": false
+    },
+    "num_items": {
+     "type": "number",
+     "description": "Numero di occorrenze trovate",
+     "minimum": 0,
+     "required": true
+    }
+   }
+  },
+  "data":{
+   
+    "type": "object",
+    "properties":{
+     "cod_amm":{
+      "type": "string",
+      "description": "Codice Ente accreditato in IPA",
+      "required": true
+     },
+	  "acronimo":{
+      "type": "string",
+      "description": "Acronimo dell'Ente",
+      "required": false
+     },
+     "des_amm":{
+      "type": "string",
+      "description": "Denominazione Ente accreditato in IPA",
+      "required": false
+     },
+	 "regione":{
+      "type": "string",
+      "description": "Regione registrata in IPA per la sede legale dell'Ente",
+      "required": false
+     },
+	 "provincia":{
+      "type": "string",
+      "description": "Provincia registrata in IPA per la sede legale dell'Ente",
+      "required": false
+     },
+	 "comune":{
+      "type": "string",
+      "description": "Comune registrato in IPA per la sede legale dell'Ente",
+      "required": false
+     },
+	  "cap":{
+      "type": "string",
+      "description": "Cap registrato in IPA per la sede legale dell'Ente",
+      "required": false
+     },
+	 "indirizzo":{
+      "type": "string",
+      "description": "Indirizzo postale registrato in IPA per la sede legale dell'Ente",
+      "required": false
+     },
+	 "titolo_resp":{
+      "type": "string",
+      "description": "Titolo del responsabile dell'Ente",
+      "required": false
+     },
+	 "nome_resp":{
+      "type": "string",
+      "description": "Nome del responsabile dell'Ente",
+      "required": false
+     },
+	 "cogn_resp":{
+      "type": "string",
+      "description": "Cognome del responsabile dell'Ente",
+      "required": false
+     },
+	  "sito_istituzionale":{
+      "type": "string",
+      "description": "Sito istituzionale dell'Ente",
+      "required": false
+     },
+	  "liv_accessibili":{
+      "type": "number",
+      "description": "livello di accessibilità del sito dell'Ente",
+      "required": false
+     },
+	  "mail1":{
+      "type": "string",
+      "description": "Indirizzo email primario associato all’Ente di tipo PEC|CECPAC",
+      "required": false
+     },
+	 "mail2":{
+      "type": "string",
+      "description": "Indirizzo email associato all’Ente",
+      "required": false
+     },
+	 "mail3":{
+      "type": "string",
+      "description": "Indirizzo email associato all’Ente",
+      "required": false
+     },
+	  "mail4":{
+      "type": "string",
+      "description": "Indirizzo email primario associato all’Ente",
+      "required": false
+     },
+	 "mail5":{
+      "type": "string",
+      "description": "Indirizzo email associato all’Ente",
+      "required": false
+     },
+	  "tipologia":{
+      "type": "string",
+      "description": "Tipologia dell’Ente in IPA",
+      "required": false
+     },
+	  "categoria":{
+      "type": "string",
+      "description": "Categoria dell'Ente in IPA",
+      "required": false
+     },
+	  "data_accreditamento":{
+      "type": "string",
+      "description": "Data di accreditamento dell'Ente",
+      "required": false
+     },
+	  "cf":{
+      "type": "string",
+      "description": "Codice fiscale dell'Ente",
+      "required": false
+     },
+     "Referenti":{
+      "type": "array",
+      "items":{
+       "type": "object",
+       "properties":{
+        "nome_ref":{
+         "type": "string",
+         "description": "Nome del referente dell'Ente",
+         "required": false
+        },
+        "cogn_ref": {
+         "type": "string",
+         "description": "Cognome del referente dell'Ente",
+         "required": false
+        }
+       } 
+      },
+      "minItems": 1 
+     }
+    }
+   
+  }
+ }
+}

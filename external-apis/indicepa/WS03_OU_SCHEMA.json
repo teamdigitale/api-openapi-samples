@@ -1,0 +1,127 @@
+{  
+   "$schema":"http://json-schema.org/draft-03/schema#",
+   "name":"WS03Response",
+   "type":"object",
+   "properties":{  
+      "result":{  
+         "type":"object",
+         "properties":{  
+            "cod_err":{  
+               "type":"number",
+               "description":"Codice di ritorno",
+               "required":true
+            },
+            "desc_err":{  
+               "type":"string",
+               "description":"Descrizione errore",
+               "required":false
+            },
+            "num_items":{  
+               "type":"number",
+               "description":"Numero di occorrenze trovate",
+               "minimum":0,
+               "required":"true"
+            }
+         }
+      },
+      "data":{  
+         "type":"array",
+         "items":{  
+            "type":"object",
+            "properties":{  
+               "cod_amm":{  
+                  "type":"string",
+                  "description":"Codice Ente accreditato in IPA",
+                  "required":"true"
+               },
+               "cod_uni_ou":{  
+                  "type":"string",
+                  "description":"Codice Univoco dell'UO",
+                  "required":"true"
+               },
+               "cod_aoo":{  
+                  "type":"string",
+                  "description":"Codice AOO",
+                  "required":"false"
+               },
+               "des_ou":{  
+                  "type":"string",
+                  "description":"Nome dell'UO",
+                  "required":"false"
+               },
+               "regione":{  
+                  "type":"string",
+                  "description":"Regione registrata in IPA per la sede dell'UO",
+                  "required":"false"
+               },
+               "provincia":{  
+                  "type":"string",
+                  "description":"Provincia registrata in IPA per la sede dell'UO",
+                  "required":"false"
+               },
+               "comune":{  
+                  "type":"string",
+                  "description":"ComuneregistratoinIPAperlasededell'UO",
+                  "required":"false"
+               },
+               "cap":{  
+                  "type":"string",
+                  "description":"CapregistratoinIPAperlasededell'UO",
+                  "required":"false"
+               },
+               "indirizzo":{  
+                  "type":"string",
+                  "description":"IndirizzopostaleregistratoinIPAperlasededell'UO",
+                  "required":"false"
+               },
+               "tel":{  
+                  "type":"string",
+                  "description":"NumeroditelefonoregistratoinIPAperdell’UO",
+                  "required":"false"
+               },
+               "fax":{  
+                  "type":"string",
+                  "description":"NumerodifaxregistratoinIPAperdell’UO",
+                  "required":"false"
+               },
+               "mail1":{  
+                  "type":"string",
+                  "description":"Indirizzoemailprimarioassociatoall’UO",
+                  "required":"false"
+               },
+               "mail2":{  
+                  "type":"string",
+                  "description":"Indirizzoemailassociatoall’UO",
+                  "required":"false"
+               },
+               "mail3":{  
+                  "type":"string",
+                  "description":"Indirizzoemailassociatoall’UO",
+                  "required":"false"
+               },
+               "nome_resp":{  
+                  "type":"string",
+                  "description":"Nomedelresponsabiledell'UO",
+                  "required":"false"
+               },
+               "cogn_resp":{  
+                  "type":"string",
+                  "description":"Cognomedelresponsabiledell'UO",
+                  "required":"false"
+               },
+               "mail_resp":{  
+                  "type":"string",
+                  "description":"Indirizzoemaildelresponsabiledell'UO",
+                  "required":"false"
+               },
+               "tel_resp":{  
+                  "type":"string",
+                  "description":"Numeroditelefonodelresponsabiledell'UO",
+                  "required":"false"
+               }
+            }
+         },
+         "required":"false"
+      }
+   }
+}
