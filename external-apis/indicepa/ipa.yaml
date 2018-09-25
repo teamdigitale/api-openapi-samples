@@ -1,11 +1,17 @@
 openapi: 3.0.0
 info:
+  title: Indice PA - Specifiche non ufficiali
+  version: "v2018-09-01"
   x-summary: Specifiche iPA non ufficiali.
   description: |-
+    #### Descrizione
     L’iPA mette a disposizione del pubblico una serie di informazioni relative agli Enti in esso
     accreditati.
-  title: Indice PA
-  version: 1.0.0
+
+    #### Note
+    Questa e' una descrizione della specifica esistente, ripresa dai pdf
+    presenti in https://www.indicepa.gov.it/documentale/n-webservices.php.
+
 servers:
 - url: https://www.indicepa.gov.it:443/public-ws
 paths:
