@@ -1,0 +1,315 @@
+openapi: 3.0.0
+info:
+  title: Indice PA - Specifiche non ufficiali
+  version: "v2018-09-01"
+  x-summary: Specifiche iPA non ufficiali.
+  description: |-
+    #### Descrizione
+    L’iPA mette a disposizione del pubblico una serie di informazioni relative agli Enti in esso
+    accreditati.
+
+    #### Note
+    Questa e' una descrizione della specifica esistente, ripresa dai pdf
+    presenti in https://www.indicepa.gov.it/documentale/n-webservices.php.
+
+servers:
+- url: https://www.indicepa.gov.it:443/public-ws
+paths:
+  /WS01_SFE_CF.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico i dati utili alla Fatturazione Elettronica. Ogni ufficio
+        (detto anche Unità Organizzativa) può essere individuato univocamente attraverso il codice detto:
+        codice univoco dell’ufficio. Se un ufficio è destinatario di fatturazione elettronica, possiede anche
+        altre informazioni (visibili on-line sul sito dell’iPA nella entità “Servizio di Fatturazione
+        Elettronica”) oltre quelle inerenti l’ufficio stesso.
+        In particolare ad ogni Servizio di Fatturazione Elettronica degli Enti è associato anche un Codice
+        Fiscale, il quale non identifica univocamente né l’ufficio destinatario di Fatturazione Elettronica
+        né l’Ente di appartenenza di detto ufficio. In altre parole lo stesso codice fiscale può essere in uso
+        a più Servizi di Fatturazione Elettronica e di Enti diversi.
+        Questo servizio web consente di estrarre dall’iPA informazioni su tutti gli uffici destinatari di
+        Fatturazione Elettronica associati al Codice Fiscale fornito.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WS01Request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS01Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS01_SFE_CF.pdf
+  /WS02_AOO.php:
+    post:
+      description: |
+        L’iPA consente la ricerca di informazioni utili relative alle Aree Organizzative Omogenee,
+        ove definite, per ciascuna amministrazione in esso accreditata. Ogni Area Organizzativa
+        Omogenea (detta anche Ufficio di Protocollo) è univocamente individuata attraverso due
+        codici: il codice iPA dell’amministrazione in cui è definita ed il codice AOO, ovvero il
+        codice univoco assegnato all’AOO dall’Ente stesso all’atto della sua creazione. Gli uffici
+        dell’Ente potranno poi essere associati esclusivamente ad una delle AOO definite per l’Ente
+        stesso.
+        Questo servizio web consente di estrarre dall’ iPA informazioni su tutte le aree organizzative
+        omogenee associate al codice iPA fornito. Il servizio consente, inoltre, di impostare come
+        parametro di ricerca anche il codice AOO, oltre il codice iPA. Si tenga presente che nel caso
+        in cui l’utente fornisca congiuntamente i due codici (codice iPA e codice AOO) dalla ricerca
+        potrà essere estratta solo ed esclusivamente una Area Organizzativa Omogenea.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WS02Request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS02Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS02_AOO.pdf
+  /WS03_OU.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico una serie di informazioni relative alle Unità
+        Organizzative di cui le amministrazione in esso accreditate risultano costituite. Ogni Unità
+        Organizzativa può essere individuata univocamente attraverso un codice: il codice univoco
+        dell’ufficio. Inoltre, se un ufficio è destinatario di fatturazione elettronica, ad esso risultano
+        associate anche altre informazioni (visibili on-line sul sito dell’iPA nella entità “Servizio di
+        Fatturazione Elettronica”), oltre quelle inerenti l’ufficio stesso.
+        Questo servizio web consente di estrarre dall’ iPA la lista delle Unità Organizzative facenti
+        capo ad uno specifico codice iPA.
+      requestBody:
+        $ref: '#/components/requestBodies/CodiceAmministrazione'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS03Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS03_OU.pdf
+  /WS04_SFE.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico i dati utili alla Fatturazione Elettronica. Ciascun
+        servizio di fatturazione elettronica risulta associato ad un ufficio (detto anche Unità
+        Organizzativa) che può essere individuato univocamente attraverso il codice detto: codice
+        univoco dell’ufficio. L’ufficio destinatario di fatturazione elettronica, possiede anche altre
+        informazioni (visibili on-line sul sito dell’ iPA nella entità “Servizio di Fatturazione
+        Elettronica”) oltre quelle inerenti l’ufficio stesso.
+        In particolare ad ogni Servizio di Fatturazione Elettronica degli Enti è associato anche un
+        Codice Fiscale, il quale non identifica univocamente né l’ufficio destinatario di Fatturazione
+        Elettronica né l’Ente di appartenenza di detto ufficio, motivo per il quale lo stesso codice
+        fiscale può essere in uso a più Servizi di Fatturazione Elettronica, nonché ad Enti differenti.
+        Questo servizio web consente di estrarre dall’iPA informazioni su tutti i Servizi di
+        Fatturazione Elettronica associati ad un Ente specifico
+      requestBody:
+        $ref: '#/components/requestBodies/CodiceAmministrazione'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS04Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS04_SFE.pdf
+  /WS05_AMM.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico una serie di informazioni che gli Enti in esso
+        accreditati sono tenuti a pubblicare. Per ciascun Ente possono essere definite: una struttura di
+        Unità Organizzative e un insieme di Aree Organizzative Omogenee, a ciascuna delle quali
+        possono essere associati una serie di servizi.
+        Questo servizio web consente di estrarre dall’ iPA informazioni relativa ad un Ente
+        specifico.
+      requestBody:
+        $ref: '#/components/requestBodies/CodiceAmministrazione'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS05Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS05_AMM.pdf
+  /WS06_OU_CODUNI.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico una serie di informazioni relative agli Enti in esso
+        accreditati. A ciascun Ente possono essere associati una serie di uffici (detti anche Unità
+        Organizzative). Ogni ufficio può essere individuato univocamente attraverso il codice detto:
+        codice univoco dell’ufficio. Se un ufficio è destinatario di fatturazione elettronica, possiede
+        anche altre informazioni (visibili on-line sul sito dell’iPA nella entità “Servizio di
+        Fatturazione Elettronica”) oltre quelle inerenti l’ufficio stesso. In particolare ad ogni Servizio
+        di Fatturazione Elettronica degli Enti è associato anche un Codice Fiscale, il quale non
+        identifica univocamente ne l’ufficio destinatario di Fatturazione Elettronica ne l’Ente di
+        appartenenza di detto ufficio. In altre parole lo stesso codice fiscale può essere in uso a più
+        Servizi di Fatturazione Elettronica e di Enti diversi.
+        Questo servizio web consente di estrarre dall’ iPA informazioni relative ad una specifica
+        Unità Organizzativa di un Ente accreditato in iPA.
+      requestBody:
+        $ref: '#/components/requestBodies/CodiceUnivoco'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS06Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS06_OU_CODUNI.pdf
+  /WS07_EMAIL.php:
+    post:
+      description: |
+        L’iPA mette a disposizione del pubblico una serie di informazioni che gli Enti in esso
+        accreditati sono tenuti a pubblicare. Per ciascun Ente possono essere definite due entità: Unità
+        Organizzative e Aree Organizzative Omogenee, a ciascuna delle quali possono essere associati
+        una serie di servizi.
+        Questo servizio web consente di estrarre dall’iPA informazioni relativa ad una entità, sia essa
+        un Ente, un’Unità Organizzativa, un’Area Organizzativa Omogenea, un servizio generico, un
+        Servizio di Fatturazione Elettronica, un Responsabile o un Referente, associata ad uno
+        specifico indirizzo email. Se un indirizzo mail è associato a più entità all’interno di iPA,
+        verranno visualizzate le informazioni di dettaglio relative a ciascuna delle entità individuate.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WS07Email'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS07Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS07_EMAIL.pdf
+  /WS08_AOOC.php:
+    post:
+      description: |
+        L’iPA consente la ricerca di informazioni utili relative alle Aree Organizzative Omogenee,
+        ove definite, per ciascuna amministrazione in esso accreditata. Ogni Area Organizzativa
+        Omogenea (detta anche Ufficio di Protocollo) è univocamente individuata attraverso due
+        codici: il codice iPA dell’amministrazione in cui è definita ed il codice AOO, ovvero il
+        codice univoco assegnato all’AOO dall’Ente stesso all’atto della sua creazione. Gli uffici
+        dell’Ente potranno poi essere associati esclusivamente ad una delle AOO definite per l’Ente
+        stesso.
+        Questo servizio web consente di estrarre dall’ iPA informazioni su tutte le aree organizzative
+        omogenee cessate associate al codice iPA fornito. Il servizio consente, inoltre, di impostare
+        come parametro di ricerca anche il codice AOO, oltre il codice iPA. Si tenga presente che nel
+        caso in cui l’utente fornisca congiuntamente i due codici (codice iPA e codice AOO) dalla
+        ricerca potrà essere estratta solo ed esclusivamente una Area Organizzativa Omogenea.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WS08AOO'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS08Response'
+          description: Risposta corretta.
+      x-url: https://www.indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=WS08_AOOC.pdf
+components:
+  requestBodies:
+    CodiceAmministrazione:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/WS03Request'
+      required: true
+    CodiceUnivoco:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/WS06Request'
+      required: true
+  schemas:
+    WS01Request:
+      properties:
+        AUTH_ID:
+          type: string
+        CF:
+          type: string
+      required:
+      - AUTH_ID
+      - CF
+      type: object
+    WS01Response:
+      $ref: WS01_SFE_CF_SCHEMA.json
+    WS02Request:
+      properties:
+        AUTH_ID:
+          type: string
+        COD_AMM:
+          type: string
+          example: c_e472
+        COD_AOO:
+          type: string
+      required:
+      - AUTH_ID
+      - COD_AMM
+      type: object
+    WS02Response:
+      $ref: WS02_AOO_SCHEMA.json
+    WS03Request:
+      properties:
+        AUTH_ID:
+          type: string
+        COD_AMM:
+          type: string
+          example: c_e472
+      required:
+      - AUTH_ID
+      - COD_AMM
+      type: object
+    WS03Response:
+      $ref: WS03_OU.json
+    WS04Response:
+      $ref: WS04_SFE_SCHEMA.json
+    WS05Response:
+      $ref: WS05_AMM_SCHEMA.json
+    WS06Request:
+      properties:
+        AUTH_ID:
+          type: string
+        COD_UNI_OU:
+          type: string
+          example: UF8XOO
+      required:
+      - AUTH_ID
+      - COD_UNI_OU
+      type: object
+    WS06Response:
+      $ref: WS06_OU_CODUNI_SCHEMA.json
+    WS07Email:
+      properties:
+        AUTH_ID:
+          type: string
+        EMAIL:
+          type: string
+      required:
+      - AUTH_ID
+      - EMAIL
+      type: object
+    WS07Response:
+      $ref: WS07_EMAIL_SCHEMA.json
+    WS08AOO:
+      properties:
+        AOO:
+          type: string
+        AUTH_ID:
+          type: string
+      required:
+      - AUTH_ID
+      - AOO
+      type: object
+    WS08Response:
+      $ref: WS08_AOOC_SCHEMA.json

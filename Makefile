@@ -4,10 +4,15 @@ YAMLGEN=$(patsubst %.yaml.src,%.yaml,$(YAMLSRC))
 
 yaml: $(YAMLGEN)
 
-%.yaml: %.yaml.src
+# Run tox if the virtualenv is not setup
+%/activate:
+	tox
+
+.ONESHELL:
+%.yaml: %.yaml.src .tox/python/bin/activate
 	. .tox/python/bin/activate
 	yamllint $<
-	python ./yaml-resolver.py $< $@
+	python -m openapi_resolver $< $@
 
 
 yamllint: $(YAML)

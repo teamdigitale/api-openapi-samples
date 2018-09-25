@@ -2,3 +2,5 @@ openapi-spec-validator
 ansicolors
 jsonschema
 json_schema_generator
+yamllint
+openapi_resolver

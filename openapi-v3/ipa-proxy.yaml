@@ -1,0 +1,1023 @@
+openapi: 3.0.0
+info:
+  title: Simple Inventory API
+  description: This is a simple API
+  version: '1.0.0'
+servers:
+- url: https://virtserver.swaggerhub.com/robipolli/indicepa/1.0.0
+  variables: {}
+paths:
+  /amministrazioni:
+    get:
+      tags:
+      - developers
+      summary: get_amministrazione
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: GetAmministrazione
+      parameters:
+      - name: cod_amm
+        in: query
+        description: COD_AMM
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                description: search results matching criteria
+                $ref: '#/components/schemas/WS05Response'
+        400:
+          description: bad input parameter
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /amministrazioni-aoo:
+    get:
+      tags:
+      - developers
+      summary: search_amministrazioni_aree_organizzative_omogenee
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: SearchAmministrazioniAreeOrganizzativeOmogenee
+      parameters:
+      - name: cod_amm
+        in: query
+        description: COD_AMM
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: cod_aoo
+        in: query
+        description: pass an optional search string for looking up inventory
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS02Response'
+        400:
+          description: bad input parameter
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /amministrazioni-ou:
+    get:
+      tags:
+      - developers
+      summary: search_amministrazioni_unita_organizzative
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: SearchAmministrazioniUnitaOrganizzative
+      parameters:
+      - name: cod_amm
+        in: query
+        description: COD_AMM
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS03Response'
+        400:
+          description: bad input parameter
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /fatturazione-elettronica:
+    get:
+      tags:
+      - developers
+      summary: search_fatturazione_elettronica
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: SearchFatturazioneElettronica
+      parameters:
+      - name: cod_amm
+        in: query
+        description: COD_AMM
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS04Response'
+        400:
+          description: bad input parameter
+        401:
+          description: Forbidden
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /fatturazione-elettronica-codice-fiscale:
+    get:
+      tags:
+      - developers
+      summary: search_fatturazione_elettronica_by_tax_code
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: SearchFatturazioneElettronicaByTaxCode
+      parameters:
+      - name: codice_fiscale
+        in: query
+        description: CF
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS01Response'
+        400:
+          description: bad input parameter
+        401:
+          description: Forbidden
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /fatturazione-elettronica-ufficio:
+    get:
+      tags:
+      - developers
+      summary: search_fatturazione_elettronica_by_ufficio
+      description: >
+        By passing in the appropriate options, you can search for
+
+        available inventory in the system
+      operationId: SearchFatturazioneElettronicaByUfficio
+      parameters:
+      - name: codice_uni_ou
+        in: query
+        description: COD_UNI_OU
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WS06Response'
+        400:
+          description: bad input parameter
+        401:
+          description: Forbidden
+      security:
+      - Authorization: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+components:
+  schemas:
+    WS05Response:
+      title: WS05Response
+      type: object
+      properties:
+        data:
+          example:
+            cf: cf
+            categoria: categoria
+            indirizzo: indirizzo
+            nome_resp: nome_resp
+            provincia: provincia
+            regione: regione
+            acronimo: acronimo
+            tipologia: tipologia
+            mail4: mail4
+            mail3: mail3
+            Referenti:
+            - cogn_ref: cogn_ref
+              nome_ref: nome_ref
+            - cogn_ref: cogn_ref
+              nome_ref: nome_ref
+            cap: cap
+            mail5: mail5
+            comune: comune
+            liv_accessibili: 0.80082819999999999
+            mail2: mail2
+            data_accreditamento: data_accreditamento
+            mail1: mail1
+            sito_istituzionale: sito_istituzionale
+            cod_amm: cod_amm
+            cogn_resp: cogn_resp
+            titolo_resp: titolo_resp
+            des_amm: des_amm
+          $ref: '#/components/schemas/Ws05responseData'
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+          cf: cf
+          categoria: categoria
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          acronimo: acronimo
+          tipologia: tipologia
+          mail4: mail4
+          mail3: mail3
+          Referenti:
+          - cogn_ref: cogn_ref
+            nome_ref: nome_ref
+          - cogn_ref: cogn_ref
+            nome_ref: nome_ref
+          cap: cap
+          mail5: mail5
+          comune: comune
+          liv_accessibili: 0.80082819999999999
+          mail2: mail2
+          data_accreditamento: data_accreditamento
+          mail1: mail1
+          sito_istituzionale: sito_istituzionale
+          cod_amm: cod_amm
+          cogn_resp: cogn_resp
+          titolo_resp: titolo_resp
+          des_amm: des_amm
+    Ws05responseData:
+      title: WS05Response_data
+      type: object
+      properties:
+        Referenti:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Referente'
+          description: ''
+        acronimo:
+          type: string
+          description: Acronimo dell'Ente
+        cap:
+          type: string
+          description: Cap registrato in IPA per la sede legale dell'Ente
+        categoria:
+          type: string
+          description: Categoria dell'Ente in IPA
+        cf:
+          type: string
+          description: Codice fiscale dell'Ente
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        cogn_resp:
+          type: string
+          description: Cognome del responsabile dell'Ente
+        comune:
+          type: string
+          description: Comune registrato in IPA per la sede legale dell'Ente
+        data_accreditamento:
+          type: string
+          description: Data di accreditamento dell'Ente
+        des_amm:
+          type: string
+          description: Denominazione Ente accreditato in IPA
+        indirizzo:
+          type: string
+          description: Indirizzo postale registrato in IPA per la sede legale dell'Ente
+        liv_accessibili:
+          type: number
+          description: livello di accessibilità del sito dell'Ente
+        mail1:
+          type: string
+          description: Indirizzo email primario associato all’Ente di tipo PEC|CECPAC
+        mail2:
+          type: string
+          description: Indirizzo email associato all’Ente
+        mail3:
+          type: string
+          description: Indirizzo email associato all’Ente
+        mail4:
+          type: string
+          description: Indirizzo email primario associato all’Ente
+        mail5:
+          type: string
+          description: Indirizzo email associato all’Ente
+        nome_resp:
+          type: string
+          description: Nome del responsabile dell'Ente
+        provincia:
+          type: string
+          description: Provincia registrata in IPA per la sede legale dell'Ente
+        regione:
+          type: string
+          description: Regione registrata in IPA per la sede legale dell'Ente
+        sito_istituzionale:
+          type: string
+          description: Sito istituzionale dell'Ente
+        tipologia:
+          type: string
+          description: Tipologia dell’Ente in IPA
+        titolo_resp:
+          type: string
+          description: Titolo del responsabile dell'Ente
+      example:
+        cf: cf
+        categoria: categoria
+        indirizzo: indirizzo
+        nome_resp: nome_resp
+        provincia: provincia
+        regione: regione
+        acronimo: acronimo
+        tipologia: tipologia
+        mail4: mail4
+        mail3: mail3
+        Referenti:
+        - cogn_ref: cogn_ref
+          nome_ref: nome_ref
+        - cogn_ref: cogn_ref
+          nome_ref: nome_ref
+        cap: cap
+        mail5: mail5
+        comune: comune
+        liv_accessibili: 0.80082819999999999
+        mail2: mail2
+        data_accreditamento: data_accreditamento
+        mail1: mail1
+        sito_istituzionale: sito_istituzionale
+        cod_amm: cod_amm
+        cogn_resp: cogn_resp
+        titolo_resp: titolo_resp
+        des_amm: des_amm
+    Referente:
+      type: object
+      properties:
+        cogn_ref:
+          type: string
+          description: Cognome del referente dell'Ente
+        nome_ref:
+          type: string
+          description: Nome del referente dell'Ente
+      example:
+        cogn_ref: cogn_ref
+        nome_ref: nome_ref
+    ResponseResult:
+      type: object
+      properties:
+        cod_err:
+          type: number
+          description: Codice di ritorno
+        desc_err:
+          type: string
+          description: Descrizione errore
+        num_items:
+          minimum: 0
+          type: number
+          description: Numero di occorrenze trovate
+      example:
+        num_items: 1
+        cod_err: 123
+        desc_err: desc_err
+    WS02Response:
+      title: WS02Response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ws02responseData'
+          description: ''
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+        - mail_resp: mail_resp
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          tel_resp: tel_resp
+          mail3: mail3
+          cap: cap
+          comune: comune
+          mail2: mail2
+          mail1: mail1
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          tel: tel
+          cogn_resp: cogn_resp
+          fax: fax
+          des_aoo: des_aoo
+        - mail_resp: mail_resp
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          tel_resp: tel_resp
+          mail3: mail3
+          cap: cap
+          comune: comune
+          mail2: mail2
+          mail1: mail1
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          tel: tel
+          cogn_resp: cogn_resp
+          fax: fax
+          des_aoo: des_aoo
+    Ws02responseData:
+      title: WS02Response_data
+      type: object
+      properties:
+        cap:
+          type: string
+          description: Cap registrato in IPA per la sede dell'AOO
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        cod_aoo:
+          type: string
+          description: Codice AOO
+        cogn_resp:
+          type: string
+          description: Cognome del responsabile dell'AOO
+        comune:
+          type: string
+          description: Comune registrato in IPA per la sede dell'AOO
+        des_aoo:
+          type: string
+          description: Nome dell'AOO
+        fax:
+          type: string
+          description: Numero di fax registrato in IPA per dell’AOO
+        indirizzo:
+          type: string
+          description: Indirizzo postale registrato in IPA per la sede dell'AOO
+        mail1:
+          type: string
+          description: Indirizzo email primario associato all’AOO
+        mail2:
+          type: string
+          description: Indirizzo email associato all’AOO
+        mail3:
+          type: string
+          description: Indirizzo email associato all’AOO
+        mail_resp:
+          type: string
+          description: Indirizzo email del responsabile dell'AOO
+        nome_resp:
+          type: string
+          description: Nome del responsabile dell'AOO
+        provincia:
+          type: string
+          description: Provincia registrata in IPA per la sede dell'AOO
+        regione:
+          type: string
+          description: Regione registrata in IPA per la sede dell'AOO
+        tel:
+          type: string
+          description: Numero di telefono registrato in IPA per dell’AOO
+        tel_resp:
+          type: string
+          description: Numero di telefono del responsabile dell'AOO
+      example:
+        mail_resp: mail_resp
+        indirizzo: indirizzo
+        nome_resp: nome_resp
+        provincia: provincia
+        regione: regione
+        tel_resp: tel_resp
+        mail3: mail3
+        cap: cap
+        comune: comune
+        mail2: mail2
+        mail1: mail1
+        cod_amm: cod_amm
+        cod_aoo: cod_aoo
+        tel: tel
+        cogn_resp: cogn_resp
+        fax: fax
+        des_aoo: des_aoo
+    WS03Response:
+      title: WS03Response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ws03responseData'
+          description: ''
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+        - cod_uni_ou: cod_uni_ou
+          mail_resp: mail_resp
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          tel_resp: tel_resp
+          mail3: mail3
+          cap: cap
+          comune: comune
+          mail2: mail2
+          mail1: mail1
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          des_ou: des_ou
+          tel: tel
+          cogn_resp: cogn_resp
+          fax: fax
+        - cod_uni_ou: cod_uni_ou
+          mail_resp: mail_resp
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          tel_resp: tel_resp
+          mail3: mail3
+          cap: cap
+          comune: comune
+          mail2: mail2
+          mail1: mail1
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          des_ou: des_ou
+          tel: tel
+          cogn_resp: cogn_resp
+          fax: fax
+    Ws03responseData:
+      title: WS03Response_data
+      type: object
+      properties:
+        cap:
+          type: string
+          description: CapregistratoinIPAperlasededell'UO
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        cod_aoo:
+          type: string
+          description: Codice AOO
+        cod_uni_ou:
+          type: string
+          description: Codice Univoco dell'UO
+        cogn_resp:
+          type: string
+          description: Cognomedelresponsabiledell'UO
+        comune:
+          type: string
+          description: ComuneregistratoinIPAperlasededell'UO
+        des_ou:
+          type: string
+          description: Nome dell'UO
+        fax:
+          type: string
+          description: NumerodifaxregistratoinIPAperdell’UO
+        indirizzo:
+          type: string
+          description: IndirizzopostaleregistratoinIPAperlasededell'UO
+        mail1:
+          type: string
+          description: Indirizzoemailprimarioassociatoall’UO
+        mail2:
+          type: string
+          description: Indirizzoemailassociatoall’UO
+        mail3:
+          type: string
+          description: Indirizzoemailassociatoall’UO
+        mail_resp:
+          type: string
+          description: Indirizzoemaildelresponsabiledell'UO
+        nome_resp:
+          type: string
+          description: Nomedelresponsabiledell'UO
+        provincia:
+          type: string
+          description: Provincia registrata in IPA per la sede dell'UO
+        regione:
+          type: string
+          description: Regione registrata in IPA per la sede dell'UO
+        tel:
+          type: string
+          description: NumeroditelefonoregistratoinIPAperdell’UO
+        tel_resp:
+          type: string
+          description: Numeroditelefonodelresponsabiledell'UO
+      example:
+        cod_uni_ou: cod_uni_ou
+        mail_resp: mail_resp
+        indirizzo: indirizzo
+        nome_resp: nome_resp
+        provincia: provincia
+        regione: regione
+        tel_resp: tel_resp
+        mail3: mail3
+        cap: cap
+        comune: comune
+        mail2: mail2
+        mail1: mail1
+        cod_amm: cod_amm
+        cod_aoo: cod_aoo
+        des_ou: des_ou
+        tel: tel
+        cogn_resp: cogn_resp
+        fax: fax
+    WS04Response:
+      title: WS04Response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ws04responseData'
+          description: ''
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+        - cod_uni_ou: cod_uni_ou
+          cf: cf
+          dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          des_ou: des_ou
+          dt_verifca_cf: dt_verifca_cf
+          stato_canale: stato_canale
+        - cod_uni_ou: cod_uni_ou
+          cf: cf
+          dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          des_ou: des_ou
+          dt_verifca_cf: dt_verifca_cf
+          stato_canale: stato_canale
+    Ws04responseData:
+      title: WS04Response_data
+      type: object
+      properties:
+        cf:
+          type: string
+          description: Codice fiscale del servizio di fatturazione elettronica
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        cod_aoo:
+          type: string
+          description: Codice AOO
+        cod_uni_ou:
+          type: string
+          description: Codice Univoco dell'Ufficio di fatturazione elettronica
+        dat_val_canale_trasm_sfe:
+          type: string
+          description: Data di inizio validità del servizio di fatturazione
+        des_ou:
+          type: string
+          description: Nome dell'UO
+        dt_verifca_cf:
+          type: string
+          description: Data di validazione del cf
+        stato_canale:
+          type: string
+          description: Stato del canale di fatturazione
+      example:
+        cod_uni_ou: cod_uni_ou
+        cf: cf
+        dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+        cod_amm: cod_amm
+        cod_aoo: cod_aoo
+        des_ou: des_ou
+        dt_verifca_cf: dt_verifca_cf
+        stato_canale: stato_canale
+    WS01Response:
+      title: WS01Response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ws01responseData'
+          description: ''
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+        - OU:
+          - cod_uni_ou: cod_uni_ou
+            des_ou: des_ou
+            stato_canale: stato_canale
+          - cod_uni_ou: cod_uni_ou
+            des_ou: des_ou
+            stato_canale: stato_canale
+          cod_amm: cod_amm
+          des_amm: des_amm
+        - OU:
+          - cod_uni_ou: cod_uni_ou
+            des_ou: des_ou
+            stato_canale: stato_canale
+          - cod_uni_ou: cod_uni_ou
+            des_ou: des_ou
+            stato_canale: stato_canale
+          cod_amm: cod_amm
+          des_amm: des_amm
+    Ws01responseData:
+      title: WS01Response_data
+      type: object
+      properties:
+        OU:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Ws01responseOu'
+          description: ''
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        des_amm:
+          type: string
+          description: Denominazione Ente accreditato in IPA
+      example:
+        OU:
+        - cod_uni_ou: cod_uni_ou
+          des_ou: des_ou
+          stato_canale: stato_canale
+        - cod_uni_ou: cod_uni_ou
+          des_ou: des_ou
+          stato_canale: stato_canale
+        cod_amm: cod_amm
+        des_amm: des_amm
+    Ws01responseOu:
+      title: WS01Response_OU
+      type: object
+      properties:
+        cod_uni_ou:
+          type: string
+          description: Codice Univoco Ufficio destinatario di Fatturazione Elettroniche
+        des_ou:
+          type: string
+          description: Denominazione Unita Organizzativa
+        stato_canale:
+          type: string
+          description: 'A: Canale Attivo, V: In Fase di validazione'
+      example:
+        cod_uni_ou: cod_uni_ou
+        des_ou: des_ou
+        stato_canale: stato_canale
+    WS06Response:
+      title: WS06Response
+      type: object
+      properties:
+        data:
+          example:
+            cod_uni_ou: cod_uni_ou
+            cf: cf
+            mail_resp: mail_resp
+            indirizzo: indirizzo
+            nome_resp: nome_resp
+            provincia: provincia
+            regione: regione
+            tel_resp: tel_resp
+            mail3: mail3
+            cap: cap
+            comune: comune
+            mail2: mail2
+            mail1: mail1
+            dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+            cod_amm: cod_amm
+            cod_aoo: cod_aoo
+            des_ou: des_ou
+            tel: tel
+            cogn_resp: cogn_resp
+            dt_verifica_cf: dt_verifica_cf
+            fax: fax
+            stato_canale: stato_canale
+          $ref: '#/components/schemas/Ws06responseData'
+        result:
+          example:
+            num_items: 0.146581292
+            cod_err: 6.02745628
+            desc_err: desc_err
+          $ref: '#/components/schemas/ResponseResult'
+      example:
+        result:
+          num_items: 0.146581292
+          cod_err: 6.02745628
+          desc_err: desc_err
+        data:
+          cod_uni_ou: cod_uni_ou
+          cf: cf
+          mail_resp: mail_resp
+          indirizzo: indirizzo
+          nome_resp: nome_resp
+          provincia: provincia
+          regione: regione
+          tel_resp: tel_resp
+          mail3: mail3
+          cap: cap
+          comune: comune
+          mail2: mail2
+          mail1: mail1
+          dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+          cod_amm: cod_amm
+          cod_aoo: cod_aoo
+          des_ou: des_ou
+          tel: tel
+          cogn_resp: cogn_resp
+          dt_verifica_cf: dt_verifica_cf
+          fax: fax
+          stato_canale: stato_canale
+    Ws06responseData:
+      title: WS06Response_data
+      type: object
+      properties:
+        cap:
+          type: string
+          description: Cap registrato in IPA per la sede dell'UO
+        cf:
+          type: string
+          description: Codice fiscale del servizio di faturazione
+        cod_amm:
+          type: string
+          description: Codice Ente accreditato in IPA
+        cod_aoo:
+          type: string
+          description: Codice AOO
+        cod_uni_ou:
+          type: string
+          description: Codice Univoco dell'UO
+        cogn_resp:
+          type: string
+          description: Cognome del responsabile dell'UO
+        comune:
+          type: string
+          description: Comune registrato in IPA per la sede dell'UO
+        dat_val_canale_trasm_sfe:
+          type: string
+          description: Data di inizio validità del servizio di fatturazione
+        des_ou:
+          type: string
+          description: Nome dell'UO
+        dt_verifica_cf:
+          type: string
+          description: Data di validazione del cf del servizio di fatturazione
+        fax:
+          type: string
+          description: Numero di fax dell'UO
+        indirizzo:
+          type: string
+          description: Indirizzo postale registrato in IPA per la sede dell'UO
+        mail1:
+          type: string
+          description: Indirizzo email primario associato all’UO
+        mail2:
+          type: string
+          description: Indirizzo email associato all’UO
+        mail3:
+          type: string
+          description: Indirizzo email associato all’UO
+        mail_resp:
+          type: string
+          description: Cognome del responsabile dell'UO
+        nome_resp:
+          type: string
+          description: Nome del responsabile dell'UO
+        provincia:
+          type: string
+          description: Provincia registrata in IPA per la sede dell'UO
+        regione:
+          type: string
+          description: Regione registrata in IPA per la sede dell'UO
+        stato_canale:
+          type: string
+          description: Stato del canale di fatturazione; A:Attivo|V=In fase di validazione
+        tel:
+          type: string
+          description: Numero di telefono dell'UO
+        tel_resp:
+          type: string
+          description: Cognome del responsabile dell'UO
+      example:
+        cod_uni_ou: cod_uni_ou
+        cf: cf
+        mail_resp: mail_resp
+        indirizzo: indirizzo
+        nome_resp: nome_resp
+        provincia: provincia
+        regione: regione
+        tel_resp: tel_resp
+        mail3: mail3
+        cap: cap
+        comune: comune
+        mail2: mail2
+        mail1: mail1
+        dat_val_canale_trasm_sfe: dat_val_canale_trasm_sfe
+        cod_amm: cod_amm
+        cod_aoo: cod_aoo
+        des_ou: des_ou
+        tel: tel
+        cogn_resp: cogn_resp
+        dt_verifica_cf: dt_verifica_cf
+        fax: fax
+        stato_canale: stato_canale
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      description: ''
+      name: Authorization
+      in: header
+security:
+- Authorization: []

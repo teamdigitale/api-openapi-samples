@@ -1,0 +1,27 @@
+{
+ "$schema": "http://json-schema.org/draft-03/schema#",
+ "name": "WS01Response",
+ "properties": {
+  "result": {
+   "type": "object",
+   "properties": {
+    "cod_err": {
+     "type": "number",
+     "description": "Codice di ritorno. I valori ammessi sono cod_err desc_err\n 0 Nessun errore\n 1 Parametro CF mancante\n 2 Parametro CF non valorizzato\n 3 Parametro CF valorizzato erroneamente\n 10 Parametro EMAIL mancante\n 11 Parametro EMAIL non valorizzato\n 12 Parametro EMAIL valorizzato erroneamente\n 20 Parametro COD_AMM mancante\n 21 Parametro COD_AMM non valorizzato\n 22 Parametro COD_AMM valorizzato erroneamente\n 23 Valore COD_AMM non presente in archivio\n 30 Parametro COD_UNI_OU mancante\n 31 Parametro COD_UNI_OU non valorizzato\n 32 Parametro COD_UNI_OU valorizzato erroneamente\n 40 Parametro COD_AOO mancante\n 41 Parametro COD_AOO non valorizzato\n 42 Parametro COD_AOO valorizzato erroneamente\n 900 Parametro AUTH_ID mancante\n 901 Parametro AUTH_ID non valorizzato\n 902 Paramentro AUTH_ID errato",
+     "required": true
+    },
+    "desc_err": {
+     "type": "string",
+     "description": "Descrizione errore",
+     "required": false
+    },
+    "num_items": {
+     "type": "number",
+     "description": "Numero di occorrenze trovate",
+     "minimum": 0,
+     "required": true
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,71 @@
+{ 
+ "$schema": "http://json-schema.org/draft-03/schema#",
+ "name": "WS01Response",
+ "type": "object",
+ "properties": {
+  "result": {
+   "type": "object",
+   "properties": {
+    "cod_err": {
+     "type": "number",
+     "description": "Codice di ritorno",
+     "required": true
+    },
+    "desc_err": {
+     "type": "string",
+     "description": "Descrizione errore",
+     "required": false
+    },
+    "num_items": {
+     "type": "number",
+     "description": "Numero di occorrenze trovate",
+     "minimum": 0,
+     "required": true
+    }
+   }
+  },
+  "data":{
+   "type": "array",
+   "items":{
+    "type": "object",
+    "properties":{
+     "cod_amm":{
+      "type": "string",
+      "description": "Codice Ente accreditato in IPA",
+      "required": true
+     },
+     "des_amm":{
+      "type": "string",
+      "description": "Denominazione Ente accreditato in IPA",
+      "required": true
+     },
+     "OU":{
+      "type": "array",
+      "items":{
+       "type": "object",
+       "properties":{
+        "des_ou":{
+         "type": "string",
+         "description": "Denominazione Unita Organizzativa",
+         "required": true
+        },
+        "stato_canale": {
+         "type": "string",
+         "description": "A: Canale Attivo, V: In Fase di validazione",
+         "required": true
+        },
+        "cod_uni_ou": {
+         "type": "string",
+         "description": "Codice Univoco Ufficio destinatario di Fatturazione Elettroniche",
+         "required": false
+        }
+       } 
+      },
+      "minItems": 1 
+     }
+    }
+   },
+   "required": false
+  }
+ }
+}

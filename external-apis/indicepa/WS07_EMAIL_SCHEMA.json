@@ -1,0 +1,62 @@
+{ 
+ "$schema": "http://json-schema.org/draft-03/schema#",
+ "name": "WS07Response",
+ "type": "object",
+ "properties": {
+  "result": {
+   "type": "object",
+   "properties": {
+    "cod_err": {
+     "type": "number",
+     "description": "Codice di ritorno",
+     "required": true
+    },
+    "desc_err": {
+     "type": "string",
+     "description": "Descrizione errore",
+     "required": false
+    },
+    "num_items": {
+     "type": "number",
+     "description": "Numero di occorrenze trovate",
+     "minimum": 0,
+     "required": true
+    }
+   }
+  },
+  "data":{
+   "type": "array",
+   "items":{
+    "type": "object",
+    "properties":{
+     "tipo_email":{
+      "type": "string",
+      "description": "Tipo email:PEC|CECPAC|ALTRO",
+      "required": false
+     },
+	 "tipo_entita":{
+      "type": "string",
+      "description": "Tipo entità: AMM|AOO|UO|SERVAMM|SERVAOO|SERVOU|RESPAOO|RESPUO",
+      "required": true
+     },
+	  "cod_amm":{
+      "type": "string",
+      "description": "Codice Ente accreditato in IPA",
+      "required": true
+     },
+	  "des_amm":{
+      "type": "string",
+      "description": "Denominazione Ente accreditato in IPA",
+      "required": false
+     },
+	  "cod_entita":{
+      "type": "string",
+      "description": "Codice dell'entità",
+      "required": true
+     }
+   },
+   "required": false
+   }
+  }
+ }
+}
