@@ -91,6 +91,13 @@ components:
       required: true
       schema:
         type: string
+    progDisponibilita:
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio delle disponibilità liquide
+      in: path
+      name: progDisponibilita
+      required: true
+      schema:
+        type: string
   schemas:
     FlussiPaginatiProduzione:
       properties:
@@ -1452,5 +1459,266 @@ paths:
       summary: Download ack giornale di cassa
       tags:
       - Giornale di Cassa
+  /{idA2A}/PA/{codEnte}/disponibilita/:
+    get:
+      description: |
+        ENTE: Lista disponibilità liquide relative ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataUploadDa'
+      - $ref: '#/components/parameters/dataUploadA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista disponibilità liquide
+      tags:
+      - Disponibilità liquide
+    post:
+      description: |
+        TESORIERE: Upload Disponibilità liquide relative ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      requestBody:
+        content:
+          application/zip:
+            schema:
+              format: binary
+              type: string
+        description: Disponibilità liquide in formato ZIP.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Disponibilità liquide inviate con successo
+          headers:
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '413':
+          description: body della richiesta troppo grande
+        '415':
+          description: 'assenza dell''header della richiesta `Content-Type: application/zip`
+            o header valorizzato diversamente oppure body della richiesta non in formato
+            zip'
+        '422':
+          description: body della richiesta non aderente al suo schema XSD o comunque
+            di complessità troppo elevata
+        '429':
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '460':
+          description: identificativo A2A del tramite della PA oppure codice UNI_UO
+            della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
+        '461':
+          description: identificativo A2A del tramite della BT oppure codice ABI della
+            BT, entrambi specificati nel messaggio inviato, non censiti in anagrafica
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Invio disponibilità liquide
+      tags:
+      - Disponibilità liquide
+  /{idA2A}/PA/{codEnte}/disponibilita/ack/:
+    get:
+      description: |
+        TESORIERE: Lista Ack Disponibilità liquide relative ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/dataProduzioneDa'
+      - $ref: '#/components/parameters/dataProduzioneA'
+      - $ref: '#/components/parameters/download'
+      - $ref: '#/components/parameters/pagina'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/json`'
+        '429':
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Lista ack disponibilità liquide
+      tags:
+      - Disponibilità liquide
+  /{idA2A}/PA/{codEnte}/disponibilita/{progDisponibilita}:
+    get:
+      description: |
+        ENTE: Download disponibilità liquide relative ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progDisponibilita'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Disponibilità liquide in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download disponibilità liquide
+      tags:
+      - Disponibilità liquide
+  /{idA2A}/PA/{codEnte}/disonibilita/{progDisponibilita}/ack:
+    get:
+      description: |
+        TESORIERE: Download Ack Disponibilità liquide relativo ad uno specifico Ente
+      parameters:
+      - $ref: '#/components/parameters/idA2A'
+      - $ref: '#/components/parameters/codEnte'
+      - $ref: '#/components/parameters/progDisponibilita'
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Ack disponibilità liquide in formato ZIP
+        '400':
+          description: Bad Request
+        '401':
+          description: Identificativo A2A di chi origina la richiesta non ancora abilitato
+        '404':
+          description: Not Found
+        '406':
+          description: 'Assenza dell''header di richiesta `Accept: application/zip`'
+        '429':
+          description: richieste più frequenti di quanto consentito dalle regole di
+            throttling
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+            X-RateLimit-Limit:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+            X-RateLimit-Remaining:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+            X-RateLimit-Reset:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+        '503':
+          description: Servizio non disponibile
+          headers:
+            Retry-After:
+              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+        default:
+          description: Errore non atteso
+      summary: Download ack disponibilità liquide
+      tags:
+      - Disponibilità liquide
 servers:
 - url: https://a2a.siopeplus.it/v1
