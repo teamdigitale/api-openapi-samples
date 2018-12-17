@@ -92,7 +92,8 @@ components:
       schema:
         type: string
     progDisponibilita:
-      description: Progressivo assegnato da SIOPE+ all'atto dell'invio delle disponibilità liquide
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio delle disponibilità
+        liquide
       in: path
       name: progDisponibilita
       required: true
@@ -185,12 +186,12 @@ components:
           example: '1234567890'
           type: string
       type: object
+openapi: 3.0.0
 info:
   contact:
     email: siopeplus@bancaditalia.it
     name: Banca d'Italia - SIOPEPLUS
     url: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
-  x-summary: SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni pubbliche e tesorieri.
   description: |
     #### Documentazione
     SIOPE+ è l'infrastruttura che intermedia il colloquio tra le pubbliche amministrazioni e le banche tesoriere
@@ -221,9 +222,21 @@ info:
   termsOfService: https://www.bancaditalia.it/compiti/tesoreria/plus-siope/index.html
   title: SIOPE+ API
   version: 1.0.1
-openapi: 3.0.0
+  x-summary: SIOPE+ - trasmissione degli ordini d'incasso e pagamento tra amministrazioni
+    pubbliche e tesorieri.
+servers:
+- url: https://a2a.siopeplus.it/v1
+tags:
+- description: Giornale di Cassa
+  name: giornaleDiCassa
+- description: Flusso ordinativi
+  name: flussoOrdinativi
+- description: Esito Flusso ordinativi
+  name: esitoFlussoOrdinativi
+- description: Disponibilità liquide
+  name: disponibilitaLiquide
 paths:
-  /{idA2A}/BT/{codBanca}/esitoapplicativo/ack/:
+  /{idA2A}/BT/{codBanca}/esitoapplicativo/ack:
     get:
       description: |
         TESORIERE: Lista Ack Messaggio Esito Applicativo relativi a tutti gli Enti
@@ -254,23 +267,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack messaggio esito applicativo
       tags:
-      - Esito Applicativo
+      - esitoApplicativo
   /{idA2A}/BT/{codBanca}/flusso/:
     get:
       description: |
@@ -302,23 +334,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista Flussi Ordinativi relativi a tutti gli Enti
       tags:
-      - Flusso Ordinativi
+      - flussoOrdinativi
   /{idA2A}/BT/{codBanca}/flusso/esitoflusso/ack/:
     get:
       description: |
@@ -350,24 +401,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack esiti flusso ordinativi
       tags:
-      - Esito Flusso Ordinativi
-  /{idA2A}/BT/{codBanca}/giornale/ack/:
+      - esitoFlussoOrdinativi
+  /{idA2A}/BT/{codBanca}/giornale/ack:
     get:
       description: |
         TESORIERE: Lista Ack Giornale di cassa relativi a tutti gli Enti
@@ -398,24 +468,44 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack giornale di cassa
       tags:
-      - Giornale di Cassa
-  /{idA2A}/PA/{codEnte}/esitoapplicativo/:
+      - giornaleDiCassa
+
+  /{idA2A}/PA/{codEnte}/esitoapplicativo:
     get:
       description: |
         ENTE: Lista messaggi Esito Applicativo relativi ad uno specifico Ente
@@ -446,23 +536,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista messaggi esiti applicativi
       tags:
-      - Esito Applicativo
+      - esitoApplicativo
     post:
       description: |
         TESORIERE: Upload Esito Applicativo relativo ad uno specifico Ente
@@ -486,11 +595,20 @@ paths:
           description: Esito applicativo inviato con successo
           headers:
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '400':
           description: Bad Request
         '401':
@@ -513,13 +631,27 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '460':
           description: identificativo A2A del tramite della PA oppure codice UNI_UO
             della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
@@ -530,12 +662,17 @@ paths:
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Invio esito applicativo
       tags:
-      - Esito Applicativo
+      - esitoApplicativo
   /{idA2A}/PA/{codEnte}/esitoapplicativo/ack/:
     get:
       description: |
@@ -567,23 +704,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack messaggio esito applicativo
       tags:
-      - Esito Applicativo
+      - esitoApplicativo
   /{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}:
     get:
       description: |
@@ -613,23 +769,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download messaggio di esito applicativo
       tags:
-      - Esito Applicativo
+      - esitoApplicativo
   /{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}/ack:
     get:
       description: |
@@ -659,24 +834,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack messaggio esito applicativo
       tags:
-      - Esito Applicativo
-  /{idA2A}/PA/{codEnte}/flusso/:
+      - esitoApplicativo
+  /{idA2A}/PA/{codEnte}/flusso:
     get:
       description: |
         TESORIERE: Lista Flussi Ordinativi relativo ad uno specifico Ente
@@ -707,23 +901,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista Flussi Ordinativi relativi ad uno specifico Ente
       tags:
-      - Flusso Ordinativi
+      - flussoOrdinativi
     post:
       description: |
         ENTE: Upload di un Flusso Ordinativi relativo ad uno specifico Ente
@@ -747,11 +960,20 @@ paths:
           description: Flusso ordinativi inviato con successo
           headers:
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '400':
           description: Bad Request
         '401':
@@ -774,13 +996,27 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '460':
           description: identificativo A2A del tramite della PA oppure codice UNI_UO
             della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
@@ -791,12 +1027,17 @@ paths:
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Invio flusso ordinativi
       tags:
-      - Flusso Ordinativi
+      - flussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/ack/:
     get:
       description: |
@@ -828,24 +1069,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack flussi ordinativi
       tags:
-      - Flusso Ordinativi
-  /{idA2A}/PA/{codEnte}/flusso/esitoflusso/:
+      - flussoOrdinativi
+  /{idA2A}/PA/{codEnte}/flusso/esitoflusso:
     get:
       description: |
         ENTE: Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
@@ -876,24 +1136,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista esiti flussi ordinativi
       tags:
-      - Esito Flusso Ordinativi
-  /{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack/:
+      - esitoFlussoOrdinativi
+  /{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack:
     get:
       description: |
         TESORIERE: Lista Ack Esito Flusso Ordinativi relativi ad uno specifico Ente
@@ -924,23 +1203,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack esiti flusso ordinativi
       tags:
-      - Esito Flusso Ordinativi
+      - esitoFlussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/{progFlusso}:
     get:
       description: |
@@ -970,23 +1268,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack flusso ordinativi
       tags:
-      - Flusso Ordinativi
+      - flussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack:
     get:
       description: |
@@ -1014,23 +1331,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack flusso ordinativi
       tags:
-      - Flusso Ordinativi
+      - flussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso:
     get:
       description: |
@@ -1060,23 +1396,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download esito flusso ordinativi
       tags:
-      - Esito Flusso Ordinativi
+      - esitoFlussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/:
     post:
       description: |
@@ -1102,11 +1457,20 @@ paths:
           description: Flusso ordinativi inviato con successo
           headers:
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '400':
           description: Bad Request
         '401':
@@ -1129,13 +1493,27 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '460':
           description: identificativo A2A del tramite della PA oppure codice UNI_UO
             della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
@@ -1146,12 +1524,17 @@ paths:
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Invio esito flusso ordinativi
       tags:
-      - Esito Flusso Ordinativi
+      - esitoFlussoOrdinativi
   /{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/ack:
     get:
       description: |
@@ -1181,23 +1564,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack esito flusso ordinativi
       tags:
-      - Esito Flusso Ordinativi
+      - esitoFlussoOrdinativi
   /{idA2A}/PA/{codEnte}/giornale/:
     get:
       description: |
@@ -1229,23 +1631,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista giornali di cassa
       tags:
-      - Giornale di Cassa
+      - giornaleDiCassa
     post:
       description: |
         TESORIERE: Upload Giornale di cassa relativo ad uno specifico Ente
@@ -1269,11 +1690,20 @@ paths:
           description: Giornale di cassa inviato con successo
           headers:
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '400':
           description: Bad Request
         '401':
@@ -1296,13 +1726,27 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '460':
           description: identificativo A2A del tramite della PA oppure codice UNI_UO
             della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
@@ -1313,13 +1757,18 @@ paths:
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Invio giornale di cassa
       tags:
-      - Giornale di Cassa
-  /{idA2A}/PA/{codEnte}/giornale/ack/:
+      - giornaleDiCassa
+  /{idA2A}/PA/{codEnte}/giornale/ack:
     get:
       description: |
         TESORIERE: Lista Ack Giornale di cassa relativi ad uno specifico Ente
@@ -1350,23 +1799,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack giornale di cassa
       tags:
-      - Giornale di Cassa
+      - giornaleDiCassa
   /{idA2A}/PA/{codEnte}/giornale/{progGiornale}:
     get:
       description: |
@@ -1396,23 +1864,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download giornale di cassa
       tags:
-      - Giornale di Cassa
+      - giornaleDiCassa
   /{idA2A}/PA/{codEnte}/giornale/{progGiornale}/ack:
     get:
       description: |
@@ -1442,24 +1929,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack giornale di cassa
       tags:
-      - Giornale di Cassa
-  /{idA2A}/PA/{codEnte}/disponibilita/:
+      - giornaleDiCassa
+  /{idA2A}/PA/{codEnte}/disponibilita:
     get:
       description: |
         ENTE: Lista disponibilità liquide relative ad uno specifico Ente
@@ -1490,23 +1996,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista disponibilità liquide
       tags:
-      - Disponibilità liquide
+      - disponibilitaLiquide
     post:
       description: |
         TESORIERE: Upload Disponibilità liquide relative ad uno specifico Ente
@@ -1530,11 +2055,20 @@ paths:
           description: Disponibilità liquide inviate con successo
           headers:
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '400':
           description: Bad Request
         '401':
@@ -1557,13 +2091,27 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '460':
           description: identificativo A2A del tramite della PA oppure codice UNI_UO
             della PA, entrambi specificati nel messaggio inviato, non ancora abilitato
@@ -1574,13 +2122,18 @@ paths:
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Invio disponibilità liquide
       tags:
-      - Disponibilità liquide
-  /{idA2A}/PA/{codEnte}/disponibilita/ack/:
+      - disponibilitaLiquide
+  /{idA2A}/PA/{codEnte}/disponibilita/ack:
     get:
       description: |
         TESORIERE: Lista Ack Disponibilità liquide relative ad uno specifico Ente
@@ -1611,23 +2164,43 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Lista ack disponibilità liquide
       tags:
-      - Disponibilità liquide
+      - disponibilitaLiquide
+
   /{idA2A}/PA/{codEnte}/disponibilita/{progDisponibilita}:
     get:
       description: |
@@ -1657,23 +2230,42 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download disponibilità liquide
       tags:
-      - Disponibilità liquide
+      - disponibilitaLiquide
   /{idA2A}/PA/{codEnte}/disonibilita/{progDisponibilita}/ack:
     get:
       description: |
@@ -1703,22 +2295,39 @@ paths:
             throttling
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Limit:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit
+              description: The number of allowed requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Remaining:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining
+              description: The number of remaining requests in the current period
+              schema:
+                format: int32
+                type: integer
             X-RateLimit-Reset:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset
+              description: The number of seconds left in the current period
+              schema:
+                format: int32
+                type: integer
         '503':
           description: Servizio non disponibile
           headers:
             Retry-After:
-              $ref: https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After
+              description: |-
+                Retry contacting the endpoint *at least* after seconds.
+                See https://tools.ietf.org/html/rfc7231#section-7.1.3
+              schema:
+                format: int32
+                type: integer
         default:
           description: Errore non atteso
       summary: Download ack disponibilità liquide
       tags:
-      - Disponibilità liquide
-servers:
-- url: https://a2a.siopeplus.it/v1
+      - disponibilitaLiquide
