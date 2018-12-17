@@ -13,10 +13,6 @@ info:
     url: 'https://twitter.com/ioggstream'
   x-audience: |
     Definire qui l'audience delle API
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-
   description: |
     ## Documentazione
     
