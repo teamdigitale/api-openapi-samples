@@ -679,12 +679,12 @@ paths:
       description: |
         ENTE: Lista disponibilità liquide relative ad uno specifico Ente
       parameters:
-      - $ref: '#/components/parameters/idA2A'
-      - $ref: '#/components/parameters/codEnte'
-      - $ref: '#/components/parameters/dataUploadDa'
-      - $ref: '#/components/parameters/dataUploadA'
-      - $ref: '#/components/parameters/download'
-      - $ref: '#/components/parameters/pagina'
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/dataUploadDa'
+        - $ref: '#/components/parameters/dataUploadA'
+        - $ref: '#/components/parameters/download'
+        - $ref: '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -695,13 +695,13 @@ paths:
           description: Ricerca completata con successo
       summary: Lista disponibilità liquide
       tags:
-      - disponibilitaLiquide
+        - disponibilitaLiquide
     post:
       description: |
         TESORIERE: Upload Disponibilità liquide relative ad uno specifico Ente
       parameters:
-      - $ref: '#/components/parameters/idA2A'
-      - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
       requestBody:
         content:
           application/zip:
@@ -722,18 +722,18 @@ paths:
             <<: *common_headers
       summary: Invio disponibilità liquide
       tags:
-      - disponibilitaLiquide
+        - disponibilitaLiquide
   /{idA2A}/PA/{codEnte}/disponibilita/ack:
     get:
       description: |
         TESORIERE: Lista Ack Disponibilità liquide relative ad uno specifico Ente
       parameters:
-      - $ref: '#/components/parameters/idA2A'
-      - $ref: '#/components/parameters/codEnte'
-      - $ref: '#/components/parameters/dataProduzioneDa'
-      - $ref: '#/components/parameters/dataProduzioneA'
-      - $ref: '#/components/parameters/download'
-      - $ref: '#/components/parameters/pagina'
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/dataProduzioneDa'
+        - $ref: '#/components/parameters/dataProduzioneA'
+        - $ref: '#/components/parameters/download'
+        - $ref: '#/components/parameters/pagina'
       responses:
         <<: *common_json_responses
         '200':
@@ -744,15 +744,15 @@ paths:
           description: Ricerca completata con successo
       summary: Lista ack disponibilità liquide
       tags:
-      - disponibilitaLiquide
+        - disponibilitaLiquide
   /{idA2A}/PA/{codEnte}/disponibilita/{progDisponibilita}:
     get:
       description: |
         ENTE: Download disponibilità liquide relative ad uno specifico Ente
       parameters:
-      - $ref: '#/components/parameters/idA2A'
-      - $ref: '#/components/parameters/codEnte'
-      - $ref: '#/components/parameters/progDisponibilita'
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/progDisponibilita'
       responses:
         <<: *common_zip_responses
         '200':
@@ -764,15 +764,15 @@ paths:
           description: Disponibilità liquide in formato ZIP
       summary: Download disponibilità liquide
       tags:
-      - disponibilitaLiquide
+        - disponibilitaLiquide
   /{idA2A}/PA/{codEnte}/disonibilita/{progDisponibilita}/ack:
     get:
       description: |
         TESORIERE: Download Ack Disponibilità liquide relativo ad uno specifico Ente
       parameters:
-      - $ref: '#/components/parameters/idA2A'
-      - $ref: '#/components/parameters/codEnte'
-      - $ref: '#/components/parameters/progDisponibilita'
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/progDisponibilita'
       responses:
         <<: *common_zip_responses
         '200':
@@ -784,7 +784,7 @@ paths:
           description: Ack disponibilità liquide in formato ZIP
       summary: Download ack disponibilità liquide
       tags:
-      - disponibilitaLiquide
+        - disponibilitaLiquide
 
 
 components:
