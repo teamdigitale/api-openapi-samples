@@ -94,15 +94,34 @@ components:
         $ref: "#/components/schemas/FiscalCode"
   schemas:
     User:
+      description: |
+        Un utente SPID. 
+        
+        In questo schema i dati seguono le naming convention
+        degli attribuiti spid e non quelli delle ontologie agid. E' da capire
+        se ci sono margini di manovra su questo terreno.
+
+      externalDocs:
+        description: Riferimenti ad attributi SPID
+        url: >-
+          https://docs.italia.it/italia/spid/spid-regole-tecniche/it/bozza/attributi.html
       required:
-        - id
+        - fiscalCode
         - name
       properties:
         fiscalCode:
           $ref: "#/components/schemas/FiscalCode"
         name:
+          description: |
+            Conforme ad attributi spid, ma non a ontologie agid, che
+            userebbero il più specifico givenName.
           type: string
-        surname:
+        familyName:
+          description: |
+            Conforme sia a specifiche spid che ad ontologie agid
+          externalDocs:
+            url: >-
+              https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/Ontologie/CPV/v0.1/person.jsonld#L188
           type: string
     Users:
       type: array
@@ -112,4 +131,3 @@ components:
       "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/schemas/tax_code.yaml#/TaxCode"
     Problem:
       "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/schemas/problem.yaml#/Problem"
-
