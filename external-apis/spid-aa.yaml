@@ -53,6 +53,7 @@ paths:
         - puntuale
       parameters:
         - $ref: '#/components/parameters/fiscalCode'
+        - $ref: '#/components/parameters/attributeNames'
       responses:
         '200':
           headers:
@@ -61,7 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Users"
+                $ref: "#/components/schemas/Attributes"
         '503':
           $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/503ServiceUnavailable'
         '429':
@@ -92,7 +93,19 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/FiscalCode"
+    attributeNames:
+      name: attributeNames
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
   schemas:
+    Timestamp:
+      type: number
+      format: int32
+      description: Unix Timestamp in Seconds since UTC
+      example: 1545060289
     User:
       description: |
         Un utente SPID. 
@@ -112,25 +125,35 @@ components:
         fiscalCode:
           $ref: "#/components/schemas/FiscalCode"
         name:
+          type: string
           description: |
             Conforme ad attributi spid, ma non a ontologie agid, che
             userebbero il più specifico givenName.
-          type: string
           externalDocs:
             url: >-
               https://w3id.org/italia/onto/CPV/givenName
         familyName:
+          type: string
           description: |
             Conforme sia a specifiche spid che ad ontologie agid
           externalDocs:
             url: >-
               https://w3id.org/italia/onto/CPV/familyName
-          type: string
     Users:
       type: array
       items:
         $ref: "#/components/schemas/User"
+    Attributes:
+      required:
+      - timestamp
+      - attributes
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        attributes:
+          $ref: '#/components/schemas/Users'
     FiscalCode:
       "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/schemas/tax_code.yaml#/TaxCode"
     Problem:
       "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/schemas/problem.yaml#/Problem"
+
