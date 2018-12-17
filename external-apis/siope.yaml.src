@@ -119,7 +119,7 @@ tags:
     description: Disponibilità liquide
 
 paths:
-  '/{idA2A}/PA/{codEnte}/flusso/':
+  '/{idA2A}/PA/{codEnte}/flusso':
     post:
       tags:
         - flussoOrdinativi
@@ -287,7 +287,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussoDataUpload'
 
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack/':
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack':
     get:
       tags:
         - esitoFlussoOrdinativi
@@ -354,7 +354,7 @@ paths:
                 type: string
                 format: binary
 
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/':
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso':
     get:
       tags:
         - esitoFlussoOrdinativi
@@ -398,7 +398,7 @@ paths:
                 type: string
                 format: binary
 
-  '/{idA2A}/PA/{codEnte}/esitoapplicativo/':
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo':
     post:
       tags:
         - esitoApplicativo
@@ -471,7 +471,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiProduzione'
 
-  '/{idA2A}/BT/{codBanca}/esitoapplicativo/ack/':
+  '/{idA2A}/BT/{codBanca}/esitoapplicativo/ack':
     get:
       tags:
         - esitoApplicativo
@@ -586,7 +586,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiUpload'
 
-  '/{idA2A}/PA/{codEnte}/giornale/ack/':
+  '/{idA2A}/PA/{codEnte}/giornale/ack':
     get:
       tags:
         - giornaleDiCassa
@@ -609,7 +609,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiProduzione'
 
-  '/{idA2A}/BT/{codBanca}/giornale/ack/':
+  '/{idA2A}/BT/{codBanca}/giornale/ack':
     get:
       tags:
         - giornaleDiCassa
