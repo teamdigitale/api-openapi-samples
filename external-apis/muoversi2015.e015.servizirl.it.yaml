@@ -33,6 +33,7 @@ info:
   version: 1.0.0
   termsOfService: >-
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
+  x-api-id: 00000000-0000-0000-0000-000000000000
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
   description: Server accessibile dall'ecosistema E015
