@@ -30,18 +30,65 @@ info:
     name: Technical Management Board di E015
     url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
     email: e015-tmb@regione.lombardia.it
+    x-publisher: [dati publisher]
+    x-provider: [dati provider servizi]
+    x-complexity-index: [valore della complessità delle api (in FP)]
+  x-gdpr:
+    - data: [Informazione da gestire (ad es. Codice Fiscale)]
+      data-type: [Tipologia (ad es. personale|sensibile|giudiziario)]
+  x-lifecycle:
+    published: [Data-Pubblicazione-Progetto]
+    retires: [Data-Ritiro-Progetto]
+    maturity: [enum di valori stable|deprecated|new|alpha|beta]
+  x-audience: 
+    visibility: [Set di valori che definiscono chi può visualizzare questa API]
+    allowed-profiles: [Elenco dei profili business abilitati a consumare l'API]
+  x-ecosystem:
+    - name: [Nome ecosistema]
+      url: [Url verso ecosistema di cui fa parte questa definizione API]
+      description: [Descrizione Ecosistema]
+  x-catalog:
+    tag: [TAG1,TAG2]
+    category: [CATEGORY1,CATEGORY2]
+    context: 
+      - name: [Nome contesto]
+        description: [Descrizione contesto]
+  x-rating:
+    stats: [URL lettura statistiche KPI API]
+    rating: [URL lettura rating API]
+  x-api-id: [Identificativo univoco insieme di funzionalita']
+  x-business-function:
+    - name: [Nome business function]
+      description: [Descrizione business function]
+  x-technology-type: [Da definire secondo glossario/dominio dei valori]
+  x-glossary: 
+    name: [Nome glossario]
+    url: [http://URL-GLOSSARIO]
+    description: [Descrizione breve glossario]
+    publisher: [Soggetto che ha redatto il glossario]
+    ecosystem: [Ecosistema cui afferisce il glossario]
+    version: [Versione glossario]
+
   version: 1.0.0
   termsOfService: >-
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
   description: Server accessibile dall'ecosistema E015
+  x-healthcheck:
+    url: [http://URL-SERVIZIO-ISALIVE]
+    interval: [intervallo in secondi del polling isalive]
+
 paths:
   /e015Search:
     get:
       description: Sulla base del testo inserito per effettuare la ricerca, il servizio
         restituisce una lista di punti, ognuno dei quali corredato da una descrizione,
         una tipologia e la coppia di coordinate che ne individua la posizione.
+      x-lifecycle:
+        published: [Data-di-pubblicazione-singola-API]
+        retires: [data-di-ritiro-singola-API]
+        maturity: [stable|deprecated|new|alpha|beta]
       responses:
         200:
           description: I luoghi corrspondenti a una ricerca.
