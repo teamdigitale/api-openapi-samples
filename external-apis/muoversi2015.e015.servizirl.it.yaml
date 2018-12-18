@@ -36,6 +36,14 @@ info:
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
   description: Server accessibile dall'ecosistema E015
+  x-healtCheck:
+    # A regime nel catalogo l'url sara' sempre /status
+    #  un codice 2xx e' OK. Altrimenti e' in errore.
+    url: >-
+      https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search/?param=milano&maxResult=1
+    interval: 300    # seconds
+    timeout: 15  # seconds
+
 paths:
   /e015Search:
     get:
