@@ -31,6 +31,7 @@ info:
     url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
     email: e015-tmb@regione.lombardia.it
   version: 1.0.0
+  x-api-id: 00000000-0000-0000-0000-000000000000
   termsOfService: >-
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
 servers:
