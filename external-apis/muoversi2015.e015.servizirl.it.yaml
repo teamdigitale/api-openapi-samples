@@ -27,18 +27,18 @@ info:
     'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search?param=milano&maxResult=1'
     ```
   x-gdpr:
-  - data-controller: # contatti della/delle persona titolare del trattamento dei dati
-      name: nome e cognome
-      email: email@example.com
-  - data-controller:
-      name: nome2 e cognome2 
-      email: email2@example.com
-  - data-processor: # contatti della/delle persona responsabile del trattamento dei dati
-      name: nome3 e cognome3
-      email: email3@example.com
-  - data-processor:
-      name: nome4 e cognome4
-      email: email4@example.com
+  -  role: data-controller # contatti della/delle persona titolare del trattamento dei dati
+     name: nome e cognome
+     email: email@example.com
+  -  role: data-controller
+     name: nome2 e cognome2 
+     email: email2@example.com
+  - role: data-processor  # contatti della/delle persona responsabile del trattamento dei dati
+    name: nome3 e cognome3
+    email: email3@example.com
+  - role: data-processor
+    name: nome4 e cognome4
+    email: email4@example.com
   contact:
     name: Technical Management Board di E015
     url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
