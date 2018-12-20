@@ -28,11 +28,11 @@ info:
     ```
   x-gdpr:
   - data-controller: # contatti della/delle persona titolare del trattamento dei dati
-    name: nome e cognome
-    email: email@example.com
+      name: nome e cognome
+      email: email@example.com
   - data-controller:
-    name: nome2 e cognome2 
-    email: email2@example.com
+      name: nome2 e cognome2 
+      email: email2@example.com
   - data-processor: # contatti della/delle persona responsabile del trattamento dei dati
       name: nome3 e cognome3
       email: email3@example.com
