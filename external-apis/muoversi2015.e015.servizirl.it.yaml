@@ -28,6 +28,12 @@ info:
     ```
     'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search?param=milano&maxResult=1'
     ```
+  x-lifecycle:             # {type: string, format: date }
+    published: 2018-01-01  # data di pubblicazione
+    deprecated: 2020-12-31 # data inizio dismissione
+    retired: 2021-03-31    # data termine dismissione
+    maturity: published    # {type: string, enum: [proposal,developing,published,deprecated,retired]
+
   x-catalog:
     tag: [orari, trasporto pubblico, arrivo, partenza intermodalità, autobus, tram, treno, traghetto, funicolare, metropolitana]
     category: [CATEGORY1,CATEGORY2]
