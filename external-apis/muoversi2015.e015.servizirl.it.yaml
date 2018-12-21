@@ -1,6 +1,8 @@
 ---
 openapi: 3.0.0
 info:
+  version: 3.0.1
+  x-api-id: 00000000-0000-0000-0000-000000000000
   title: Muoversi in Lombardia
   x-summary: Il servizio fornisce una soluzione di viaggio intermodale utilizzando il trasporto pubblico in Lombardia.
   description: |-
@@ -27,28 +29,25 @@ info:
     'https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson/e015Search?param=milano&maxResult=1'
     ```
   x-catalog:
-    tag: [TAG1,TAG2]
+    tag: [orari, trasporto pubblico, arrivo, partenza intermodalità, autobus, tram, treno, traghetto, funicolare, metropolitana]
     category: [CATEGORY1,CATEGORY2]
     context:
       - name: [Nome contesto]
         description: [Descrizione contesto]
     ecosystem:
-      - name: [Nome ecosistema]
+      - name: E015
         url: [Url verso ecosistema di cui fa parte questa definizione API]
         description: [Descrizione Ecosistema]
   contact:
     name: Technical Management Board di E015
     url: http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/muoversi-lombardia
     email: e015-tmb@regione.lombardia.it
-  version: 1.0.0
-  x-api-id: 00000000-0000-0000-0000-000000000000
   termsOfService: >-
     http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_servizio_muoversi_in_lombardia_0.pdf?download=1&download=1
-  x-api-id: 00000000-0000-0000-0000-000000000000
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
   description: Server accessibile dall'ecosistema E015
-  x-healtCheck:
+  x-healthCheck:
     # A regime nel catalogo l'url sara' sempre /status
     #  un codice 2xx e' OK. Altrimenti e' in errore.
     url: >-
