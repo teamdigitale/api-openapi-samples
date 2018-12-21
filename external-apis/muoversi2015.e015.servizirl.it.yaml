@@ -47,6 +47,7 @@ info:
 servers:
 - url: https://muoversi2015.e015.servizirl.it/planner/rest/soluzioniJson
   description: Server accessibile dall'ecosistema E015
+  x-sandbox: false  # Se questo parametro non è definito o e' a false, l'ambiente non e' di sandbox.
   x-healthCheck:
     # A regime nel catalogo l'url sara' sempre /status
     #  un codice 2xx e' OK. Altrimenti e' in errore.
