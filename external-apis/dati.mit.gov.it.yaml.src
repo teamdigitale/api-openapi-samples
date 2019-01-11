@@ -10,11 +10,11 @@ x-commons:
       $ref: '#/components/responses/default'
   common-headers: &common_headers
     X-RateLimit-Limit:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Reset'
 
 openapi: 3.0.0
 servers:
@@ -422,7 +422,7 @@ components:
       headers:
         <<: *common_headers
         Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/Retry-After'
       content:
         application/json:
           schema:
@@ -432,7 +432,7 @@ components:
         Service Unavailable
       headers:
         Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/Retry-After'
       content:
         application/json:
           schema:
@@ -459,6 +459,8 @@ components:
         - help
         - error
       properties:
+        success:
+          type: string
         result:
           anyOf:
             - type: object
@@ -479,6 +481,8 @@ components:
         - success
         - help
       properties:
+        success:
+          type: string
         result:
           anyOf:
             - type: object

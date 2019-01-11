@@ -463,6 +463,8 @@ components:
           enum:
           - false
           type: boolean
+        success:
+          type: string
       required:
       - result
       - success
@@ -485,6 +487,8 @@ components:
           - true
           - false
           type: boolean
+        success:
+          type: string
       required:
       - result
       - success
