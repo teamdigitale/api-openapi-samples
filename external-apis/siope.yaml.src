@@ -108,11 +108,21 @@ info:
     url: 'https://www.gnu.org/licenses/gpl-3.0.txt'
 servers:
   - url: 'https://a2a.siopeplus.it/v1'
+tags:
+  - name: giornaleDiCassa
+    description: Giornale di Cassa
+  - name: flussoOrdinativi
+    description: Flusso ordinativi
+  - name: esitoFlussoOrdinativi
+    description: Esito Flusso ordinativi
+  - name: disponibilitaLiquide
+    description: Disponibilità liquide
+
 paths:
-  '/{idA2A}/PA/{codEnte}/flusso/':
+  '/{idA2A}/PA/{codEnte}/flusso':
     post:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Invio flusso ordinativi
       description: |
         ENTE: Upload di un Flusso Ordinativi relativo ad uno specifico Ente
@@ -139,7 +149,7 @@ paths:
                 '$ref': '#/components/schemas/FlussoDataUpload'
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Lista Flussi Ordinativi relativi ad uno specifico Ente
       description: |
         TESORIERE: Lista Flussi Ordinativi relativo ad uno specifico Ente
@@ -162,7 +172,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/ack/':
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Lista ack flussi ordinativi
       description: |
         ENTE: Lista Ack Flusso Ordinativi relativo ad uno specifico Ente
@@ -185,7 +195,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/ack':
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Download ack flusso ordinativi
       description: |
         ENTE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
@@ -206,7 +216,7 @@ paths:
   '/{idA2A}/BT/{codBanca}/flusso/':
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Lista Flussi Ordinativi relativi a tutti gli Enti
       description: |
         TESORIERE: Lista Flussi Ordinativi relativi a tutti gli Enti
@@ -229,7 +239,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}':
     get:
       tags:
-        - 'Flusso Ordinativi'
+        - flussoOrdinativi
       summary: Download ack flusso ordinativi
       description: |
         TESORIERE: Download Ack Flusso Ordinativi relativo ad uno specifico Ente
@@ -250,7 +260,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/':
     post:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Invio esito flusso ordinativi
       description: |
         TESORIERE: Upload Esito Flusso Ordinativi relativo ad uno specifico Ente
@@ -277,10 +287,10 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussoDataUpload'
 
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack/':
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/ack':
     get:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Lista ack esiti flusso ordinativi
       description: |
         TESORIERE: Lista Ack Esito Flusso Ordinativi relativi ad uno specifico Ente
@@ -303,7 +313,7 @@ paths:
   '/{idA2A}/BT/{codBanca}/flusso/esitoflusso/ack/':
     get:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Lista ack esiti flusso ordinativi
       description: |
         TESORIERE: Lista Ack Esito Flusso Ordinativi relativi a tutti gli Enti
@@ -326,7 +336,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso/ack':
     get:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Download ack esito flusso ordinativi
       description: |
         TESORIERE: Download Ack Esito Flusso Ordinativi relativo ad uno specifico Ente
@@ -344,10 +354,10 @@ paths:
                 type: string
                 format: binary
 
-  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso/':
+  '/{idA2A}/PA/{codEnte}/flusso/esitoflusso':
     get:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Lista esiti flussi ordinativi
       description: |
         ENTE: Lista esiti Flusso Ordinativi relativo ad uno specifico Ente
@@ -370,7 +380,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/flusso/{progFlusso}/esitoflusso':
     get:
       tags:
-        - 'Esito Flusso Ordinativi'
+        - esitoFlussoOrdinativi
       summary: Download esito flusso ordinativi
       description: |
         ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
@@ -388,10 +398,10 @@ paths:
                 type: string
                 format: binary
 
-  '/{idA2A}/PA/{codEnte}/esitoapplicativo/':
+  '/{idA2A}/PA/{codEnte}/esitoapplicativo':
     post:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Invio esito applicativo
       description: |
         TESORIERE: Upload Esito Applicativo relativo ad uno specifico Ente
@@ -418,7 +428,7 @@ paths:
                 '$ref': '#/components/schemas/FlussoDataUpload'
     get:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Lista messaggi esiti applicativi
       description: |
         ENTE: Lista messaggi Esito Applicativo relativi ad uno specifico Ente
@@ -441,7 +451,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/esitoapplicativo/ack/':
     get:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Lista ack messaggio esito applicativo
       description: |
         TESORIERE: Lista Ack Messaggio Esito Applicativo relativi ad uno specifico Ente
@@ -461,10 +471,10 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiProduzione'
 
-  '/{idA2A}/BT/{codBanca}/esitoapplicativo/ack/':
+  '/{idA2A}/BT/{codBanca}/esitoapplicativo/ack':
     get:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Lista ack messaggio esito applicativo
       description: |
         TESORIERE: Lista Ack Messaggio Esito Applicativo relativi a tutti gli Enti
@@ -487,7 +497,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}/ack':
     get:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Download ack messaggio esito applicativo
       description: |
         ENTE: Download Ack Messaggio Esito Applicativo relativo ad uno specifico Ente
@@ -508,7 +518,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/esitoapplicativo/{progEsitoApplicativo}':
     get:
       tags:
-        - 'Esito Applicativo'
+        - esitoApplicativo
       summary: Download messaggio di esito applicativo
       description: |
         ENTE: Download esito flusso ordinativi relativo ad uno specifico Ente
@@ -529,7 +539,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/giornale/':
     post:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Invio giornale di cassa
       description: |
         TESORIERE: Upload Giornale di cassa relativo ad uno specifico Ente
@@ -556,7 +566,7 @@ paths:
                 '$ref': '#/components/schemas/FlussoDataUpload'
     get:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Lista giornali di cassa
       description: |
         ENTE: Lista giornali di cassa relativa ad uno specifico Ente
@@ -576,10 +586,10 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiUpload'
 
-  '/{idA2A}/PA/{codEnte}/giornale/ack/':
+  '/{idA2A}/PA/{codEnte}/giornale/ack':
     get:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Lista ack giornale di cassa
       description: |
         TESORIERE: Lista Ack Giornale di cassa relativi ad uno specifico Ente
@@ -599,10 +609,10 @@ paths:
               schema:
                 '$ref': '#/components/schemas/FlussiPaginatiProduzione'
 
-  '/{idA2A}/BT/{codBanca}/giornale/ack/':
+  '/{idA2A}/BT/{codBanca}/giornale/ack':
     get:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Lista ack giornale di cassa
       description: |
         TESORIERE: Lista Ack Giornale di cassa relativi a tutti gli Enti
@@ -625,7 +635,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}/ack':
     get:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Download ack giornale di cassa
       description: |
         TESORIERE: Download Ack Giornale di cassa relativo ad uno specifico Ente
@@ -646,7 +656,7 @@ paths:
   '/{idA2A}/PA/{codEnte}/giornale/{progGiornale}':
     get:
       tags:
-        - 'Giornale di Cassa'
+        - giornaleDiCassa
       summary: Download giornale di cassa
       description: |
         ENTE: Download giornale di cassa relativo ad uno specifico Ente
@@ -663,6 +673,119 @@ paths:
               schema:
                 type: string
                 format: binary
+
+  /{idA2A}/PA/{codEnte}/disponibilita:  # mark
+    get:
+      description: |
+        ENTE: Lista disponibilità liquide relative ad uno specifico Ente
+      parameters:
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/dataUploadDa'
+        - $ref: '#/components/parameters/dataUploadA'
+        - $ref: '#/components/parameters/download'
+        - $ref: '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiUpload'
+          description: Ricerca completata con successo
+      summary: Lista disponibilità liquide
+      tags:
+        - disponibilitaLiquide
+    post:
+      description: |
+        TESORIERE: Upload Disponibilità liquide relative ad uno specifico Ente
+      parameters:
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+      requestBody:
+        content:
+          application/zip:
+            schema:
+              format: binary
+              type: string
+        description: Disponibilità liquide in formato ZIP.
+        required: true
+      responses:
+        <<: *common_post_responses
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussoDataUpload'
+          description: Disponibilità liquide inviate con successo
+          headers:
+            <<: *common_headers
+      summary: Invio disponibilità liquide
+      tags:
+        - disponibilitaLiquide
+  /{idA2A}/PA/{codEnte}/disponibilita/ack:
+    get:
+      description: |
+        TESORIERE: Lista Ack Disponibilità liquide relative ad uno specifico Ente
+      parameters:
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/dataProduzioneDa'
+        - $ref: '#/components/parameters/dataProduzioneA'
+        - $ref: '#/components/parameters/download'
+        - $ref: '#/components/parameters/pagina'
+      responses:
+        <<: *common_json_responses
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlussiPaginatiProduzione'
+          description: Ricerca completata con successo
+      summary: Lista ack disponibilità liquide
+      tags:
+        - disponibilitaLiquide
+  /{idA2A}/PA/{codEnte}/disponibilita/{progDisponibilita}:
+    get:
+      description: |
+        ENTE: Download disponibilità liquide relative ad uno specifico Ente
+      parameters:
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/progDisponibilita'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Disponibilità liquide in formato ZIP
+      summary: Download disponibilità liquide
+      tags:
+        - disponibilitaLiquide
+  /{idA2A}/PA/{codEnte}/disonibilita/{progDisponibilita}/ack:
+    get:
+      description: |
+        TESORIERE: Download Ack Disponibilità liquide relativo ad uno specifico Ente
+      parameters:
+        - $ref: '#/components/parameters/idA2A'
+        - $ref: '#/components/parameters/codEnte'
+        - $ref: '#/components/parameters/progDisponibilita'
+      responses:
+        <<: *common_zip_responses
+        '200':
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: Ack disponibilità liquide in formato ZIP
+      summary: Download ack disponibilità liquide
+      tags:
+        - disponibilitaLiquide
+
 
 components:
   parameters:
@@ -764,6 +887,13 @@ components:
       description: >-
             Filtro dei risultati sulla data di produzione finale nel formato
             `yyyy-MM-dd'T'HH:mm:ss.SSS`
+    progDisponibilita:
+      description: Progressivo assegnato da SIOPE+ all'atto dell'invio delle disponibilità liquide
+      in: path
+      name: progDisponibilita
+      required: true
+      schema:
+        type: string
   schemas:
     FlussoDataUpload:
       type: object
