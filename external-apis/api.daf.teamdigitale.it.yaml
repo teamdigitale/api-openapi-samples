@@ -150,13 +150,13 @@ paths:
         '200':
           $ref: '#/components/responses/CkanResponse'
         '400':
-        - $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequest'
         '429':
-        - $ref: '#/components/responses/429TooManyRequests'
+          $ref: '#/components/responses/429TooManyRequests'
         '503':
-        - $ref: '#/components/responses/503ServiceUnavailable'
+          $ref: '#/components/responses/503ServiceUnavailable'
         default:
-        - $ref: '#/components/responses/default'
+          $ref: '#/components/responses/default'
       summary: List all groups within given parameters
       tags:
       - consumers
@@ -184,13 +184,13 @@ paths:
         '200':
           $ref: '#/components/responses/CkanResponse'
         '400':
-        - $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequest'
         '429':
-        - $ref: '#/components/responses/429TooManyRequests'
+          $ref: '#/components/responses/429TooManyRequests'
         '503':
-        - $ref: '#/components/responses/503ServiceUnavailable'
+          $ref: '#/components/responses/503ServiceUnavailable'
         default:
-        - $ref: '#/components/responses/default'
+          $ref: '#/components/responses/default'
       summary: List all datasets within given limit
       tags:
       - consumers
@@ -246,15 +246,15 @@ paths:
         '200':
           $ref: '#/components/responses/CkanResponse'
         '400':
-        - $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequest'
         '409':
           description: Conflict (can result e.g. from incorrectly formatted solr query)
         '429':
-        - $ref: '#/components/responses/429TooManyRequests'
+          $ref: '#/components/responses/429TooManyRequests'
         '503':
-        - $ref: '#/components/responses/503ServiceUnavailable'
+          $ref: '#/components/responses/503ServiceUnavailable'
         default:
-        - $ref: '#/components/responses/default'
+          $ref: '#/components/responses/default'
       summary: Search among all datasets
       tags:
       - consumers
@@ -281,13 +281,13 @@ paths:
         '200':
           $ref: '#/components/responses/CkanResponse'
         '400':
-        - $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequest'
         '429':
-        - $ref: '#/components/responses/429TooManyRequests'
+          $ref: '#/components/responses/429TooManyRequests'
         '503':
-        - $ref: '#/components/responses/503ServiceUnavailable'
+          $ref: '#/components/responses/503ServiceUnavailable'
         default:
-        - $ref: '#/components/responses/default'
+          $ref: '#/components/responses/default'
       summary: Get details of one package
       tags:
       - consumers

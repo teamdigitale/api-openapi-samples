@@ -1,13 +1,13 @@
 x-commons:
   common-responses: &common_responses
     '400':
-      - $ref: '#/components/responses/400BadRequest'
+      $ref: '#/components/responses/400BadRequest'
     '429':
-      - $ref: '#/components/responses/429TooManyRequests'
+      $ref: '#/components/responses/429TooManyRequests'
     '503':
-      - $ref: '#/components/responses/503ServiceUnavailable'
+      $ref: '#/components/responses/503ServiceUnavailable'
     default:
-      - $ref: '#/components/responses/default'
+      $ref: '#/components/responses/default'
 
 
 openapi: 3.0.0
