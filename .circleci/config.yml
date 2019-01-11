@@ -1,0 +1,17 @@
+#
+# CircleCI buildfile. Run locally with
+#
+#   circleci-local build
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: python:3.6-alpine
+    steps:
+      - checkout
+      - run:
+          command: |
+            apk add git
+            pip install tox
+            tox

@@ -38,4 +38,5 @@ See https://github.com/perenecabuto/json_schema_generator
 
   - SwaggerHub OpenAPI v3, v2 editor https://editor.swagger.io
   - OpenAPI v3, v2 editor by Red Hat https://github.com/apicurio/apicurio-studio
-
+  - openapi-resolver, a python package for creating openapi bundles (resolving $refs and adding them
+    as components) and normalize OAS3 files. https://github.com/ioggstream/openapi-resolver
