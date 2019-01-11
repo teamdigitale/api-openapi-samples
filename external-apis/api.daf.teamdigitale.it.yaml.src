@@ -383,8 +383,8 @@ components:
       properties:
         result:
           anyOf:
-            - object
-            - array
+            - type: object
+            - type: array
         error:
           type: object
         help:
@@ -403,8 +403,8 @@ components:
       properties:
         result:
           anyOf:
-            - object
-            - array
+            - type: object
+            - type: array
         error:
           type: object
         help:
