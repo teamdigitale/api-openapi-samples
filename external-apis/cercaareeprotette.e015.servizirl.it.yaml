@@ -84,8 +84,8 @@ paths:
         default:
           description: Errore non atteso
     parameters:
-    - '$ref': 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/limit'
-    - '$ref': 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/offset'
+    - '$ref': 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.2/docs/parameters/v3.yaml#/limit'
+    - '$ref': 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.2/docs/parameters/v3.yaml#/offset'
     - $ref: '#/components/parameters/lang'
     - $ref: '#/components/parameters/f'
     - $ref: '#/components/parameters/callback'

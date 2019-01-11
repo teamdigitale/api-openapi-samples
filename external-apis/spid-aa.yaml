@@ -23,19 +23,19 @@ info:
 x-componenti-comuni:
   common_responses: &common_responses
     '503':
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/503ServiceUnavailable'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/503ServiceUnavailable'
     '429':
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/429TooManyRequests'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/429TooManyRequests'
     default:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/default'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/default'
 
   throttling_headers: &throttling_headers
     X-RateLimit-Limit:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/headers/v3.yaml#/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/headers/v3.yaml#/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/headers/v3.yaml#/X-RateLimit-Reset'
 tags: 
 - name: puntuale
   description: Recupero puntuale di un attributo
@@ -64,11 +64,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Attributes"
         '503':
-          $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/503ServiceUnavailable'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/503ServiceUnavailable'
         '429':
-          $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/429TooManyRequests'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/429TooManyRequests'
         default:
-          $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/default'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/responses/v3.yaml#/default'
   /status:
     get:
       summary: URL per testare il funzionamento dell'API
@@ -155,5 +155,5 @@ components:
     FiscalCode:
       "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/schemas/tax_code.yaml#/TaxCode"
     Problem:
-      "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/schemas/problem.yaml#/Problem"
+      "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/schemas/problem.yaml#/Problem"
 
