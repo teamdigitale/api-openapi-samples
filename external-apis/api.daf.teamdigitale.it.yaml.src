@@ -324,48 +324,62 @@ components:
     400BadRequest:
       description: >-
         Invalid input
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     403Forbidden:
       description: >-
         Missing authorization key
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     409AlreadyExists:
       description: >-
         Item already exists
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     429TooManyRequests:
       description: >-
         Too Many Requests
       headers:
         X-RateLimit-Limit:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Limit'
         X-RateLimit-Remaining:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Remaining'
         X-RateLimit-Reset:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Reset'
         Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/Retry-After'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
     503ServiceUnavailable:
       description: >-
         Service Unavailable
       headers:
         Retry-After:
-          $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
-    Error:
+          $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/Retry-After'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
+    default:
       description: >-
         An unexpected status has been returned.
+  headers:
+    X-RateLimit-Limit:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/X-RateLimit-Reset'
+    Retry-After:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.1/docs/headers/v3.yaml#/Retry-After'
 
   securitySchemes:
     ckanapikey:
@@ -381,6 +395,8 @@ components:
         - help
         - error
       properties:
+        success:
+          type: string
         result:
           anyOf:
             - type: object
@@ -401,6 +417,8 @@ components:
         - success
         - help
       properties:
+        success:
+          type: string
         result:
           anyOf:
             - type: object

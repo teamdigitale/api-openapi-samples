@@ -317,24 +317,28 @@ components:
         type: integer
   responses:
     400BadRequest:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
       description: Invalid input
     403Forbidden:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
       description: Missing authorization key
     409AlreadyExists:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
       description: Item already exists
     429TooManyRequests:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
       description: Too Many Requests
       headers:
         Retry-After:
@@ -346,9 +350,10 @@ components:
         X-RateLimit-Reset:
           $ref: '#/components/headers/X-RateLimit-Reset'
     503ServiceUnavailable:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/CkanError'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CkanError'
       description: Service Unavailable
       headers:
         Retry-After:
@@ -366,7 +371,7 @@ components:
           $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Reset:
           $ref: '#/components/headers/X-RateLimit-Reset'
-    Error:
+    default:
       description: An unexpected status has been returned.
   schemas:
     CkanError:
@@ -384,6 +389,8 @@ components:
           enum:
           - false
           type: boolean
+        success:
+          type: string
       required:
       - result
       - success
@@ -406,6 +413,8 @@ components:
           - true
           - false
           type: boolean
+        success:
+          type: string
       required:
       - result
       - success
