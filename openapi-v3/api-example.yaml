@@ -13,11 +13,8 @@ info:
   title: |-
     Starter Kit API
   description: |
-    Questa prima linea verrà usata come sottotitolo. Descrive brevemente e in linguaggio comune il servizio.
-    \
-    \
     #### Documentazione
-    Qui devi inserire la documentazione principale del servizio. Usa due "\" per separare il sottotitolo dalla documentazione.
+    Qui devi inserire la documentazione principale del servizio.
     Il testo dev'essere diviso in piu' parti, tutte scritte in Markdown.
 
     Questa sezione e' informativa:
@@ -161,11 +158,11 @@ paths:
 components:
   parameters:
     limit:
-      $ref: 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/limit'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/limit'
     offset:
-      $ref: 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/offset'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/offset'
     sort:
-      $ref: 'https://teamdigitale.github.io/openapi/parameters/v3.yaml#/sort'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/sort'
     ipa_code:
       name: ipa_code
       in: path
@@ -185,30 +182,30 @@ components:
 
   headers:
     X-RateLimit-Limit:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Limit'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Remaining'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/X-RateLimit-Reset'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Reset'
     Retry-After:
-      $ref: 'https://teamdigitale.github.io/openapi/headers/v3.yaml#/Retry-After'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/Retry-After'
 
   responses:
     # Predefined error codes for this API
     400BadRequest:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/400BadRequest'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/400BadRequest'
     404NotFound:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/404NotFound'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/404NotFound'
     429TooManyRequests:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/429TooManyRequests'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/429TooManyRequests'
     503ServiceUnavailable:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/503ServiceUnavailable'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/503ServiceUnavailable'
     default:
-      $ref: 'https://teamdigitale.github.io/openapi/responses/v3.yaml#/default'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/default'
 
   schemas:
     Problem:
-      $ref: 'https://teamdigitale.github.io/openapi/schemas/problem.yaml#Problem'
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemasProblem'
     PA:
       type: object
       description: Una Pubblica Amministrazione.
