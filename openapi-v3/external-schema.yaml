@@ -1,0 +1,20 @@
+# This file is just for proposing an example for externalSchema
+# don't use  for api templating.
+#
+# schema.xsd contains two definitions:
+# - person
+# - item
+# We need a method to identify the given element.
+components:
+  responses:
+    # This proposal is quite flexible
+    # and uses url `fragment` to reference
+    # the element
+    Solution1:
+      content:
+        application/xml:
+          schema:
+            anyOf:
+            - alternativeSchema:
+                type: xmlSchema
+                location: schema.xsd#/person
