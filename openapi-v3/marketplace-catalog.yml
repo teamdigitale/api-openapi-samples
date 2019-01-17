@@ -52,7 +52,7 @@ paths:
         - $ref: '#/components/parameters/offset'
       responses:
         '200':
-          headers:
+          headers: &common_headers
             X-RateLimit-Limit:
               $ref: "#/components/headers/X-RateLimit-Limit"
             X-RateLimit-Remaining:
@@ -82,14 +82,8 @@ paths:
         - $ref: '#/components/parameters/id'
       responses:
         '200':
+          <<: *common_headers
           description: Meta data API
-          headers:
-            X-RateLimit-Limit:
-              $ref: "#/components/headers/X-RateLimit-Limit"
-            X-RateLimit-Remaining:
-              $ref: "#/components/headers/X-RateLimit-Remaining"
-            X-RateLimit-Reset:
-              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
@@ -112,13 +106,7 @@ paths:
       responses:
         '200':
           description: Stats API
-          headers:
-            X-RateLimit-Limit:
-              $ref: "#/components/headers/X-RateLimit-Limit"
-            X-RateLimit-Remaining:
-              $ref: "#/components/headers/X-RateLimit-Remaining"
-            X-RateLimit-Reset:
-              $ref: "#/components/headers/X-RateLimit-Reset"
+          <<: *common_headers
           content:
             application/json:
               schema:
@@ -293,30 +281,30 @@ components:
         apikey:
           type: string
           example: AIzaSyDHeXm6n1hyGIEO_wgscTYUBDJcMmqgOtA
-    Error:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/schemas/Error"
+    Problem:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemas/Problem"
 
   responses:
     Standard500ErrorResponse:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/default"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/default"
     APIsDoesNotExistResponse:
-      description: API non esisteti per questo erogatore.
+      description: API non esistenti per questo erogatore.
     StatsDoesNotExistsResponse:
       description: Stats non esisteti per queste API dell'erogatore.
     UsernameAlreadyExists:
       description: Username already existing
     429TooManyRequests:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/429TooManyRequests"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/429TooManyRequests"
     503ServiceUnavailable:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/responses/503ServiceUnavailable"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/503ServiceUnavailable"
 
   headers:
     X-RateLimit-Limit:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Limit"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Limit"
     X-RateLimit-Remaining:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Remaining"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Remaining"
     X-RateLimit-Reset:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/headers/X-RateLimit-Reset"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Reset"
   parameters:
     id:
       name: id
@@ -326,9 +314,9 @@ components:
       schema:
         type: integer
     limit:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/limit"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/limit"
     offset:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/offset"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/offset"
     sort:
-      $ref: "https://raw.githubusercontent.com/ioggstream/openapi-samples/master/openapi-v3/schema/components.yaml#/components/parameters/sort"
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/sort"
 

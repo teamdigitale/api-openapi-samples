@@ -96,11 +96,11 @@ paths:
           #   nel Nuovo modello di interoperabilità.
           headers:
             X-RateLimit-Limit:
-              $ref: '#/components/headers/X-RateLimit-Limit'
+              $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Limit'
             X-RateLimit-Remaining:
-              $ref: '#/components/headers/X-RateLimit-Remaining'
+              $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
-              $ref: '#/components/headers/X-RateLimit-Reset'
+              $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -125,9 +125,9 @@ paths:
       - public
       parameters:
         - $ref: "#/components/parameters/name"
-        - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
-        - $ref: "#/components/parameters/sort"
+        - $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/limit'
+        - $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/offset'
+        - $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/sort'
       responses:
         '200':
           description: |
@@ -157,12 +157,6 @@ paths:
 
 components:
   parameters:
-    limit:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/limit'
-    offset:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/offset'
-    sort:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/sort'
     ipa_code:
       name: ipa_code
       in: path
@@ -204,8 +198,8 @@ components:
       $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/responses/default'
 
   schemas:
-    Problem:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemasProblem'
+    # Problem:
+    #  $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemas/Problem'
     PA:
       type: object
       description: Una Pubblica Amministrazione.
