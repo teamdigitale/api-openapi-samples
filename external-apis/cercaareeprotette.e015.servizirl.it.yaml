@@ -23,7 +23,7 @@ info:
     ```
 
   version: 1.0.0
-  termsOfService: 'http://www.e015.regione.lombardia.it/PE015/system/files_force/allegati/policy-servizio/policy_aree_protette.pdf?download=1&download=1'
+  termsOfService: 'http://www.e015.regione.lombardia.it/site/download-policy?id=159'
   contact:
     name: Technical Management Board di E015
     url: 'http://www.e015.regione.lombardia.it/PE015/esplora-i-contenuti/i-servizi/aree-protette'
