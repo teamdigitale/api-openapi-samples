@@ -2,20 +2,41 @@ openapi: 3.0.0
 info:
   title: ElencoProfessionisti
   version: "1.0.0"
-  description: >-
+  x-api-id: 00000000-0000-0000-0000-000000000000
+  x-summary: Elenco dei professionisti della Regione Umbria
+  description: |-
+    #### Documentazione
     API per l'acquisizione dell'elenco dei professionisti della Regione Umbria.
     Per maggiori informazioni sull'elenco regionale delle imprese consultare
-    http://www.regione.umbria.it/opere-pubbliche/consulta-l-elenco . L'utilizzo
-    di questa API è libero e non richiede alcuna sottoscrizione
+    (il sito relativo)[http://www.regione.umbria.it/opere-pubbliche/consulta-l-elenco].
+
+    L'utilizzo di questa API è libero e non richiede alcuna sottoscrizione.
+
+
+    Elenco regionale dei professionisti da invitare alle procedure negoziate
+    per l'affidamento di servizi attinenti all'architettura e all'ingegneria
+    di importo inferiore a centomila euro.
+
+    #### Note
+    L'API viene erogata tramite il [Catalogo API della Regione Umbria](https://apistore.regione.umbria.it/store/)
+  contact:
+    name: Riferimento Tecnico - Umbria Digitale
+    url: https://apistore.regione.umbria.it/store/apis/info?name=ElencoProfessionisti&version=1.0&provider=admin&tag=Cataloghi%20indici%20elenchi-group
+    email: servicedesk@umbriadigitale.it
+  termsOfService: >-
+    WRITEME
+  x-lifecycle:
+    published: 2019-03-13T14:56:39+01:00
+    maturity: published
 
 paths:
   /elenco-professionisti:
     get:
       responses:
         '200':
-          description: Chiamata effettuata
+          description: Chiamata effettuata con successo
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: object
                 title: Lista tipologie per professionista
@@ -40,7 +61,6 @@ paths:
       x-throttling-tier: Unlimited
 servers:
   - url: 'https://api.regione.umbria.it:443/elencoprofessionisti/1.0'
-  - url: 'http://api.regione.umbria.it:443/elencoprofessionisti/1.0'
 components:
   securitySchemes:
     default:
