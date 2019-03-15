@@ -2,7 +2,11 @@ openapi: 3.0.0
 info:
   title: ElencoProfessionisti
   version: "1.0.0"
-  x-api-id: 00000000-0000-0000-0000-000000000000
+  x-api-id: 62d8d908-4701-11e9-b210-d663bd873d93
+  x_catalog:
+    properties:
+      tag: [Elenco professionisti, Opere pubbliche]
+      category: [cataloghi indici elenchi]   
   x-summary: Elenco dei professionisti della Regione Umbria
   description: |-
     #### Documentazione
