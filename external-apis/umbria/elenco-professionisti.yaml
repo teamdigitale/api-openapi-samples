@@ -6,7 +6,11 @@ info:
   x_catalog:
     properties:
       tag: [Elenco professionisti, Opere pubbliche]
-      category: [cataloghi indici elenchi]   
+      category: [cataloghi indici elenchi]
+  ecosystem:
+    - name: Ecosistema digitale regionale
+      url: https://apistore.regione.umbria.it
+      description: Ecosistema digitale regionale Umbria
   x-summary: Elenco dei professionisti della Regione Umbria
   description: |-
     #### Documentazione
