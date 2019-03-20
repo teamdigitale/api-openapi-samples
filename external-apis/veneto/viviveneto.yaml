@@ -1,18 +1,55 @@
 openapi: 3.0.0
 info:
   version: "1.0.0-oas3"
+  x-api-id: 00000000-0000-0000-0000-000000000000
+  x-summary: Interface among a legacy service and the ViviVeneto platform.
   title: ViviVeneto legacy API
-  description: >-
-    ViviVeneto services for legacy environments. These services are the
-    interface among a legacy service and ViviVeneto platform. Services context
-    is bound to business processes management (status update, retrieval) and
+  description: |-
+    ViviVeneto services for legacy environments.
+
+    These services are the interface among a legacy service and ViviVeneto platform.
+
+    Services context is bound to business processes management (status update, retrieval) and
     storage management (download, upload and deletion).
-  termsOfService: TBC
+  x-lifecycle:
+      published: WRITEME   # data di pubblicazione
+      deprecated: WRITEME  # data inizio dismissione
+      retired: WRITEME     # data termine dismissione
+      maturity: WRITEME    # {type: string, enum: [proposal,developing,published,deprecated,retired]
+  x-catalog:
+    tag:
+      - WRITEME
+      - ...
+    category:
+      - WRITEME
+      - ...
+    context:
+      - name: WRITEME
+      - description:
+    ecosystem:
+      - name: ViviVeneto
+        url: SITO WEB VIVIVENETO
+        description: >-
+          ViviVeneto is a
+  contact:
+    name: Technical contact ...
+    url: https://contact-url.example.com
+    email: email@example.com
+  termsOfService: >-
+    https://terms-of-service.example.com
+servers:
+  - url: 'https://35.195.76.65/api/core/legacy'
+    description: WRITEME  # Produzione, Collaudo, ...
+    x-healthCheck:
+      url: WRITEME  # url della richiesta di test
+      interval: 300
+      timeout: 15
+
 tags:
   - name: Business processes
   - name: Storage
 paths:
-  '/processes/instances/:processInstanceId':
+  '/processes/instances/{processInstanceId}':
     get:
       operationId: Get process instance
       tags:
@@ -106,7 +143,7 @@ paths:
                     $ref: '#/components/schemas/ProcessInstanceMemberResult'
         description: The status change request
         required: true
-  '/storage/:processInstanceId/:fileId':
+  '/storage/:processInstanceId/{fileId}':
     get:
       operationId: Download file
       tags:
@@ -152,7 +189,8 @@ paths:
             returned
           schema:
             type: string
-            format: date-time
+            format: date-time  # NB: OAS indica che date-time segue RFC3339, diverso
+                               # dal valore di If-Modified-Since in RFC 7232
       responses:
         '200':
           description: The file binary stream
@@ -212,7 +250,7 @@ paths:
           description: Invalid file id or file not found
         '500':
           description: Internal server error
-  '/storage/:processInstanceId':
+  '/storage/{processInstanceId}':
     post:
       operationId: Upload file
       tags:
@@ -280,7 +318,7 @@ paths:
                 - author
                 - organization
                 - type
-  '/storage/:processInstanceId/:fileId/metadata':
+  '/storage/{processInstanceId}/{fileId}/metadata':
     get:
       operationId: Get file metadata
       tags:
@@ -330,8 +368,6 @@ paths:
           description: Invalid file id or file not found
         '500':
           description: Internal server error
-servers:
-  - url: 'https://35.195.76.65/api/core/legacy'
 components:
   securitySchemes:
     oauth2:
@@ -481,4 +517,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FileDescriptor'
-
