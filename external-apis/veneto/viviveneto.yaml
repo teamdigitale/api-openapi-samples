@@ -1,0 +1,484 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: ViviVeneto legacy API
+  description: >-
+    ViviVeneto services for legacy environments. These services are the
+    interface among a legacy service and ViviVeneto platform. Services context
+    is bound to business processes management (status update, retrieval) and
+    storage management (download, upload and deletion).
+  termsOfService: TBC
+tags:
+  - name: Business processes
+  - name: Storage
+paths:
+  '/processes/instances/:processInstanceId':
+    get:
+      operationId: Get process instance
+      tags:
+        - Business processes
+      summary: Get process instance
+      description: >-
+        Retrieves the process instance detailed status. Status includes attached
+        files references and variables.
+      security:
+        - oauth2:
+            - read
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The process instance details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessInstance'
+        '404':
+          description: Invalid process instance id or process instance not found
+        '500':
+          description: Internal server error
+    put:
+      operationId: Update instance status
+      tags:
+        - Business processes
+      summary: Update process instance
+      description: Update process instance status.
+      security:
+        - oauth2:
+            - write
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operation succeeded
+        '403':
+          description: Operation is not allowed on process instance
+        '404':
+          description: Invalid process instance id or process instance not found
+        '500':
+          description: Internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+                - title
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                secondaryDescription:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - accepted
+                    - pending
+                    - rejected
+                members:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProcessInstanceMemberResult'
+        description: The status change request
+        required: true
+  '/storage/:processInstanceId/:fileId':
+    get:
+      operationId: Download file
+      tags:
+        - Storage
+      summary: Download a file from storage
+      description: Download a file from storage as a binary stream.
+      security:
+        - oauth2:
+            - read
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: path
+          name: fileId
+          required: true
+          description: The file id as returned in process instance descriptor
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+        - in: query
+          name: version
+          required: false
+          description: >-
+            The file version to download. If not specified, the latest version
+            is downloaded
+          schema:
+            type: string
+        - in: header
+          name: If-Modified-Since
+          required: false
+          description: >-
+            If specified, the file is downloaded if and only newer than the
+            provided value. Otherwise a 302 status code (not modified) is
+            returned
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: The file binary stream
+          content:
+            application/octect-stream:
+              schema:
+                type: string
+                format: binary
+        '302':
+          description: >-
+            File not modified. See If-Modified-Since parameters for detailed
+            explaination
+        '403':
+          description: Operation is not allowed on the file
+        '404':
+          description: Invalid file id or file not found
+        '500':
+          description: Internal server error
+    delete:
+      operationId: Delete file
+      tags:
+        - Storage
+      summary: Logically delete a file from storage
+      description: >-
+        Logically delete a file from storage. The file is not removed, but only
+        detached from storage. No one will access the file anymore. The file
+        must be restored in order to be accessbile again. The file can be
+        deleted only if created by the legacy server.
+      security:
+        - oauth2:
+            - write
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: path
+          name: fileId
+          required: true
+          description: The file id as returned in process instance descriptor
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The file has been deleted
+        '403':
+          description: Operation is not allowed on the file
+        '404':
+          description: Invalid file id or file not found
+        '500':
+          description: Internal server error
+  '/storage/:processInstanceId':
+    post:
+      operationId: Upload file
+      tags:
+        - Storage
+      summary: Upload a file to the storage
+      description: Upload a file to the storage and associate it to a process instance.
+      security:
+        - oauth2:
+            - write
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Upload succeeded
+        '404':
+          description: Invalid process instance id or process instance not found
+        '500':
+          description: Internal server error
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: The file to upload
+                  type: string
+                  format: binary
+                name:
+                  description: The metadata name value
+                  type: string
+                description:
+                  description: The metadata description value
+                  type: string
+                author:
+                  description: The metadata author value
+                  type: string
+                organization:
+                  description: The metadata organization value
+                  type: string
+                type:
+                  description: The metadata type value. More values will be defined.
+                  type: string
+                  enum:
+                    - generic
+                    - drivingLicenceFront
+                    - drivingLicenceBack
+                    - identityCardFront
+                    - identityCardBack
+              required:
+                - file
+                - name
+                - description
+                - author
+                - organization
+                - type
+  '/storage/:processInstanceId/:fileId/metadata':
+    get:
+      operationId: Get file metadata
+      tags:
+        - Storage
+      summary: Get stored file metadata
+      description: 'Get stored file metadata such as author, description, etc'
+      security:
+        - oauth2:
+            - read
+      parameters:
+        - in: path
+          name: processInstanceId
+          required: true
+          description: The ViviVeneto process instance id
+          schema:
+            type: string
+        - in: path
+          name: fileId
+          required: true
+          description: The file id as returned in process instance descriptor
+          schema:
+            type: string
+        - in: header
+          name: x-process-instance-secret
+          required: true
+          description: The ViviVeneto process instance secret key
+          schema:
+            type: string
+        - in: query
+          name: version
+          required: false
+          description: >-
+            The file version to get. If not specified, the latest version is
+            retrieved
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The process instance details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+        '403':
+          description: Operation is not allowed on the file
+        '404':
+          description: Invalid file id or file not found
+        '500':
+          description: Internal server error
+servers:
+  - url: 'https://35.195.76.65/api/core/legacy'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: 'https://35.195.76.65/token'
+          scopes:
+            read: Read only access to objects
+            write: Write access to objects
+  schemas:
+    ProcessInstanceMemberResult:
+      description: A result for a single member of a process instance.
+      type: object
+      required:
+        - fiscalCode
+        - status
+      properties:
+        fiscalCode:
+          type: string
+        status:
+          type: string
+          enum:
+            - accepted
+            - rejected
+            - pending
+        description:
+          type: string
+    ProcessVariable:
+      description: A variable in the process. Variables define the process status.
+      type: object
+      required:
+        - name
+        - type
+        - value
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - string
+            - boolean
+            - integer
+            - float
+            - datetime
+        value:
+          type: object
+    FileMetadata:
+      description: A file metadata descriptor.
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - mimeType
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        type:
+          type: string
+          enum:
+            - generic
+            - drivingLicenceFront
+            - drivingLicenceBack
+            - identityCardFront
+            - identityCardBack
+        mimeType:
+          type: string
+    FileDescriptor:
+      description: >-
+        A file descriptor. The current version is the last item in the versions
+        array.
+      type: object
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - generic
+            - drivingLicenceFront
+            - drivingLicenceBack
+            - identityCardFront
+            - identityCardBack
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ProcessInstance:
+      description: >-
+        A process instance. User is defined by the fiscal code property. Id
+        property defines the internal ViviVeneto identifier. In all APIs the
+        internal identifier is also known as process instance id.
+      type: object
+      required:
+        - id
+        - legacyId
+        - fiscalCode
+        - createdAt
+        - updatedAt
+        - variables
+        - files
+        - members
+        - status
+      properties:
+        id:
+          type: string
+        legacyId:
+          type: string
+          description: Legacy service side process instance id
+        status:
+          type: string
+          enum:
+            - opened
+            - closed
+        fiscalCode:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        membersFiscalCodes:
+          type: array
+          items:
+            type: string
+        variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessVariable'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileDescriptor'
+
