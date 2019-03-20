@@ -28,7 +28,9 @@ info:
   x-lifecycle:
     published: 2019-03-13T14:56:39+01:00
     maturity: published
-
+  x-catalog:
+    tag:
+    - "cataloghi indici elenchi"
 paths:
   /elenco-professionisti:
     get:
@@ -61,6 +63,11 @@ paths:
       x-throttling-tier: Unlimited
 servers:
   - url: 'https://api.regione.umbria.it:443/elencoprofessionisti/1.0'
+    description: Produzione
+    x-healthCheck:
+      url: TODO
+      interval: 300
+      timeout: 15
 components:
   securitySchemes:
     default:
