@@ -2,7 +2,18 @@ openapi: 3.0.0
 info:
   title: ElencoProfessionisti
   version: "1.0.0"
-  x-api-id: 00000000-0000-0000-0000-000000000000
+  x-api-id: 62d8d908-4701-11e9-b210-d663bd873d93
+  x-catalog:
+    properties:
+      tag:
+      - Elenco professionisti
+      - Opere pubbliche
+      category:
+      - cataloghi indici elenchi
+  x-ecosystem:
+    - name: Ecosistema digitale regionale
+      url: https://apistore.regione.umbria.it
+      description: Ecosistema digitale regionale Umbria
   x-summary: Elenco dei professionisti della Regione Umbria
   description: |-
     #### Documentazione
@@ -26,7 +37,7 @@ info:
   termsOfService: >-
     WRITEME
   x-lifecycle:
-    published: 2019-03-13T14:56:39+01:00
+    published: 2019-03-13
     maturity: published
   x-catalog:
     tag:
