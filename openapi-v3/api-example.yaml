@@ -12,6 +12,8 @@ info:
   # Dev'essere chiaro e conciso.
   title: |-
     Starter Kit API
+  x-summary: >-
+    Una linea che descrive la nostra API per il catalogo.
   description: |
     #### Documentazione
     Qui devi inserire la documentazione principale del servizio.
@@ -70,6 +72,11 @@ tags:
 servers:
   - description: Test server
     url: https://api.example.com/ipa/v1
+    x-sandbox: yes
+    x-healthCheck:
+      interval: 5
+      timeout: 10
+      url: https://foo/status
   - description: Development server
     url: https://localhost:8443/ipa/v1
 #
