@@ -52,14 +52,14 @@ info:
 
 Every error should be packed in a [RFC7807](https://tools.ietf.org/html/rfc7807) object
 
-The schema is defined here https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml
+The schema is defined here https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml
 and can be referenced directly by your API. Eg.
 
 ```
 components:
   schemas:
     Problem:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemas/Problem'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/Problem'
 
 ```
 
@@ -71,11 +71,11 @@ Your API should throttle clients always returning the [following headers](http:/
   headers:
     # Headers conform to http://lg-modellointeroperabilita.readthedocs.io/it/latest/doc/doc_02_cap_04.html#throttling-ed-indisponibilita-del-servizio
     X-RateLimit-Limit:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Limit'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Remaining'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Reset'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
 
 ```
 
@@ -87,17 +87,17 @@ You can use the pre-built responses in errors.
   description: Too many requests
   headers:
     X-RateLimit-Limit:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Limit'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
     X-RateLimit-Remaining:  
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Remaining'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/X-RateLimit-Reset'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
     Retry-After:
-      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/headers/Retry-After'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/Retry-After'
   content:
     application/problem+json:
       schema:
-        $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/schemas/Problem'
+        $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/Problem'
 
 ```
 
@@ -122,7 +122,7 @@ Pagination must be implemented with the following parameters:
 HTTP Headers for conditional requests are defined here:
 
 ```
-# https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters
+# https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/parameters
 Etag:
   name: Etag
   description: |
@@ -144,6 +144,6 @@ Use them when needed, eg
 ```
 ...
     parameters:
-    - "$ref": "https://raw.githubusercontent.com/teamdigitale/openapi/0.0.3/docs/definitions.yaml#/parameters/Etag"
+    - "$ref": "https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/parameters/Etag"
 
 ```
