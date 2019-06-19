@@ -58,6 +58,8 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  x-lifecycle:
+    maturity: developing
 # Una lista di `tag` utili a raggruppare le varie operazioni
 #   eseguite dalle API. Ogni `tag` puo' referenziare un link
 #   alla sua descrizione.

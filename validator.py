@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-import sys
-from os import path, getcwd
+import collections
 import logging
+import sys
+from argparse import ArgumentParser
+from os import getcwd, path
 
-logging.basicConfig(level=logging.DEBUG)
-
+import jsonschema
+import yaml
 from colors import color
 from jsonschema.exceptions import RefResolutionError
 from openapi_spec_validator import openapi_v3_spec_validator
 from openapi_spec_validator.handlers import UrlHandler
 from six.moves.urllib.parse import urlparse
 
-import yaml
-from sys import argv
-import collections
-import jsonschema
+logging.basicConfig(level=logging.DEBUG)
 
 
 def resolve_refs(uri, spec):
@@ -47,11 +46,11 @@ def resolve_refs(uri, spec):
     return _do_resolve(spec)
 
 
-def get_custom_spec(fpath, version="oas-3.0.1"):
+def get_custom_spec(fpath, version):
     italia_oas3_schema = yaml.safe_load(open(fpath))
     print(italia_oas3_schema)
     resolve_refs("", italia_oas3_schema)
-    return italia_oas3_schema[version]
+    return italia_oas3_schema["oas-" + ".".join(version)]
 
 
 def validate(url):
@@ -67,12 +66,17 @@ def validate(url):
 
         for i in openapi_v3_spec_validator.iter_errors(spec, spec_url=url):
             counter += 1
-            print_error(counter, ":".join(i.absolute_path), i.message, i.instance)
+            print_error(
+                counter, ":".join(i.absolute_path), i.message, i.instance
+            )
 
     except RefResolutionError as e:
         counter += 1
         print_error(
-            counter, "", f"Unable to resolve {e.__context__.args[0]} in {e.args[0]}", ""
+            counter,
+            "",
+            f"Unable to resolve {e.__context__.args[0]} in {e.args[0]}",
+            "",
         )
     except BaseException:
         counter += 1
@@ -100,30 +104,27 @@ def print_ok(msg):
 
 def print_error(count, path, message, instance):
     print()
-    print(color("Error #%d in [%s]:" % (count, path or "unknown"), style="bold"))
+    print(
+        color("Error #%d in [%s]:" % (count, path or "unknown"), style="bold")
+    )
     print("    %s" % message)
     print("    %s" % instance)
 
 
-def help():
-    print("usage: " + path.basename(__file__) + " <spec>")
-
-
-def main(argv):
-    if len(argv) == 0:
-        print("Invalid usage!")
-        help()
-        sys.exit(2)
-
-    specfile, *params = argv
+def main(
+    specfile,
+    validation_type="extended",
+    schema_file="openapi-v3/metadata.yaml",
+):
 
     # OAS validation.
     spec = yaml.safe_load(open(specfile))
+    openapi_version = spec["openapi"].split(".")
     validate(specfile)
 
     # Interoperability model validation
-    if params:
-        api_schema = get_custom_spec("openapi-v3/metadata.yaml")
+    if validation_type == "extended":
+        api_schema = get_custom_spec(schema_file, openapi_version[:2])
         for g in ("info", "servers"):
             assert g in spec
             jsonschema.validate(instance=spec[g], schema=api_schema[g])
@@ -132,4 +133,31 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    parser = ArgumentParser()
+
+    parser.add_argument(
+        "--spec",
+        dest="spec",
+        required=True,
+        help="OAS3 spec file or url",
+        default=False,
+    )
+    parser.add_argument(
+        "--schema",
+        dest="schema",
+        required=False,
+        help="Additional schema file to use for validation",
+        default="openapi-v3/metadata.yaml",
+    )
+
+    parser.add_argument(
+        "--type",
+        dest="validation_type",
+        required=False,
+        help="Whether validate just oas3 or extended x-attributes."
+        " Valid values: 'oas3', 'extended'",
+        default="extended",
+    )
+    args = parser.parse_args()
+
+    main(args.spec, validation_type=args.validation_type)

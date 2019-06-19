@@ -2,25 +2,30 @@
 # Metatada catalog items extending OAS3 schemas
 #
 
-oas-3.0.1:
+oas-3.0:
   info:
     type: object
     required:
     - x-api-id
     - x-summary
+    - title
+    - version
     - description
     - termsOfService
     - contact
+    - x-lifecycle
     properties:
       x-api-id:
-          $ref: '#/x_api_id'
+          $ref: '#/Api_id'
       x-summary:
-        $ref: '#/x-summary'
+        $ref: '#/Summary'
       contact:
         required:
         - email
         - name
         - url
+      x-lifecycle:
+        $ref: '#/Lifecycle'
   servers:
     type: array
     items:
@@ -28,22 +33,24 @@ oas-3.0.1:
         x-healthCheck:
           $ref: '#/HealthCheck'
         x-sandbox:
-          $ref: '#/x-sandbox'
+          $ref: '#/Sandbox'
 
-x-sandbox:
+Sandbox:
   type: boolean
   description: An one-liner summary for the API
 
-x-summary:
+Summary:
   type: string
   description: An one-liner summary for the API
 
-x_api_id:
+Api_id:
   type: string
   pattern: '[0-9a-f\-]+'
   description: A unique id for the API
 
-x_lifecycle:
+Lifecycle:
+  required:
+  - maturity
   properties:
     published:
       type: string
@@ -58,7 +65,7 @@ x_lifecycle:
       type: string
       enum: [proposal,developing,published,deprecated,retired]
 
-x_catalog:
+Catalog:
   properties:
     tag:
       description: >-
