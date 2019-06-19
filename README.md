@@ -1,4 +1,5 @@
 # openapi-samples
+
 API samples following given specs.
 
 ## Converting swagger to openapi-v3
