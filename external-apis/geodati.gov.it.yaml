@@ -18,8 +18,8 @@ info:
     #### Note
 
     L'interfaccia REST è fornita a supporto delle attività di sviluppo e di accessibilità, mentre **l'interfaccia ufficiale
-    basata sulle indicazioni della [Direttiva INSPIRE](http://geodati.gov.it/geoportale/direttiva-inspire)** è descritta
-    [qui](http://geodati.gov.it/geoportale/che-cos-e-il-rndt/2015-04-21-22-41-05).
+    basata sulle indicazioni della [Direttiva INSPIRE](https://geodati.gov.it/geoportale/direttiva-inspire)** è descritta
+    [qui](https://geodati.gov.it/geoportale/che-cos-e-il-rndt/2015-04-21-22-41-05).
 
     L'endpoint in formato [CSW - Catologo dei Servizi Web](https://it.wikipedia.org/wiki/Catalog_Service_for_the_Web) è disponibile qui: http://geodati.gov.it/RNDT/csw
 
@@ -29,14 +29,14 @@ info:
 
     Query:
     ```
-    http 'http://geodati.gov.it/RNDT/rest/find/document?max=5&searchText=natura&f=json'
+    http 'https://geodati.gov.it/RNDT/rest/find/document?max=5&searchText=natura&f=json'
     ```
 
-  termsOfService: 'http://geodati.gov.it/geoportale/note-legali'
+  termsOfService: 'https://geodati.gov.it/geoportale/note-legali'
   contact:
     email: "info@rndt.gov.it"
     name: "Agenzia per l'Italia Digitale"
-    url: "http://geodati.gov.it/geoportale/responsabile-procedimento-pubblicazione"
+    url: "https://geodati.gov.it/geoportale/responsabile-procedimento-pubblicazione"
   x-api-id: 81e79570-58ae-4cb0-b3f3-554a476a1fb9
   license:
     name: Apache 2.0
@@ -50,7 +50,7 @@ tags:
 servers:
   - description: Geodati Server.
     url: >-
-      http://geodati.gov.it/RNDT/rest
+      https://geodati.gov.it/RNDT/rest
 
 paths:
   /find/document:
@@ -96,7 +96,7 @@ paths:
 
           Eg:
           ```
-          curl http://geodati.gov.it/RNDT/rest/find/document?searchText=INSPIRETheme:Idrografia&start=1&max=5&f=pjson
+          curl https://geodati.gov.it/RNDT/rest/find/document?searchText=INSPIRETheme:Idrografia&start=1&max=5&f=pjson
           ```
 
           For an exact match use double quotes. For example, see the syntax for two terms, `carta` and `geologica`:
@@ -229,7 +229,7 @@ paths:
         description: |
           CSS stylesheet for HTML results.
           String value representing a URL to a stylesheet.
-        example: "http://geodati.gov.it/geoportale/templates/rndt/css/template.css"
+        example: "https://geodati.gov.it/geoportale/templates/rndt/css/template.css"
         schema:
           type: string
           format: url
@@ -382,7 +382,7 @@ components:
         href:
           format: url
           type: string
-          example: http://geodati.gov.it/geoportalRNDTPA/catalog/search/resource/details.page?uuid=age%3AD_E472_LATINA
+          example: https://geodati.gov.it/geoportalRNDTPA/catalog/search/resource/details.page?uuid=age%3AD_E472_LATINA
         type:
           type: string
           example: details
