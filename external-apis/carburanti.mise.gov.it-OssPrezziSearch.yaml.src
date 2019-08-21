@@ -1,0 +1,337 @@
+---
+openapi: 3.0.2
+info:
+  title: OSSERVAPREZZI CARBURANTI
+  x-summary: Consultare in tempo reale i prezzi di vendita dei carburanti
+  x-api-id: 6fbcf843-f45e-468e-a37d-3b1052b1069a
+  version: 1.0.0
+  description: |-
+    ## Osservatorio prezzi carburante
+
+    Osservaprezzi carburanti è il sito del Ministero dello sviluppo economico che permette di consultare in tempo reale
+    i prezzi di vendita dei carburanti effettivamente praticati presso gli impianti di distribuzione situati nel territorio nazionale,
+    così come comunicati dai gestori dei punti di vendita settimanalmente o nei casi di aumenti infrasettimanali.
+
+    Come previsto dalla legge sviluppo (articolo 51 della legge n. 99 del 2009) e dai relativi provvedimenti
+    attuativi (DM 15 ottobre 2010 e DM 17 gennaio 2013), dopo il periodo iniziale di applicazione ai soli impianti della rete autostradale,
+    a decorrere dal 16 settembre 2013, è infatti obbligatorio per i gestori di tutti gli impianti di distribuzione di carburante dell'intera rete
+    stradale comunicare al Ministero dello sviluppo economico i prezzi praticati per tutte
+    le tipologie di carburanti (benzina, gasolio, gpl e metano, compreso quello proveniente da rigassificazione L-GNC e quello erogato
+    in forma liquida GNL) e per tutte le forme di vendita (con priorità per la modalità self service, se attiva durante l'intero orario di apertura),
+    ai fini della loro pubblicazione su questo sito.
+
+    Questa attività di monitoraggio ed informazione al consumatore, realizzata dalla Direzione Generale per il mercato, la concorrenza,
+    il consumatore, la vigilanza e la normativa tecnica, rappresenta un importante passo avanti verso uno degli obiettivi fondamentali del
+    Ministero: la valorizzazione della trasparenza nei mercati e, in particolare, nel mercato dei carburanti, come contributo necessario alla politica di tutela dei consumatori.
+
+  contact:
+    email: osservaprezzi@mise.gov.it
+    name: Portale dell'Osservatorio Carburanti
+    url: https://carburanti.mise.gov.it/OssPrezziSearch/
+  termsOfService: https://carburanti.mise.gov.it/OssPrezziSearch/
+servers:
+- url: https://carburanti.mise.gov.it/OssPrezziSearch
+paths:
+  /ricerca/province:
+    post:
+      summary: Ricerca le province di una regione.
+      description: >-
+        Ritorna un dizionario con le sigle ed i nomi delle province.
+        Se il campo di ricerca non è presente o non è valido ritorna un dizionario vuoto.
+      operationId: getProvince
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                regioneId:
+                  type: number
+                  minimum: 1
+                  maximum: 20
+                  example: 8
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  PZ: Potenza
+                  MT: Matera
+          description: >-
+            Successo: ritorna un dizionario con le sigle ed i nomi delle province.
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        default:
+          $ref: '#/components/responses/default'
+  /ricerca/comuni:
+    post:
+      summary: Ricerca i comuni in una provincia.
+      description: >-
+        Ritorna un dizionario con i nomi dei comuni di una provincia.
+        Se il campo di ricerca non è presente o non è valido ritorna un dizionario vuoto.
+      operationId: getComuni
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                provinciaId:
+                  type: string
+                  example: BT
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  Andria: Andria
+                  Barletta: Barletta
+                  Bisceglie: Bisceglie
+                  Canosa di Puglia: Canosa di Puglia
+                  Margherita di Savoia: Margherita di Savoia
+                  Minervino Murge: Minervino Murge
+                  San Ferdinando di Puglia: San Ferdinando di Puglia
+                  Spinazzola: Spinazzola
+                  Trani: Trani
+                  Trinitapoli: Trinitapoli
+          description: >-
+            Successo: ritorna un dizionario con i nomi dei comuni.
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        default:
+          $ref: '#/components/responses/default'
+
+  /ricerca/localita:
+    post:
+      summary: Ricerca prezzi dei carburanti in base alla località.
+      description: Ritorna le stazioni di rifornimento con i relativi prezzi.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RicercaLocalita'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Risposta'
+          description: Successful response - returns a single `Distributore`.
+        default:
+          $ref: '#/components/responses/default'
+      operationId: getStazioniByLocalita
+
+  /ricerca/position:
+    post:
+      summary: Ricerca prezzi dei carburanti in base alla località.
+      description: Ritorna le stazioni di rifornimento con i relativi prezzi.
+      operationId: getStazioniByPosition
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RicercaPosition'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Risposta'
+          description: Successful response - returns a single `Distributore`.
+        default:
+          $ref: '#/components/responses/default'
+  /ricerca/percorso:
+    post:
+      summary: Ricerca prezzi dei carburanti su percorso.
+      description: Ritorna le stazioni di rifornimento con i relativi prezzi.
+      operationId: getStazioniByPath
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RicercaPath'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Risposta'
+          description: Successful response - returns a single `Distributore`.
+        default:
+          $ref: '#/components/responses/default'
+
+components:
+  responses:
+    400BadRequest:
+      $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/responses/400BadRequest
+    default:
+      $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/responses/default
+  schemas:
+    Point:
+      properties:
+        lat:
+          $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/schemas/Latitude
+        lng:
+          $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/schemas/Longitude
+      required:
+      - lat
+      - lng
+    Path:
+      type: array
+      items:
+        $ref: '#/components/schemas/Point'
+    LongitudeString:
+      $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/schemas/LongitudeString
+    LatitudeString:
+      $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/schemas/LatitudeString
+    Center:
+      description: Il centro della ricerca geografica.
+      properties:
+        second:
+          $ref: '#/components/schemas/LongitudeString'
+        first:
+          $ref: '#/components/schemas/LatitudeString'
+    Risposta:
+      properties:
+        success:
+          type: boolean
+          example: true
+        priceSort:
+          type: boolean
+          example: true
+        center:
+          $ref: '#/components/schemas/Center'
+        array:
+          type: array
+          items:
+            $ref: '#/components/schemas/Distributore'
+    Distributore:
+      title: Root Type for Distributore
+      description: Risposta a Ricerca Carburante
+      required:
+      - carburanti
+      - lat
+      type: object
+      properties:
+        lat:
+          $ref: '#/components/schemas/LatitudeString'
+        lon:
+          $ref: '#/components/schemas/LongitudeString'
+        dIns:
+          format: date-time
+          type: string
+        carburanti:
+          type: array
+          items:
+            $ref: '#/components/schemas/Carburante'
+        addr:
+          type: string
+        bnd:
+          type: string
+        name:
+          description: Nome del distributore
+          type: string
+        id:
+          format: int32
+          type: integer
+      example:
+        lat: "41.37743027724601"
+        lon: "13.395387679338455"
+        dIns: 2019-08-13 08:47:31
+        carburanti:
+        - idDettCarbRid: 17818997
+          carb: Benzina
+          idCarb: 1
+          isSelf: 0
+          prezzo: "1.484"
+        - idDettCarbRid: 24770666
+          carb: Benzina
+          idCarb: 1
+          isSelf: 1
+          prezzo: "1.549"
+        - idDettCarbRid: 17818993
+          carb: Gasolio
+          idCarb: 2
+          isSelf: 0
+          prezzo: "1.317"
+        - idDettCarbRid: 24941168
+          carb: Gasolio
+          idCarb: 2
+          isSelf: 1
+          prezzo: "1.399"
+        addr: VIA PONTE GAGLIARDO 160 04022 - FONDI LT
+        bnd: Esso
+        name: FONDI GAGLIARDO ESSO
+        id: 30613
+    Carburante:
+      title: Carburante
+      description: Informazioni sul costo di un carburante
+      type: object
+      properties:
+        idDettCarbRid:
+          format: int32
+          type: integer
+        carb:
+          type: string
+        idCarb:
+          type: string
+        isSelf:
+          format: int32
+          type: integer
+        prezzo:
+          type: string
+      example:
+        idDettCarbRid: 17818993
+        carb: Gasolio
+        idCarb: 2
+        isSelf: 0
+        prezzo: "1.317"
+    BaseRicerca:
+      properties:
+        carb:
+          type: string
+          example: 2-x
+        ordPrice:
+          enum:
+          - asc
+          - desc
+          type: string
+          example: asc
+
+    RicercaLocalita:
+      allOf:
+      - $ref: '#/components/schemas/BaseRicerca'
+      - description: Parametri di ricerca per i prezzi di un carburante
+        properties:
+          region:
+            type: number
+            example: 9
+          province:
+            type: string
+            example: LT
+          town:
+            type: string
+            example: Latina
+
+    RicercaPath:
+      allOf:
+      - $ref: '#/components/schemas/BaseRicerca'
+      - description: Parametri di ricerca per i prezzi di un carburante
+        properties:
+          googlePoints:
+            $ref: '#/components/schemas/Path'
+    RicercaPosition:
+      allOf:
+      - $ref: '#/components/schemas/BaseRicerca'
+      - properties:
+          pointsListStr:
+            type: string
+            pattern: '[0-9.]+-[0-9.]+#'
+            example: 39.919216100221554-8.567276000976562#
