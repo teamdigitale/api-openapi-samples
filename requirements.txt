@@ -3,4 +3,4 @@ ansicolors
 jsonschema
 json_schema_generator
 yamllint
-openapi-resolver==0.0.4
+openapi-resolver==0.0.7rc1

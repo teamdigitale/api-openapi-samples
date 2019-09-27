@@ -10,11 +10,11 @@ yaml: $(YAMLGEN)
 
 .ONESHELL:
 %.yaml: %.yaml.src .tox/python/bin/activate
-	. .tox/python/bin/activate
+	. .tox/py36/bin/activate
 	yamllint $<
 	python -m openapi_resolver $< $@
 
 
 yamllint: $(YAML)
-	. .tox/python/bin/activate
+	. .tox/py36/bin/activate
 	yamllint $?
