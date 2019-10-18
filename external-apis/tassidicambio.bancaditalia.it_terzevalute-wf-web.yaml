@@ -15,6 +15,8 @@ x-commons:
   common-responses: &common-responses
     '400':
       $ref: '#/components/responses/400BadRequest'
+    '408':
+      $ref: '#/components/responses/408RequestTimeout'
     '429':
       $ref: '#/components/responses/429TooManyRequests'
     '503':
@@ -24,12 +26,12 @@ x-commons:
 
 openapi: 3.0.0
 info:
-  version: "1.0.0"
+  version: "draft"
   # Il `title` e' il nome del tuo prodotto/servizio!
   # E' la prima cosa ad apparire in pagine web e cataloghi.
   # Dev'essere chiaro e conciso.
   title: |-
-    Terze Valute API.
+    Tassi di Cambio - REST API.
   x-summary: >-
     Renderizza in JSON i dati presenti nei vocabolari controllati.
   description: |
@@ -109,7 +111,7 @@ servers:
 paths:
   /latestRates:
     get:
-      summary: Ritorna i tassi di cambio.
+      summary: Ultimi Cambi.
       description: |
         Ritorna i tassi di cambio.
       operationId: get_latest_rates
@@ -132,7 +134,7 @@ paths:
                 $ref: '#/components/schemas/LatestResponse'
   /dailyRates:
     get:
-      summary: Ritorna i tassi di cambio.
+      summary: Cambi Giornalieri.
       description: |
         Ritorna i tassi di cambio.
       operationId: get_daily_rates
@@ -160,6 +162,11 @@ paths:
 components:
   parameters:
     lang:
+      description: |-
+        Stringa identificativa della lingua in cui si desidera ottenere i dati: può valere “it” o “en”
+        case insensitive.
+        Se il parametro non viene specificato, o valorizzato in modo errato, i risultati saranno
+        forniti nella lingua di default.
       name: lang
       in: query
       schema:
@@ -177,10 +184,29 @@ components:
         example: 2011-01-23
     currencyIsoCode:
       name: currencyIsoCode
+      description: |
+        Codice ISO (case insensitive) della valuta "contro" cui si vuole la
+        quotazione. Può valere “EUR”, “USD”, “ITL”. Se il parametro non è
+        specificato, o è specificato un valore diverso da quelli validi, il servizio
+        restituirà un messaggio di errore
       in: query
       schema:
         $ref: https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/CurrencyCode
-        
+    baseCurrencyIsoCode:
+      name: baseCurrencyIsoCode
+      description: |
+        Codice ISO (case insensitive) della valuta per cui si richiede la quotazione.
+        Nel caso di più valute il parametro sarà ripetuto. Se il parametro non
+        viene passato, si intendono tutte le valute per cui è disponibile la
+        quotazione nella data richiesta.
+        Codici ISO inesistenti verranno scartati. Se tutti i codici ISO inseriti sono
+        inesistenti, verrà restituita una lista vuota.
+        Se il parametro è specificato in un formato errato, il servizio restituirà un
+        messaggio di errore.
+      in: query
+      schema:
+        $ref: https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/CurrencyCode
+
   headers:
     Cache-Control:
       schema:
@@ -204,6 +230,8 @@ components:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/429TooManyRequests'
     503ServiceUnavailable:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/503ServiceUnavailable'
+    408RequestTimeout:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/default'
     default:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/default'
 
