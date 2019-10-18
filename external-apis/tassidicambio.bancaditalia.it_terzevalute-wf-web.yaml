@@ -1,0 +1,312 @@
+#
+# Questo e' un progetto d'esempio in formato OpenAPI 3.0 API Starter Kit.
+#
+# Stai per sviluppare un API? Segui attentamente questo template e
+#   potrai integrarla facilmente in Developers Italia.
+#
+x-commons:
+  ratelimit-headers: &ratelimit-headers
+    X-RateLimit-Limit:
+      $ref: '#/components/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: '#/components/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: '#/components/headers/X-RateLimit-Reset'
+  common-responses: &common-responses
+    '400':
+      $ref: '#/components/responses/400BadRequest'
+    '429':
+      $ref: '#/components/responses/429TooManyRequests'
+    '503':
+      $ref: '#/components/responses/503ServiceUnavailable'
+    default:
+      $ref: '#/components/responses/default'
+
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  # Il `title` e' il nome del tuo prodotto/servizio!
+  # E' la prima cosa ad apparire in pagine web e cataloghi.
+  # Dev'essere chiaro e conciso.
+  title: |-
+    Terze Valute API.
+  x-summary: >-
+    Renderizza in JSON i dati presenti nei vocabolari controllati.
+  description: |
+    #### Documentazione
+    Il nuovo dominio base per i servizi A2A è:
+    
+    https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0
+    
+    Per brevità nella descrizione delle URL si omette il dominio base.
+    Quindi, ad esempio, invece di
+    
+        GET https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/currencies
+    
+    scriviamo semplicemente GET /currencies
+    Oppure al posto di
+    
+        GET https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}
+    
+    scriviamo solo GET /latestRates?lang={}
+    
+    I parametri in input ripetibili sono indicati nell'URL tra parentesi quadre. Ad esempio come in:
+    
+        GET /dailyRates?referenceDate={}[&baseCurrencyIsoCode={}]&currencyIsoCode={}&lang={} 
+    
+    ##### Sottosezioni
+    E' possibile utilizzare - con criterio - delle sottosezioni.
+
+    #### Note
+
+    Il servizio non richiede autenticazione, ma va' usato rispettando gli
+    header di throttling esposti in conformita' alle Linee Guida del Modello di interoperabilita'.
+
+    #### Informazioni tecniche ed esempi
+
+    Esempio:
+
+
+
+  # I termini del servizio contengono un riferimento
+  #   a tutte le indicazioni e le note legali per l'utilizzo
+  #   del servizio, inclusi gli eventuali riferimenti utili al GDPR.
+  termsOfService: 'http://swagger.io/terms/'
+  # Chi posso contattare per informazioni sul servizio e sul suo stato?
+  contact:
+    name: Banca d'Italia
+    url: https://tassidicambio.bancaditalia.it
+  # L'audience delle API. Attualmente e' definito solamente
+  #   la tipologia `public`.
+  x-audience:
+    - public
+  # Ogni API deve avere un UUID, invariante nel tempo e
+  #   rispetto al `title`.
+  x-api-id: 00000000-0000-0000-0000-000000000000
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  url: https://www.bancaditalia.it/compiti/operazioni-cambi/Nuove_Istruzioni_tecnico-operative.pdf
+  description: Documentazione ufficiale
+# Una lista di `tag` utili a raggruppare le varie operazioni
+#   eseguite dalle API. Ogni `tag` puo' referenziare un link
+#   alla sua descrizione.
+tags:
+  - name: public
+    description: Retrieve informations
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
+# Uno o piu' server di erogazione.
+#   Puo' essere utile indicare gli indirizzi di collaudo,
+#   sviluppo e test.
+servers:
+  - description: Production
+    url: https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0
+#
+# Qui vanno tutti i path.
+#
+paths:
+  /latestRates:
+    get:
+      summary: Ritorna i tassi di cambio.
+      description: |
+        Ritorna i tassi di cambio.
+      operationId: get_latest_rates
+      tags:
+        - public
+      parameters: 
+      - $ref: '#/components/parameters/lang'
+      responses:
+        <<: *common-responses
+        '200':
+          description: |
+            Ultimi cambi ritornati correttamente.
+          # Questi header di throttling sono obbligatori e definiti
+          #   nel Nuovo modello di interoperabilità.
+          headers:
+            <<: *ratelimit-headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LatestResponse'
+  /dailyRates:
+    get:
+      summary: Ritorna i tassi di cambio.
+      description: |
+        Ritorna i tassi di cambio.
+      operationId: get_daily_rates
+      tags:
+        - public
+      parameters: 
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/currencyIsoCode'
+      - $ref: '#/components/parameters/referenceDate'
+      
+      responses:
+        <<: *common-responses
+        '200':
+          description: |
+            Cambi giornalier ritornati correttamente.
+          # Questi header di throttling sono obbligatori e definiti
+          #   nel Nuovo modello di interoperabilità.
+          headers:
+            <<: *ratelimit-headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyResponse'
+
+components:
+  parameters:
+    lang:
+      name: lang
+      in: query
+      schema:
+        type: string
+        enum: 
+        - it
+        - en
+        example: it
+    referenceDate:
+      name: referenceDate
+      in: query
+      schema:
+        type: string
+        format: date
+        example: 2011-01-23
+    currencyIsoCode:
+      name: currencyIsoCode
+      in: query
+      schema:
+        $ref: https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/CurrencyCode
+        
+  headers:
+    Cache-Control:
+      schema:
+        type: string
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
+    Retry-After:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/Retry-After'
+
+  responses:
+    # Predefined error codes for this API
+    400BadRequest:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/400BadRequest'
+    404NotFound:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/404NotFound'
+    429TooManyRequests:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/429TooManyRequests'
+    503ServiceUnavailable:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/503ServiceUnavailable'
+    default:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/default'
+
+  schemas:
+    DailyResponse:
+      properties:
+        resultsInfo:
+          $ref: '#/components/schemas/ResultsInfo'
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyAverageRate'
+    
+    LatestResponse:
+      properties:
+        resultsInfo:
+          $ref: '#/components/schemas/ResultsInfo'
+        latestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyRate'
+    ResultsInfo:
+      description: |
+         $schema: 'http://json-schema.org/draft-04/schema#'
+      type: object
+      properties:
+        notice:
+          type: string
+        timezoneReference:
+          type: string
+        totalRecords:
+          type: integer
+      required:
+        - notice
+        - timezoneReference
+        - totalRecords
+
+    CurrencyAverageRate:
+      description: |-
+        "$schema": 'http://json-schema.org/draft-04/schema#'
+      type: object
+      properties:
+        country:
+          type: string
+        currency:
+          type: string
+        isoCode:
+          type: string
+        referenceDate:
+          type: string
+        uicCode:
+          type: string
+        exchangeConvention:
+          type: string
+        exchangeConventionCode:
+          type: string
+        avgRate:
+          type: string
+      required:
+        - country
+        - currency
+        - isoCode
+        - uicCode
+        - referenceDate
+        - avgRate
+        - exchangeConvention
+        - exchangeConventionCode
+
+      
+    CurrencyRate:
+      description: |-
+        "$schema": 'http://json-schema.org/draft-04/schema#'
+      type: object
+      properties:
+        country:
+          type: string
+        currency:
+          type: string
+        eurRate:
+          type: string
+        isoCode:
+          type: string
+        referenceDate:
+          type: string
+        uicCode:
+          type: string
+        usdExchangeConvention:
+          type: string
+        usdExchangeConventionCode:
+          type: string
+        usdRate:
+          type: string
+      required:
+        - country
+        - currency
+        - isoCode
+        - uicCode
+        - referenceDate
+
+        - eurRate
+        - usdExchangeConvention
+        - usdExchangeConventionCode
+        - usdRate
+    
+    Problem:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/Problem'
