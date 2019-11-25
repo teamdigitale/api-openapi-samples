@@ -1,0 +1,737 @@
+openapi: 3.0.0
+servers:
+  - url: "http://localhost:8080/master-data/v1"
+info:
+  description: "Dati relativi al Servizio Demografico, al Catasto e allo Stato Civile"
+  version: 1.0.8
+  title: Demografico_LD
+  contact:
+    email: "you@your-company.com"
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+  - name: backoffice
+    description: Operazioni utilizzate nell'ambito dei sistemi di backoffice
+  - name: portale
+    description: Operazioni utilizzate nell'ambito dei portali di servizi agli utenti
+paths:
+  "/demografico/residente/{codiceFiscale}":
+    parameters:
+      - in: path
+        name: codiceFiscale
+        required: true
+        schema:
+          type: string
+          example: "GVCFRN81R14G720X"
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato master Residente"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Residente"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  "/demografico/scheda-anagrafica/{codiceFiscale}":
+    parameters:
+      - in: path
+        name: codiceFiscale
+        required: true
+        schema:
+          type: string
+          example: "GVCFRN81R14G720X"
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato Scheda Anagrafica"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchedaAnagrafica"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  "/demografico/tessera-elettorale/{codiceFiscale}":
+    parameters:
+      - in: path
+        name: codiceFiscale
+        required: true
+        schema:
+          type: string
+          example: "GVCFRN81R14G720X"
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato Tessera Elettorale"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TesseraElettorale"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  "/oggetti/dati-catastali/{codiceIndirizzo}":
+    parameters:
+      - in: path
+        name: codiceIndirizzo
+        required: true
+        schema:
+          type: string
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato Dati Catastali"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatiCatastali"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  "/oggetti/stato-civile/genitore/{codiceFiscaleFiglio}":
+    parameters:
+      - in: path
+        name: codiceFiscaleFiglio
+        required: true
+        schema:
+          type: string
+          description: Identificativo del figlio
+          example: "GVCRSS10D48G720H"
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato di dei Genitori, ovvero delle persone che nello Stato Civile risultano essere genitori a fronte dell'identificativo del figlio"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrutturaGenitori"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  "/oggetti/stato-civile/figlio/{codiceFiscaleGenitore}":
+    parameters:
+      - in: path
+        name: codiceFiscaleGenitore
+        required: true
+        schema:
+          type: string
+          description: Identificativo del genitore
+          example: "GVCRSS10D48G720H"
+    get:
+      summary: "Restituisce la rappresentazione JSON del dato dei figli (SE ESISTONO), ovvero delle persone che nello Stato Civile risultano essere figli a fronte dell'identificativo del genitore"
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+          - anagrafe_read
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrutturaFigli'
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+components:
+  schemas:
+    Residente:
+      type: object
+      required:
+        - rdfs_label
+        - cpv_taxCode
+        - cpv_personID
+        - cpv_familyName
+        - cpv_givenName
+        - cpv_dateOfBirth
+        - cpv_hasBirthPlace
+        - cpv_hasSex
+        - cpv_hasAddress
+        - cpv_inRegisteredFamily
+      properties:
+        rdfs_label:
+          type: string
+          description: "Nome e cognome del residente correttamente concatenati per una facile rappresentazione a video"
+          example: "Roberto De Lorenzi"
+        cpv_taxCode:
+          type: string
+          description: "Identificativo del residente rappresentato dal suo Codice Fiscale"
+          example: "DLRRRT68T29D969Z"
+        cpv_personID:
+          type: string
+          description: "Identificativo del residente rappresentato dalla Matricola del Cittadino"
+          example: "??????"
+        cpv_familyName:
+          type: string
+          description: "Cognome del residente"
+          example: "De Lorenzi"
+        cpv_givenName:
+          type: string
+          description: "Nome del residente"
+          example: "Roberto"
+        cpv_dateOfBirth:
+          type: string
+          format: date
+          description: "Data di nascita del residente"
+          example: "2011-03-02"
+        cpv_hasBirthPlace:
+          type: object
+          description: "Luogo di nascita del residente"
+          properties:
+            clv_hasIdentifier:
+              type: string
+              description: "Codice Istat del Comune di nascita ovvero codice MIN dello stato di nascita (se diverso da Italia)"
+              example: "010025"
+            clv_City:
+              type: string
+              description: "Nome esteso del Comune di nascita (se nato in Italia)"
+              example: "Genova"
+            clv_Province:
+              type: string
+              description: "Nome esteso della provincia di nascita / città metropolitana(se nato in Italia)"
+              example: "Genova"
+            clv_Region:
+              type: string
+              description: "Nome esteso della regione di nascita (se nato in Italia)"
+              example: "Liguria"
+            clv_Country:
+              type: string
+              description: "Nome esteso dello stato di nascita"
+              example: "Italia"
+        cpv_hasCitizenship:
+          type: object
+          description: "Cittadinanza del residente"
+          properties:
+            clv_hasIdentifier:
+              type: string
+              description: "Codice MIN dello stato di cittadinanza"
+              example: "100"
+            clv_Country:
+              type: string
+              description: "Nome esteso della cittadinanza"
+              example: "Italiana"
+        cpv_hasSex:
+          type: string
+          enum:
+            - M
+            - F
+            - X
+          description: "Sesso del residente; M: maschio, F: femmina, X: indeterminato"
+          example: "M"
+        cpv_hasAddress:
+          type: object
+          description: "Indirizzo di residenza"
+          properties:
+            clv_fullAddress:
+              type: string
+              description: "Indirizzo per esteso della residenza"
+              example: "Via Fiumara 3/42, 16149 Genova"
+            clv_postCode:
+              type: string
+              description: "CAP dell'indirizzo"
+              example: "16142"
+            clv_toponymQualifier:
+              type: string
+              description: "DUG (Denominazione Urbanistica Generica) o qualificatore di toponimo (e.g., via, vicolo, viale, piazza, ecc.) dell'odonimo/toponimo"
+              example: "Via"
+            clv_officialStreetName:
+              type: string
+              description: "Parte di toponimo stradale chiamata DUF - Denominazione Urbanistica ufficiale"
+              example: "Fiumara"
+            clv_streetNumber:
+              type: string
+              description: "Numero civico assegnato all’accesso esterno"
+              example: "3"
+            clv_flatNumber:
+              type: string
+              description: "Numero interno assegnato all’accesso interno"
+              example: "42"
+            clv_City:
+              type: string
+              description: "Nome esteso del Comune di nascita (se nato in Italia)"
+              example: "Genova"
+            genovaOnto_officialStreetNameCode:
+              type: string
+              description: "Codice della via/piazza/corso..."
+              example: "123"
+            genovaOnto_streetNumberCode:
+              type: string
+              description: "Codice del Numero Civico"
+              example: "123"
+            genovaOnto_flatNumberCode:
+              type: string
+              description: "Codice dell'Indirizzo"
+              example: "456"
+        cpv_inRegisteredFamily:
+            allOf:
+                - $ref: "#/components/schemas/SchedaAnagrafica"
+        cpv_dateOfDeath:
+            type: string
+            format: date
+            description: "Data di morte del residente (eventuale)"
+            example: "2011-03-02"
+        genovaOnto_IDCardNumber:
+            type: string
+            description: "Numero della Carta di Identità del Residente"
+            example: "AZ1234567"
+        genovaOnto_IDCardIssueDate:
+            type: string
+            format: date
+            description: "Data di emissione della Carta di Identità del Residente"
+            example: "2017-05-22"
+        genovaOnto_IDCardValidUntilDate:
+            type: string
+            format: date
+            description: "Data di scadenza della Carta di Identità del Residente"
+            example: "2022-05-22"
+        genovaOnto_IDCardIssuingMunicipality:
+            type: string
+            description: "Comune che ha emesso la Carta di Identità del Residente"
+            example: "Comune di Genova"
+        genovaOnto_IDCardIsCIE:
+            type: boolean
+            description: "La Carta di Identità del Residente è elettronica (true) o cartacea (false)?"
+            example: "false"
+        genovaStato_civile:
+            type: string
+            description: "stato civile del cittadino residente"
+            example: ["celibe", "nubile", "coniugato/a"]
+    SchedaAnagrafica:
+          type: object
+          required:
+            - cpv_registeredFamilyID
+            - cpv_FamilySheetHolder
+          description: "riferimento alla scheda anagrafica di appartenenza"
+          properties:
+            cpv_registeredFamilyID:
+              type: string
+              description: "Codice identificativo univoco della scheda anagrafica"
+              example: "123456"
+            cpv_FamilySheetHolder:
+              type: string
+              description: "Intestatario del foglio di famiglia"
+              example: "DLRRRT68T29D969Z"
+            cpv_numberRegFamilyComponents:
+              type: integer
+              format: int32
+              description: "Il numero di persone che compongono la famiglia anagrafica"
+              example: "2"
+            cpv_belongsToFamily:
+              type: array
+              items:
+                $ref: "#/components/schemas/ItemRelazioneParentale"
+    TesseraElettorale:
+      type: object
+      required:
+        - cpv_taxCode
+        - cpv_personID
+        - cpv_familyName
+        - cpv_givenName
+        - clv_City
+        - ti_date
+        - numero_tessera
+        - numero_sezione
+        - indirizzo_sezione
+      properties:
+        cpv_taxCode:
+          type: string
+          description: "Codice Fiscale dell'intestatario della scheda"
+          example: "DLRRRT68T29D969Z"
+        cpv_personID:
+          type: string
+          description: "Identificativo del intestatario rappresentato dal numero di Carta di Identità"
+          example: "AV4336156"
+        cpv_familyName:
+          type: string
+          description: "Cognome dell' intestatario"
+          example: "De Lorenzi"
+        cpv_givenName:
+          type: string
+          description: "Nome dell' intestatario"
+          example: "Roberto"
+        clv_City:
+              type: string
+              description: "Comune che ha rilasciato la tessera"
+              example: "Genova"
+        ti_date:
+          type: string
+          format: date
+          description: "Attributo che rappresenta la data di rilascio della tessera"
+          example: "2018-09-29"
+        numero_tessera:
+          type: string
+          description: "Numero della tessera elettorale"
+          example: "fgfdgdfgdfg"
+        numero_sezione:
+          type: string
+          description: "Numero della sezione elettorale"
+          example: "fgfdgdfgdfg"
+        indirizzo_sezione:
+          type: string
+          description: "Indirizzo della sezione elettorale"
+          example: "fgfdgdfgdfg"
+    DatiCatastali:
+      type: object
+      required:
+        - codice_comune_catastale
+        - foglio
+        - particella
+      properties:
+        codice_comune_catastale:
+          type: string
+          description: "Codice Belfiore del Comune"
+          example: "D969"
+        sezione_urbana:
+          type: string
+          description: "Indica la suddivisione territoriale"
+          example: "fgfdgdfgdfg"
+        foglio:
+          type: string
+          format: integer
+          description: "Unità territoriale catastale in cui è collocato l’edificio di residenza"
+          example: 20
+        particella:
+          type: string
+          format: integer
+          description: "Porzione di terreno o di fabbricato "
+          example: 968
+        subalterno:
+          type: string
+          description: "Identifica un’unità immobiliare autonoma"
+          example: 13
+        zona_censuaria:
+          type: string
+          description: "Zona classificata in base alla redditività"
+          example: 2
+        categoria:
+          type: string
+          description: "Tipologia in base alla rendita"
+          example: "A/2"
+        classe:
+          type: string
+          description: "Indice di classificazione"
+          example: "3"
+        superficie_catastale:
+          type: string
+          description: "Somma delle varie tipologie di superficie di una unità immobiliare urbana"
+          example: "fgfdgdfgdfg"
+        consistenza:
+          type: string
+          description: "Grandezza dal punto di vista catastale dell’immobile"
+          example: "fgfdgdfgdfg"
+        rendita:
+          type: string
+          format: currency
+          description: "Valore attribuito con finalità fiscale all’immobile espresso con la coppia: valuta (ISO 4217), valore"
+          example: "fgfdgdfgdfg"
+    Problem:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: "A human readable explanation specific to this occurrence of the\nproblem.\n"
+          example: Connection to database timed out
+        instance:
+          type: string
+          description: "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
+          format: uri
+        status:
+          maximum: 600
+          exclusiveMaximum: true
+          minimum: 100
+          type: integer
+          description: "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n"
+          format: int32
+          example: xxx
+        title:
+          type: string
+          description: "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable\n"
+        type:
+          type: string
+          description: "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n"
+          format: uri
+          example: "https://tools.ietf.org/html/rfc7231#section-6.6.4"
+          default: "about:blank"
+    ItemRelazioneParentale:
+      type: object
+      required:
+        - cpv_componentTaxCode
+        - cpv_parentType
+      properties:
+        cpv_componentTaxCode:
+          type: string
+          description: "Codice Fiscale della persona in relazione parentale"
+          example: "MRORSS62B15D969W"
+        cpv_parentType:
+          type: string
+          enum:
+            - IC # Convivente in Convivenza  Convivente in Convivenza
+            - AC # nonnastra  nonnastra
+            - AD # Adottato  Adottato
+            - AE # Affiliante  Affiliante
+            - AF # Affiliato  Affiliata
+            - AI # Affine  Affine
+            - AT # Affidato  Affidato
+            - AV # Avo  Ava
+            - BC # BisCugino  BisCugina
+            - BN # Bisnipote  Bisnipote
+            - BO # Bisnonno  Bisnonna
+            - CC # Capo Convivenza  Capo Convivenza
+            - CF # Coppia di fatto  Coppia di fatto
+            - CN # Consuocero  Consuocera
+            - CR # Convittore  Convittore
+            - CT # Cognato  Cognata
+            - CU # Cugino  Cugina
+            - CV # Convivente in famiglia  Convivente in famiglia
+            - DM # Domestico  Domestico
+            - FG # Figlio  Figlia
+            - FN # Figlio naturale  Figlia naturale
+            - FR # Fratello  Fratello
+            - FS # Figliastro  Figliastra
+            - FT # Fratellastro  Fratellastro
+            - GE # Genero  Genero
+            - IS # Intestatario scheda  Intestatario scheda
+            - MA # Madre Adottiva  Madre Adottiva
+            - MD # Madre  Madre
+            - MG # Moglie  Moglie
+            - MN # Matrigna  Matrigna
+            - MR # Marito  Marito
+            - NC # EX  I.S.  EX  I.S.
+            - NN # Nonno  Nonna
+            - NP # Nipote  Nipote
+            - NU # Nuora  Nuora
+            - PD # Padre  Padre
+            - PE # Pronipote  Pronipote
+            - PN # Patrigno  Patrigno
+            - PT # Padre adottivo  Padre adottivo
+            - PZ # Prozio  Prozia
+            - SC # Suocero  Suocera
+            - SR # Sorella  Sorella
+            - ST # Sorellastra  Sorellastra
+            - UC # Unito Civilmente  Unita Civilmente
+            - XX # Sconosciuto  Sconosciuto
+            - ZA # Zia  Zia
+            - ZO # Zio  Zio
+          description: "codifica della relazione parentale"
+    StrutturaGenitori:
+      type: object
+      properties:
+        cpv_hasParentalRelationshipWith:
+          type: object
+          description: "elenco genitori (se esistenti)"
+          properties:
+            cpv_hasFather:
+              type: string
+              description: contiene il codice fiscale del soggetto che lo Stato Civile individua come Padre
+              example: "MRORSS71T16B538Q"
+            cpv_hasMother:
+              type: string
+              description: contiene il codice fiscale del soggetto che lo Stato Civile individua come Madre
+              example: "MRARSS74C52D969U"
+    StrutturaFigli:
+      type: object
+      properties:
+        cpv_hasParentalRelationshipWith:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFiglio'
+    ItemFiglio:
+      type: object
+      required:
+        - cpv_isParentOf
+      properties:
+        cpv_isParentOf:
+          type: string
+          description: "Codice Fiscale di un figlio"
+          example: "MRORSS62B15D969W"
+  responses:
+    400BadRequest:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/400BadRequest"
+    404NotFound:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/404NotFound"
+    429TooManyRequests:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/429TooManyRequests"
+    503ServiceUnavailable:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/503ServiceUnavailable"
+    default:
+      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/default"
+  securitySchemes:
+    oauthSecurity:
+      type: oauth2
+      description: schema di sicurezza basato su oauth
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://api.comune.genova.it/oauth2/authorize"
+          tokenUrl: "https://api.comune.genova.it/oauth2/token"
+          refreshUrl: "https://api.comune.genova.it/oauth2/token"
+          scopes:
+            operatore: utente dei sistemi di backoffice
+            anagrafe_read: accesso in lettura ai dati anagrafici
+            anagrafe_write: accesso in scrittura ai dati anagrafici
+            catasto_read: accesso in lettura ai dati catastali
+            statocivile_read: accesso in lettura ai dati dello Stato Civile
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: "https://test.api.comune.genova.it/authorize"
+          scopes: {}
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: How many items to return at one time (max 100)
+      schema:
+        type: integer
+        format: int32
+    offset:
+      name: offset
+      in: query
+      description: The zero-ary offset index into the results
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    sort:
+      description: Sorting order
+      in: query
+      name: sort
+      schema:
+        example: +name
+        type: string

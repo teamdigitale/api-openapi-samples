@@ -1,0 +1,1427 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/marti1959it/ServiziRistorazioneScolasticaPortale/1.1.17
+  - url: https://api.comune.genova.it/ServiziRistorazioneScolasticaPortale/1.1.17
+    description: API in ambiente di produzione
+  - url: https://staging-api.comune.genova.it/ServiziRistorazioneScolasticaPortale/1.1.17
+    description: API in ambiente di staging
+info:
+  description: "Dati relativi agli utenti dei Servizi di Ristorazione Scolastica (nel seguito - utente dei Servizi - per brevità). Iscritti alle scuole comunali 0/6 anni, alle scuole primarie statali e private, alle scuole secondarie di 1 grado statali, e secondarie di 2 grado."
+  version: "1.1.17"
+  title: Servizi di Ristorazione Scolastica - Portale version
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: portale
+    description: Operations available to regular users
+paths:
+  /utenti-servizi-ristorazione/domanda-iscrizione:
+    post:
+      summary: Creazione di una domanda di iscrizione ai servizi di ristorazione
+      tags:
+        - portale
+      security:
+        - oauthSecurity:
+            - scuole_write
+      requestBody:
+        description: dati della domanda di iscrizione
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatiDomandaIscrizioneServiziRistorazione"
+      responses:
+        "201":
+          description: Iscrizione creata correttamente
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"  
+  /utenti-servizi-ristorazione/{codice-fiscale}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Restituisce il dettaglio di un utente del Servizi di Ristorazione Scolastica, identificato dal relativo codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - backoffice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtenteServiziRistorazione'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/anagrafica/{codice-fiscale}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        description: il codice fiscale di un utente del Servizi di Ristorazione Scolastica da selezionare
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Restituisce le generalità di un utente del Servizi di Ristorazione Scolastica identificato tramite il codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiAnagrafici'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/residenza/{codice-fiscale}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Restituisce l'indirizzo di residenza di un utente dei Servizi di Ristorazione Scolastica, identificato tramite il codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiResidenziali'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/iscrizione/{codice-fiscale}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Restituisce i dati di iscrizione di un utente dei Servizi di Ristorazione Scolastica, identificato tramite il codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiIscrizioneServiziRistorazione'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/domande-iscrizione-servizi-ristorazione-stato-pdf/{codice-domanda-iscrizione-pdf}:
+    parameters:
+      - in: path
+        name: codice-domanda-iscrizione-pdf
+        required: true
+        description: codice univoco del file pdf della domanda di iscrizione ai servizi di ristorazione
+        schema:
+          type: string
+          example: 112233445566
+    get:
+      summary: scarica la domanda di scrizione ai servizi di ristorazione in formato pdf
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: un file pdf
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: base64
+                description: file pdf codificato in base64
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'           
+  /utenti-servizi-ristorazione/presenza-mensa/{codice-fiscale}/{data-da}/{data-a}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: data-da
+        required: true
+        schema:
+          type: string
+          format: date
+      - in: path
+        name: data-a
+        required: true
+        schema:
+          type: string 
+          format: date          
+    get:
+      summary: Restituisce i dati di presenza/assenza alla mensa di un utente dei Servizi di Ristorazione Scolastica, identificato tramite il codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 31
+                items:
+                  $ref: '#/components/schemas/DatiPresenzaServiziRistorazione'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/pagamenti/bollettini/{codice-fiscale}/{anno-scolastico}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        description: dati del genitore; se il genitore è impegnato del pagamento viene restituito l'array completo in funzione degli altri parametri in ingresso, altrimenti solo l'indicazione che tutti i pagamenti sono stati effettuati o ne rimangono in sospeso.
+        schema:
+          type: string
+          example: RCCDNL76E44D969P
+      - in: path
+        name: anno-scolastico
+        required: true
+        schema:
+          type: string
+          description: anno scolastico di riferimento
+          example: ['2019/2020', '2018/2019', '2017/2018']
+    get:
+      summary: Restituisce un insieme di bollettini di pagamento dei Servizi di Ristorazione Scolastica, relativi ai bambini di un adulto identificato tramite il codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 30
+                items:
+                  $ref: '#/components/schemas/DatiBollettinoPagamento'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'    
+  /utenti-servizi-ristorazione/pagamenti/bollettini/sintetico/{codice-fiscale}/{anno-scolastico}:
+    parameters:
+      - in: path
+        name: codice-fiscale
+        required: true
+        description: dati del genitore; viene restituita solo l'indicazione che tutti i pagamenti sono stati effettuati o ne rimangono in sospeso.
+        schema:
+          type: string
+          example: RCCDNL76E44D969P
+      - in: path
+        name: anno-scolastico
+        required: true
+        schema:
+          type: string
+          description: anno scolastico di riferimento
+          example: ["2022", "2021", "2020"]
+    get:
+      summary: Restituisce l'indicazione che tutti i pagamenti sono stati effettuati o ne rimangono in sospeso.
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiBollettinoPagamentoSintetico'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'            
+  /utenti-servizi-ristorazione/pagamenti/bollettino/pdf/{codice-bollettino}:
+    parameters:
+      - in: path
+        name: codice-bollettino
+        required: true
+        description: scarica il bollettino di pagamento in formato pdf
+        schema:
+          type: string
+          example: 112233445566
+    get:
+      summary: scarica il bollettino di pagamento in formato pdf
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: un file pdf
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'  
+  /utenti-servizi-ristorazione/domande-agevolazione-tariffaria:
+    post:
+      summary: crea una richiesta di Agevolazione Tariffaria.
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      requestBody:
+        description: dati necessari alla creazione di una richiesta di Agevolazione Tariffaria.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatiAgevolazioneTariffaria'
+      responses:
+        '200':
+          description: Richiesta di Agevolazione Tariffaria creata correttamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: restituire "OK" se la request è andata a buon fine; altrimenti codice errore interno GoaDev
+                  descrizione:
+                    type: string
+                    description: messaggio di errore human readable (comprensibile per l'utente) in caso id != "OK"
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+          $ref: '#/components/responses/default'  
+  /utenti-servizi-ristorazione/domande-agevolazione-tariffaria/{codice-fiscale-impegnato}/{codice-fiscale-agevolando}/{anno-scolastico-riferimento}:
+    parameters:
+      - in: path
+        name: codice-fiscale-impegnato
+        required: true
+        description: codice fiscale dell'impegnato che ha presentato domanda di agevolazione tariffaria
+        schema:
+          type: string
+          example: DLLVNT77B60D969I 
+      - in: path
+        name: codice-fiscale-agevolando
+        required: true
+        description: codice fiscale del soggetto (agevolando) per cui si è presentata domanda di agevolazione tariffaria
+        schema:
+          type: string
+          example: CSCFNC13C29D969H 
+      - in: path
+        name: anno-scolastico-riferimento
+        required: true
+        description: anno scolastico di riferimento
+        schema:
+          type: string
+          example: ["2018", "2019", "2020", "2021", "2022"]
+    get:
+      summary: Restituisce i dati relativi a una domanda di agevolazione tariffaria
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - backoffice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiAgevolazioneTariffaria'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+          $ref: '#/components/responses/default'
+  /utenti-servizi-ristorazione/domande-agevolazione-tariffaria-stato/{codice-fiscale-agevolando}/{anno-scolastico-riferimento}:
+    parameters:
+      - in: path
+        name: codice-fiscale-agevolando
+        required: true
+        description: codice fiscale del soggetto (agevolando) per cui si è presentata domanda di agevolazione tariffaria
+        schema:
+          type: string
+          example: CSCFNC13C29D969H 
+      - in: path
+        name: anno-scolastico-riferimento
+        required: true
+        description: anno scolastico di riferimento
+        schema:
+          type: string
+          example: ["2018", "2019", "2020", "2021", "2022"]
+    get:
+      summary: Restituisce i dati relativi a una domanda di agevolazione tariffaria
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - backoffice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiStatoAgevolazioneTariffaria'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+          $ref: '#/components/responses/default'  
+  /utenti-servizi-ristorazione/domande-agevolazione-tariffaria-stato-pdf/{codice-domanda-agevolazione-pdf}:
+    parameters:
+      - in: path
+        name: codice-domanda-agevolazione-pdf
+        required: true
+        description: codice univoco del file pdf domanda di agevolazione tariffaria
+        schema:
+          type: string
+          example: 112233445566
+    get:
+      summary: scarica la domanda di agevolazione tariffaria in formato pdf
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: un file pdf
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: base64
+                description: file pdf codificato in base64
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'          
+  /utenti-servizi-ristorazione/richiesta-simulazione-tariffaria/{servizio-richiesto}/{anno-scolastico-riferimento}/{categoria}/{scuola}/{periodo-scelto}/{ISEE}/{numero-minori-carico}/{intervenuta-disoccupazione}:
+    parameters:
+      - in: path
+        name: servizio-richiesto
+        description: Invernale il servizio da settembre a giugno Estivo il servizio per il mese di luglio
+        required: true
+        schema:
+          type: string  
+          enum: [invernale, estivo]
+      - in: path
+        name: anno-scolastico-riferimento
+        description: anno scolastico di riferimento
+        required: true
+        schema:
+          type: string 
+          example: ["2019/2020", "2018/2019", "2017/2018", "2016/2017"]
+      - in: path
+        name: categoria
+        description: categoria della scuola
+        required: true
+        schema:
+          type: string 
+      - in: path
+        name: scuola
+        description: nome della scuola
+        required: true
+        schema:
+          type: string    
+      - in: path
+        name: periodo-scelto
+        description: periodo scelto
+        required: true
+        schema:
+          type: string      
+      - in: path
+        name: ISEE
+        description: Indicatore Situazione Economica Equivalente
+        required: true
+        schema:
+          type: string   
+      - in: path
+        name: numero-minori-carico
+        description: Minori appartenenti allo stesso nucleo
+        required: true
+        schema:
+          type: string 
+      - in: path
+        name: intervenuta-disoccupazione
+        description: È intervenuto e continua lo stato di disoccupazione DELL’UNICO componente del nucleo familiare che nella attestazione ISEE risulta titolare di reddito da lavoro
+        required: true
+        schema:
+          type: string  
+          enum:
+          - no
+          - monoreddito
+          - plurireddito
+    get:
+      summary: Restituisce la simulazione tariffaria per un soggetto identificato dal suo codice fiscale
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - backoffice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatiSimulazioneTariffaria'      
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'
+        default:
+          $ref: '#/components/responses/default'          
+  /generali-servizi-ristorazione/menu-servizi-ristorazione/{struttura-scolastica}/{data-da}/{data-a}/{codice-fiscale}:
+    parameters:
+      - in: path
+        name: struttura-scolastica
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: data-da
+        required: true
+        schema:
+          type: string
+          format: date
+      - in: path
+        name: data-a
+        required: true
+        schema:
+          type: string
+          format: date
+      - in: path
+        name: codice-fiscale
+        required: true
+        schema:
+          type: string    
+    get:
+      summary: Restituisce il menù della mensa di una Struttura Scolastica, in un intervallo di giorni
+      tags: 
+      - portale
+      security:
+        - oauthSecurity:
+          - ufficioSistemaTariffario
+          - backoffice
+          - utentiInterni
+          - utentiEsterni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 7
+                items:
+                  $ref: '#/components/schemas/DatiMenuMensa'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '503':
+          $ref: '#/components/responses/503ServiceUnavailable'            
+        default:
+          $ref: '#/components/responses/default'      
+components:
+  schemas:
+    DatiAnagrafici:
+      type: object
+      required:
+        - nome
+        - cognome
+        - data_nascita
+        - luogo_nascita
+        - sesso
+        - codice_fiscale
+      properties:
+        nome:
+          type: string
+          description: Nome dell'utente
+        cognome:
+          type: string
+          description: Cognome dell'utente
+        data_nascita:
+          type: string
+          format: date
+          description: Data di nascita
+        luogo_nascita:
+          type: string
+          description: Codifica Comune/Stato di nascita ISTAT/Belfiore/altre codifiche con (profondità storica)
+          example: "009056"
+        sesso:
+          type: string
+          enum: [M, F]
+          description: Sesso dell'utente dei Servizi (con profondità storica)
+        codice_fiscale:
+          type: string
+          description: Codice fiscale/codice STP attribuito (es da Ag. Entrate) dell'utente dei Servizi.
+          example: "SCLDVD11S30I480Z"
+    DatiResidenziali:
+      type: object
+      required:
+        - indirizzo_residenza
+      properties:
+        indirizzo_residenza:
+          type: string
+          description: Indirizzo di residenza (cpf)
+    DatiIscrizioneServiziRistorazione:
+      type: object
+      required:
+        - stato_iscrizione_servizi_ristorazione
+        - categoria_struttura_scolastica
+        - struttura_scolastica
+        - classe
+        - sezione
+        - nome_impegnato
+        - cognome_impegnato
+        - scuola_con_mensa
+        - bambino_mangia
+      properties:
+        stato_iscrizione_servizi_ristorazione:
+          type: string
+          enum: ["Inviata", "In elaborazione", "Accettata","Non iscritto", "Sospesa"]
+          description: Stato della domanda di iscrizione dell'utente dei Servizi.
+        data_presentazione_domanda_iscrizione_servizi_ristorazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          description: Data in cui è stata presentata la domanda di iscrizione dell'utente ai Servizi.      
+        data_iscrizione_servizi_ristorazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          description: Data a partire dalla quale l'utente è iscritto ai Servizi.
+        categoria_struttura_scolastica:
+          type: string
+          description: Categoria della struttura scolastica cui è iscritto l'utente dei Servizi.          
+        struttura_scolastica:
+          type: string
+          description: Struttura scolastica cui è iscritto l'utente dei Servizi.
+        classe:
+          type: string
+          description: Classe a cui è iscritto l'utente dei Servizi.
+        sezione:
+          type: string
+          description: Sezione della Classe a cui è iscritto l'utente dei Servizi.
+        nome_impegnato:
+          type: string
+          description: nome della persona impegnata al pagamento dei Servizi.
+        cognome_impegnato:
+          type: string
+          description: cognome della persona impegnata al pagamento dei Servizi.
+        codice_fiscale_impegnato:
+          type: string
+          description: codice fiscale della persona impegnata al pagamento dei Servizi.     
+        codice-pdf-domanda:
+          type: string
+          description: codice identificativo univoco del file pdf contenente i dati della domanda di iscrizione ai servizi di ristorazione (creato solo se la domanda è negli stati "Sospesa" o "Accettata").          
+        scuola_con_mensa:
+          type: boolean
+          description: flag (true o false) che indica se nella struttura scolastica e' presente la mensa.
+        bambino_mangia:
+          type: boolean
+          description: flag (true o false) che indica se l'utente dei Servizi e' iscritto a mensa (sezione e,o classe con servizio mensa, bambino con domanda valida o no).
+    DatiDomandaIscrizioneServiziRistorazione:
+      type: object
+      required:
+        - codice_fiscale_impegnato
+        - codice_fiscale_iscrivendo
+        - email_iscrivendo
+      properties:
+        codice_fiscale_impegnato:
+          type: string
+          description: codice fiscale della persona impegnata al pagamento dei Servizi. 
+          example: "VLZBTY69D58Z605J"
+        codice_fiscale_iscrivendo:
+          type: string
+          description: codice fiscale del soggetto per cui si presenta la domanda di iscrizione ai Servizi. 
+          example: "LMDMHL10S29D969T"
+        nome_iscrivendo:
+          type: string
+          description: nome del soggetto. 
+          example: "BETTY AZUCENA"
+        cognome_iscrivendo: 
+          type: string
+          description: cognome del soggetto. 
+          example: "VELEZ ALCIVAR"
+        sesso_iscrivendo:
+          type: string
+          enum: [M, F]
+          description: sesso del soggetto. 
+          example: "F"
+        data_nascita_iscrivendo:
+          type: string
+          format: date
+          description: data di nascita del soggetto. 
+          example: "2010-12-29"
+        indirizzo_residenza_iscrivendo:
+          type: string
+          description: indirizzo di residenza del soggetto. 
+          example: "VIA PEGLI 49 N / 8 GENOVA 16100"
+        email_iscrivendo:
+          type: string
+          description: email dell'iscrivendo
+        num_telefono_iscrivendo:
+          type: string
+          description: numero telefonico dell'iscrivendo  
+        comune_domicilio_iscrivendo:
+          type: string
+          maxLength: 150
+          description: comune di domicilio dell'iscrivendo
+        cap_domicilio_iscrivendo:
+          type: string
+          pattern: '/^\d{5}$/'
+          minLength: 5
+          maxLength: 5
+          description: codice di avviamento postale di domicilio dell'iscrivendo          
+          example: '16121'
+        indirizzo_domicilio_iscrivendo:
+          type: string
+          description: domicilio dell'iscrivendo          
+        dieta_speciale_iscrivendo:
+          type: boolean
+          description: l'iscrivendo necessita di dieta speciale (true) o meno (false). 
+          example: false
+        dieta_speciale_iscrivendo_true_salute:
+          type: boolean
+          description: l'iscrivendo necessita di dieta speciale (ovvero se dieta_speciale_iscrivendo=true) per motivi di salute. 
+        dieta_speciale_iscrivendo_true_etico:
+          type: boolean
+          description: l'iscrivendo necessita di dieta speciale (ovvero se dieta_speciale_iscrivendo=true) per motivi etico-religiosi.           
+        dieta_speciale_iscrivendo_true_salute_allergie:
+          type: boolean
+          description: l'iscrivendo necessita di dieta speciale (ovvero se dieta_speciale_iscrivendo=true AND dieta_speciale_iscrivendo_true_salute_allergie=true) per motivi di salute legati a fattori allergici.     
+        ricevimento_notifiche_presenza_mensa:
+          type: boolean
+          description: impegnato desidera avere notifiche sulle presenze in mensa del soggetto (true) o meno (false). 
+          example: true
+        impegnato_conto_altro_adulto:
+          type: string
+          description: colui che esegue la domanda può indicare "di impegnarmi anche in nome e per conto del Signor/ra (padre, madre, affidatario/a, etc., o altro adulto appartenente al nucleo familiare dell’alunno/a dichiarato ai fini dell’attestazione ISEE)". Nel caso sono inseriti nome e cognome della persona.
+    DatiPresenzaServiziRistorazione:
+      type: object
+      required:
+        - data_riferimento
+        - presenza
+      properties:
+        data_riferimento:
+          type: string
+          format: date
+          description: Data di riferimento per la verifica presenze/assenze.
+        presenza:
+          type: string
+          enum: ["Assente", "Presente solo a scuola", "Presente sia a scuola che in mensa"]
+          description: Schema di presenze/assenze dell'utente dei Servizi per il giorno/anno/mese di riferimento.
+    DatiMenuMensa:
+      type: object
+      required:
+        - data_riferimento
+      properties:
+        data_riferimento:
+          type: string
+          format: date
+        is_dieta_speciale:
+          type: string
+          enum: ["Menù standard", "Menù speciale", "Menù speciale con esclusioni"]
+        menu_giorno:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemMenuMensa'
+    ItemMenuMensa:
+      type: object
+      properties:
+        ordine_piatto:
+          type: string
+        nome_piatto:
+          type: string
+        ingredienti_piatto:
+          type: string
+        warning_piatto:
+          type: string
+        calorie_piatto:
+          type: string          
+    UtenteServiziRistorazione:
+      allOf:
+        - $ref: '#/components/schemas/DatiAnagrafici'
+        - $ref: '#/components/schemas/DatiResidenziali'
+        - $ref: '#/components/schemas/DatiIscrizioneServiziRistorazione'
+    DatiBollettinoPagamento:
+      type: object
+      properties:
+        numero_bollettino:
+          type: string
+          description: numero del bollettino di pagamento
+          example: '112233445566'
+        data_emissione_bollettino:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          description: data di emissione del bollettino di pagamento
+        data_scadenza_bollettino:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          description: data di scadenza del bollettino di pagamento
+        anno_scolastico_riferimento_bollettino:
+          type: string
+          description: anno scolastico cui si riferisce il bollettino di pagamento
+          example: '2018/2019' 
+        acro_1mese_bim_prec:
+          $ref: '#/components/schemas/ItemAcroMese'
+        acro_2mese_bim_prec:
+          $ref: '#/components/schemas/ItemAcroMese' 
+        acro_1mese_bim_in_pagamento:
+          $ref: '#/components/schemas/ItemAcroMese'
+        acro_2mese_bim_in_pagamento:
+          $ref: '#/components/schemas/ItemAcroMese'              
+        beneficiari_pagamento:
+          type: array
+          items: 
+            allOf:
+              - $ref: '#/components/schemas/DatiAnagrafici'
+              - $ref: '#/components/schemas/DatiIscrizioneServiziRistorazione'
+          description: dati dei soggetti cui si riferisce il bollettino
+        stato_pagamento_bollettino:
+          type: boolean
+          description: Il bollettino risulta pagato (true); non risulta ancora pervenuto il pagamento del bollettino (false)
+        dettaglio_bollettino:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatiEstrattoConto'
+    DatiBollettinoPagamentoSintetico:
+      type: object
+      properties:
+        situazione_pagamenti:
+          type: string
+          enum: ["In regola con i pagamenti", "Non in regola con i pagamenti"]
+          description: descrizione sintetica della situazione dei pagamenti
+          example: "In regola con i pagamenti"            
+    DatiAgevolazioneTariffaria:
+      type: object
+      required:
+        - codice_fiscale_richiedente
+        - codici_fiscali_agevolandi
+        - anno_scolastico_agevolazione
+        - email_richiedente
+        - num_telefonico_richiedente
+      properties:
+        codici_fiscali_agevolandi:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatiAgevolazioneTariffariaAgevolando'
+          minItems:  1
+          description: codici fiscali dei minori per cui si richiede l'applicazione dell'Agevolazione Tariffaria (deve essere presente almeno 1 soggetto)
+        codice_fiscale_richiedente:
+          type: string
+          description: codice fiscale del cittadino che richiede l'applicazione dell'Agevolazione Tariffaria
+          example: "VLZBTY69D58Z605J"
+        anno_scolastico_agevolazione:
+          type: string
+          description: anno scolastico per cui si richiede l'applicazione dell'Agevolazione Tariffaria
+          example: "2018"
+        email_richiedente:
+          type: string
+          description: email del cittadino che richiede l'applicazione dell'Agevolazione Tariffaria
+          example: 'bettyaz@gmail.com' 
+        num_telefonico_richiedente:
+          type: string
+          description: numero di telefono del cittadino che richiede l'applicazione dell'Agevolazione Tariffaria
+          example: '33512345678' 
+        grado_parentela_richiedente:
+          type: string
+          enum: ["Genitore"]
+          description: grado di parentela (unico ruolo possibile genitore coresidente con il figlio)
+          example: 'Genitore'          
+        compilatore_domanda:
+          type: string
+          enum: ["Genitore"]
+          description: colui che compila la domanda
+          example: 'Genitore'          
+        disoccupati_nucleo_familiare:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatiAgevolazioneTariffariaDisoccupato'
+          minItems:  0
+        numero_minori_carico_nucleo_familiare:
+          type: number
+          format: integer
+          minimum: 1
+          example: 2
+          description: numero minori a carico nel nucleo familiare
+        data_richiesta_agevolazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          nullable: true          
+          description: Data in cui è stata presentata la domanda dell'Agevolazione Tariffaria
+        data_inizio_agevolazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          nullable: true          
+          description: Data in cui entra in vigore l'Agevolazione Tariffaria
+        data_fine_agevolazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          nullable: true          
+          description: Data in cui scade l'Agevolazione Tariffaria
+        stato_richiesta_agevolazione:
+          type: string
+          enum: ["Non presentata", "Presentata", "Accettata"]
+          description: Stato della domanda di Agevolazione Tariffaria ("Non presentata" DEFAULT)
+        numero_protocollo_dsu:
+          type: string
+          description: numero di protocollo che viene assegnato all'ISEE (direttamente dall'INPS), dedotto dalla risposta fornita dal web service del Comune di Genova che si interfaccia con INPS  
+          example: 'INPS-ISEE-2019-05977365A-00'
+        omissione_difformita:
+          type: boolean
+          description: indica se l'ISEE ha difformità (true) o meno (false), dedotto dalla risposta fornita dal web service del Comune di Genova che si interfaccia con INPS 
+          example: false    
+        data_presentazione_agevolazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          nullable: true          
+          description: data di presentazione di domanda dell'ISEE, dedotto dalla risposta fornita dal web service del Comune di Genova che si interfaccia con INPS
+        data_validita_agevolazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          nullable: true          
+          description: data di validità di domanda dell'ISEE, dedotto dalla risposta fornita dal web service del Comune di Genova che si interfaccia con INPS
+    DatiStatoAgevolazioneTariffaria:
+      type: object
+      required:
+        - stato_richiesta_agevolazione
+      properties:
+        stato_richiesta_agevolazione:
+          type: string
+          enum: ["Non presentata", "Presentata", "Accettata"]
+          description: Stato della domanda di Agevolazione Tariffaria ("Non presentata" DEFAULT)  
+        codice-pdf-domanda:
+          type: string
+          description: codice identificativo univoco del file pdf contenente i dati della domanda di agevolazione tariffaria (creato solo se la domanda è negli stati "Presentata" o "Accettata")
+    DatiAgevolazioneTariffariaAgevolando:
+      type: object
+      required:
+        - codice_fiscale_agevolando
+      properties:
+        codice_fiscale_agevolando:
+          type: string
+          description: codice fiscale dell'agevolando 
+          example: "LMDMHL10S29D969T"
+        isee_agevolando:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 12000.00
+          description: ISEE dichiarato dell'agevolando espresso in euro        
+    DatiAgevolazioneTariffariaDisoccupato:
+      type: object
+      required:
+        - codice_fiscale_disoccupato
+        - data_inizio_disoccupazione
+      properties:
+        codice_fiscale_disoccupato:
+          type: string
+          description: codice fiscale del disoccupato 
+          example: "VLZBTY69D58Z605J"
+        data_inizio_disoccupazione:
+          type: string
+          format: date-time
+          example: '2019-05-02T17:32:28Z'
+          description: data dalla quale il soggetto è disoccupato    
+    DatiSimulazioneTariffaria:
+      type: object
+      required:
+        - quota_annuale_iscrizione_euro
+        - isee_dichiarato_euro
+        - detrazione_immobile_abitazione_euro
+        - isee_ricalcolato_euro
+        - percentuale_incidenza
+        - tariffa_no_min_max_euro
+        - percentuale_sconto_n_figli_carico
+        - tariffa_pasto_euro
+      properties:
+        quota_annuale_iscrizione_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 26.00
+          description: Quota di iscrizione annuale espressa in euro
+        isee_dichiarato_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 12000.00
+          description: ISEE dichiarato espresso in euro
+        detrazione_immobile_abitazione_euro_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: Detrazione immobile abitazione espressa in euro
+        isee_ricalcolato_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 12000.00
+          description: ISEE ricalcolato espresso in euro
+        percentuale_incidenza:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.005
+          description: Percentuale di incidenza
+        tariffa_no_min_max_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 26.00
+          description: Tariffa (fatti salvi i limiti minimi e massimi)
+        percentuale_sconto_n_figli_carico:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: Percentuale di sconto per più figli a carico
+        tariffa_pasto_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: Tariffa a pasto espressa in euro          
+    DatiEstrattoConto:
+      type: object
+      required:
+        - codice_fiscale_impegnato
+        - anno_scolastico_riferimento
+        - periodo_riferimento
+        - data_scadenza
+        - sconto_disoccupazione
+        - sconto_minori
+        - situazione_pagamenti
+        - totale_da_pagare
+      properties:
+        codice_fiscale_impegnato:
+          type: string
+        anno_scolastico_riferimento:
+          type: string
+        periodo_riferimento:
+          type: string   
+        data_scadenza:
+          type: string
+          format: date
+        sconto_disoccupazione:
+          type: string  
+          format: decimal
+        sconto_minori:
+          type: string  
+          format: decimal
+        situazione_pagamenti:
+          type: string   
+        totale_da_pagare:
+          type: string   
+        elenco_fatture:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFattura'
+    ItemFattura:
+      type: object
+      required:
+            - codice_bambino
+            - cognome_bambino
+            - nome_bambino
+            - tipo_servizio
+            - costo_mensile_servizio_euro
+            - isee_dichiarato_euro
+            - tariffa_pasto_euro
+            - calc_pasti_eff_bim_prec_tot
+            - calc_pasti_eff_bim_prec_1mese
+            - calc_pasti_eff_bim_prec_2mese
+            - calc_pasti_stim_bim_prec_tot
+            - calc_pasti_stim_bim_prec_1mese
+            - calc_pasti_stim_bim_prec_2mese
+            - calc_pasti_eff_bim_prec_conguaglio
+            - calc_pasti_bim_in_pagamento_tot
+            - calc_pasti_bim_in_pagamento_1mese
+            - calc_pasti_bim_in_pagamento_2mese
+            - tot_pasti_da_pagare
+            - riep_voci_spesa_importo_tot_pasti_euro
+            - riep_voci_spesa_importo_tot_servizio_euro
+            - riep_voci_spesa_quota_iscr_risto_euro
+            - riep_voci_spesa_quota_iscr_servizio_euro
+            - riep_voci_spesa_interessi_ritard_pag_euro
+            - riep_voci_spesa_rimb_cong_resid_prec_euro
+            - riep_voci_spesa_rimb_cong_gen_voucher_euro
+            - riep_voci_spesa_rimb_pasto_incompl_euro
+            - importo_da_pagare_con_iva_euro
+      properties:
+        codice_bambino:
+          type: string
+          description: codice interno del bambino cui è riferita la fattura
+        cognome_bambino:
+          type: string
+          description: cognome del bambino cui è riferita la fattura          
+        nome_bambino:
+          type: string
+          description: nome del bambino cui è riferita la fattura          
+        tipo_servizio:
+          type: string
+          description: tipo di servizio fruito dal bambino cui è riferita la fattura          
+        tipo_orario:
+          type: string
+          description: tipo di orario fruito dal bambino cui è riferita la fattura          
+        costo_mensile_servizio_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: costo mensile del servizio in euro
+        isee_dichiarato_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: ISEE dichiarato dall'impegnato in euro
+        tariffa_pasto_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: tariffa pasto espressa in euro
+        calc_pasti_eff_bim_prec_tot:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - EFFETTIVI - nel bimestre precedente (totale)
+        calc_pasti_eff_bim_prec_1mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - EFFETTIVI - nel bimestre precedente (primo mese)
+        calc_pasti_eff_bim_prec_2mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - EFFETTIVI - nel bimestre precedente (secondo mese)
+        calc_pasti_stim_bim_prec_tot:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - STIMATI - nel bimestre precedente (totale)
+        calc_pasti_stim_bim_prec_1mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - STIMATI - nel bimestre precedente (primo mese)
+        calc_pasti_stim_bim_prec_2mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti - STIMATI - nel bimestre precedente (secondo mese)
+        calc_pasti_eff_bim_prec_conguaglio:
+          type: number
+          format: integer
+          example: -2
+          description: conguaglio relativo al bimestre precedente
+        calc_pasti_bim_in_pagamento_tot:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti nel bimestre in pagamento (totale)
+        calc_pasti_bim_in_pagamento_1mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti nel bimestre in pagamento (primo mese)
+        calc_pasti_bim_in_pagamento_2mese:
+          type: number
+          format: integer
+          minimum: 0
+          example: 20
+          description: calcolo dei pasti nel bimestre in pagamento (secondo mese)
+        tot_pasti_da_pagare:
+          type: number
+          example: 26
+          description: totale dei past da pagare (differenza tra stima e conguaglio)
+        riep_voci_spesa_importo_tot_pasti_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: importo totale per pasti espresso in euro
+        riep_voci_spesa_importo_tot_servizio_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: importo totale per servizio espresso in euro
+        riep_voci_spesa_quota_iscr_risto_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: quota di iscrizione alla ristorazione espressa in euro
+        riep_voci_spesa_quota_iscr_servizio_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: quota di iscrizione al servizio espressa in euro
+        riep_voci_spesa_interessi_ritard_pag_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: interessi per ritardato pagamento (espressi in euro)
+        riep_voci_spesa_rimb_cong_resid_prec_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: rimborso/conguaglio residuo espresso in euro
+        riep_voci_spesa_rimb_cong_gen_voucher_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: rimborso/conguaglio generico/voucher espresso in euro
+        riep_voci_spesa_rimb_pasto_incompl_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: rimborso per pasto incompleto (vedi Carta del Servizio) espresso in euro
+        importo_da_pagare_con_iva_euro:
+          type: number
+          format: decimal
+          minimum: 0.00
+          example: 0.00
+          description: importo da pagare comprensivo di IVA al 4%       
+    ItemAcroMese:
+      type: object
+      properties:
+        acro_mese:
+          type: string
+          enum: 
+                - 'GEN'
+                - 'FEB'
+                - 'MAR'
+                - 'APR'
+                - 'MAG'
+                - 'GIU'
+                - 'LUG'
+                - 'AGO'
+                - 'SET'
+                - 'OTT'
+                - 'NOV'
+                - 'DIC'
+    Problem:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: "A human readable explanation specific to this occurrence of the\nproblem.\n"
+          example: Connection to database timed out
+        instance:
+          type: string
+          description: "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
+          format: uri
+        status:
+          maximum: 600
+          exclusiveMaximum: true
+          minimum: 100
+          type: integer
+          description: "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n"
+          format: int32
+          example: 503
+        title:
+          type: string
+          description: "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable\n"
+        type:
+          type: string
+          description: "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n"
+          format: uri
+          example: "https://tools.ietf.org/html/rfc7231#section-6.6.4"
+          default: "about:blank"
+  securitySchemes:
+    oauthSecurity:
+      type: oauth2
+      description: schema di sicurezza basato su oauth
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.comune.genova.it/oauth2/authorize
+          tokenUrl: https://api.comune.genova.it/oauth2/token
+          refreshUrl: https://api.comune.genova.it/oauth2/token
+          scopes:
+            ufficioSistemaTariffario: autorizzazioni concesse alle operazioni effettuate dallo ufficio sistema tariffario 
+            backoffice: autorizzazioni concesse alle operazioni effettuate dai sistemi di backoffice
+            utentiInterni: autorizzazioni concesse agli utenti interni al Comune di Genova
+            utentiEsterni: autorizzazioni concesse a generici utenti esterni al Comune di Genova
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: How many items to return at one time (max 100)
+      schema:
+        type: integer
+        format: int32
+    offset:
+      name: offset
+      in: query
+      description: The zero-ary offset index into the results
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    sort:
+      description: Sorting order
+      in: query
+      name: sort
+      schema:
+        example: +name
+        type: string
+  responses:
+    400BadRequest:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/400BadRequest'
+    404NotFound:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/404NotFound'
+    429TooManyRequests:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/429TooManyRequests'
+    503ServiceUnavailable:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/503ServiceUnavailable'
+    default:
+      $ref: 'https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/default'
