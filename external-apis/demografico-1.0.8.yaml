@@ -44,7 +44,7 @@ paths:
         required: true
         description: Codice Fiscale Residente
         schema:
-          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+          $ref: "#/components/schemas/TaxCode"
         example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato master Residente"
@@ -69,7 +69,7 @@ paths:
         name: codiceFiscale
         required: true
         schema:
-          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+          $ref: "#/components/schemas/TaxCode"
         example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato Scheda Anagrafica"
@@ -94,7 +94,7 @@ paths:
         name: codiceFiscale
         required: true
         schema:
-          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+          $ref: "#/components/schemas/TaxCode"
         example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato Tessera Elettorale"
@@ -144,7 +144,7 @@ paths:
         required: true
         description: Identificativo del figlio
         schema:
-          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+          $ref: "#/components/schemas/TaxCode"
         example: "GVCRSS10D48G720H"
     get:
       summary: "Restituisce la rappresentazione JSON del dato di dei Genitori, ovvero delle persone che nello Stato Civile risultano essere genitori a fronte dell'identificativo del figlio"
@@ -172,7 +172,7 @@ paths:
         description: Identificativo del genitore
         example: "GVCRSS10D48G720H"
         schema:
-          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+          $ref: "#/components/schemas/TaxCode"
     get:
       summary: "Restituisce la rappresentazione JSON del dato dei figli (SE ESISTONO), ovvero delle persone che nello Stato Civile risultano essere figli a fronte dell'identificativo del genitore"
       tags:
@@ -192,6 +192,8 @@ paths:
           description: No Content
 components:
   schemas:
+    TaxCode:
+      $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
     Address:
       type: object
       description: "Indirizzo di residenza"
@@ -260,32 +262,17 @@ components:
           type: string
           description: "Nome esteso dello stato di nascita"
           example: "Italia"
-    Residente:
+    Person:
       type: object
-      required:
-        - rdfs_label
-        - cpv_taxCode
-        - cpv_personID
-        - cpv_familyName
-        - cpv_givenName
-        - cpv_dateOfBirth
-        - cpv_hasBirthPlace
-        - cpv_hasSex
-        - cpv_hasAddress
-        - cpv_inRegisteredFamily
       properties:
-        rdfs_label:
-          type: string
-          description: "Nome e cognome del residente correttamente concatenati per una facile rappresentazione a video"
-          example: "Roberto De Lorenzi"
         cpv_taxCode:
           type: string
-          description: "Identificativo del residente rappresentato dal suo Codice Fiscale"
+          description: "Codice Fiscale dell'intestatario della scheda"
           example: "DLRRRT68T29D969Z"
         cpv_personID:
           type: string
-          description: "Identificativo del residente rappresentato dalla Matricola del Cittadino"
-          example: "??????"
+          description: "Identificativo del intestatario rappresentato dal numero di Carta di Identità"
+          example: "AV4336156"
         cpv_familyName:
           type: string
           description: "Cognome del residente"
@@ -294,69 +281,90 @@ components:
           type: string
           description: "Nome del residente"
           example: "Roberto"
-        cpv_dateOfBirth:
-          type: string
-          format: date
-          description: "Data di nascita del residente"
-          example: "2011-03-02"
-        cpv_hasBirthPlace:
-          $ref: '#/components/schemas/BirthPlace'
-        cpv_hasCitizenship:
-          type: object
-          description: "Cittadinanza del residente"
-          properties:
-            clv_hasIdentifier:
-              type: string
-              description: "Codice MIN dello stato di cittadinanza"
-              example: "100"
-            clv_Country:
-              type: string
-              description: "Nome esteso della cittadinanza"
-              example: "Italiana"
-        cpv_hasSex:
-          type: string
-          enum:
-            - M
-            - F
-            - X
-          description: "Sesso del residente; M: maschio, F: femmina, X: indeterminato"
-          example: "M"
-        cpv_hasAddress:
-          $ref: '#/components/schemas/Address'
-        cpv_inRegisteredFamily:
-            allOf:
-                - $ref: "#/components/schemas/SchedaAnagrafica"
-        cpv_dateOfDeath:
+    Residente:
+      allOf:
+      - $ref: '#/components/schemas/Person'
+      - type: object
+        required:
+          - rdfs_label
+          - cpv_taxCode
+          - cpv_personID
+          - cpv_familyName
+          - cpv_givenName
+          - cpv_dateOfBirth
+          - cpv_hasBirthPlace
+          - cpv_hasSex
+          - cpv_hasAddress
+          - cpv_inRegisteredFamily
+        properties:
+          rdfs_label:
+            type: string
+            description: "Nome e cognome del residente correttamente concatenati per una facile rappresentazione a video"
+            example: "Roberto De Lorenzi"
+
+          cpv_dateOfBirth:
             type: string
             format: date
-            description: "Data di morte del residente (eventuale)"
+            description: "Data di nascita del residente"
             example: "2011-03-02"
-        genovaOnto_IDCardNumber:
+          cpv_hasBirthPlace:
+            $ref: '#/components/schemas/BirthPlace'
+          cpv_hasCitizenship:
+            type: object
+            description: "Cittadinanza del residente"
+            properties:
+              clv_hasIdentifier:
+                type: string
+                description: "Codice MIN dello stato di cittadinanza"
+                example: "100"
+              clv_Country:
+                type: string
+                description: "Nome esteso della cittadinanza"
+                example: "Italiana"
+          cpv_hasSex:
             type: string
-            description: "Numero della Carta di Identità del Residente"
-            example: "AZ1234567"
-        genovaOnto_IDCardIssueDate:
-            type: string
-            format: date
-            description: "Data di emissione della Carta di Identità del Residente"
-            example: "2017-05-22"
-        genovaOnto_IDCardValidUntilDate:
-            type: string
-            format: date
-            description: "Data di scadenza della Carta di Identità del Residente"
-            example: "2022-05-22"
-        genovaOnto_IDCardIssuingMunicipality:
-            type: string
-            description: "Comune che ha emesso la Carta di Identità del Residente"
-            example: "Comune di Genova"
-        genovaOnto_IDCardIsCIE:
-            type: boolean
-            description: "La Carta di Identità del Residente è elettronica (true) o cartacea (false)?"
-            example: "false"
-        genovaStato_civile:
-            type: string
-            description: "stato civile del cittadino residente"
-            example: ["celibe", "nubile", "coniugato/a"]
+            enum:
+              - M
+              - F
+              - X
+            description: "Sesso del residente; M: maschio, F: femmina, X: indeterminato"
+            example: "M"
+          cpv_hasAddress:
+            $ref: '#/components/schemas/Address'
+          cpv_inRegisteredFamily:
+              allOf:
+                  - $ref: "#/components/schemas/SchedaAnagrafica"
+          cpv_dateOfDeath:
+              type: string
+              format: date
+              description: "Data di morte del residente (eventuale)"
+              example: "2011-03-02"
+          genovaOnto_IDCardNumber:
+              type: string
+              description: "Numero della Carta di Identità del Residente"
+              example: "AZ1234567"
+          genovaOnto_IDCardIssueDate:
+              type: string
+              format: date
+              description: "Data di emissione della Carta di Identità del Residente"
+              example: "2017-05-22"
+          genovaOnto_IDCardValidUntilDate:
+              type: string
+              format: date
+              description: "Data di scadenza della Carta di Identità del Residente"
+              example: "2022-05-22"
+          genovaOnto_IDCardIssuingMunicipality:
+              type: string
+              description: "Comune che ha emesso la Carta di Identità del Residente"
+              example: "Comune di Genova"
+          genovaOnto_IDCardIsCIE:
+              type: boolean
+              description: "La Carta di Identità del Residente è elettronica (true) o cartacea (false)?"
+              example: "false"
+          genovaStato_civile:
+              type: string
+              description: "stato civile del cittadino residente"
+              example: ["celibe", "nubile", "coniugato/a"]
     SchedaAnagrafica:
           type: object
           required:
@@ -382,55 +390,41 @@ components:
               items:
                 $ref: "#/components/schemas/ItemRelazioneParentale"
     TesseraElettorale:
-      type: object
-      required:
-        - cpv_taxCode
-        - cpv_personID
-        - cpv_familyName
-        - cpv_givenName
-        - clv_City
-        - ti_date
-        - numero_tessera
-        - numero_sezione
-        - indirizzo_sezione
-      properties:
-        cpv_taxCode:
-          type: string
-          description: "Codice Fiscale dell'intestatario della scheda"
-          example: "DLRRRT68T29D969Z"
-        cpv_personID:
-          type: string
-          description: "Identificativo del intestatario rappresentato dal numero di Carta di Identità"
-          example: "AV4336156"
-        cpv_familyName:
-          type: string
-          description: "Cognome dell' intestatario"
-          example: "De Lorenzi"
-        cpv_givenName:
-          type: string
-          description: "Nome dell' intestatario"
-          example: "Roberto"
-        clv_City:
-          type: string
-          description: "Comune che ha rilasciato la tessera"
-          example: "Genova"
-        ti_date:
-          type: string
-          format: date
-          description: "Attributo che rappresenta la data di rilascio della tessera"
-          example: "2018-09-29"
-        numero_tessera:
-          type: string
-          description: "Numero della tessera elettorale"
-          example: "fgfdgdfgdfg"
-        numero_sezione:
-          type: string
-          description: "Numero della sezione elettorale"
-          example: "fgfdgdfgdfg"
-        indirizzo_sezione:
-          type: string
-          description: "Indirizzo della sezione elettorale"
-          example: "fgfdgdfgdfg"
+      allOf:
+      - $ref: "#/components/schemas/Person"
+      - type: object
+        required:
+          - cpv_taxCode
+          - cpv_personID
+          - cpv_familyName
+          - cpv_givenName
+          - clv_City
+          - ti_date
+          - numero_tessera
+          - numero_sezione
+          - indirizzo_sezione
+        properties:
+          clv_City:
+            type: string
+            description: "Comune che ha rilasciato la tessera"
+            example: "Genova"
+          ti_date:
+            type: string
+            format: date
+            description: "Attributo che rappresenta la data di rilascio della tessera"
+            example: "2018-09-29"
+          numero_tessera:
+            type: string
+            description: "Numero della tessera elettorale"
+            example: "fgfdgdfgdfg"
+          numero_sezione:
+            type: string
+            description: "Numero della sezione elettorale"
+            example: "fgfdgdfgdfg"
+          indirizzo_sezione:
+            type: string
+            description: "Indirizzo della sezione elettorale"
+            example: "fgfdgdfgdfg"
     DatiCatastali:
       type: object
       required:
