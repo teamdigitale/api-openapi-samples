@@ -192,6 +192,74 @@ paths:
           description: No Content
 components:
   schemas:
+    Address:
+      type: object
+      description: "Indirizzo di residenza"
+      properties:
+        clv_fullAddress:
+          type: string
+          description: "Indirizzo per esteso della residenza"
+          example: "Via Fiumara 3/42, 16149 Genova"
+        clv_postCode:
+          type: string
+          description: "CAP dell'indirizzo"
+          example: "16142"
+        clv_toponymQualifier:
+          type: string
+          description: "DUG (Denominazione Urbanistica Generica) o qualificatore di toponimo (e.g., via, vicolo, viale, piazza, ecc.) dell'odonimo/toponimo"
+          example: "Via"
+        clv_officialStreetName:
+          type: string
+          description: "Parte di toponimo stradale chiamata DUF - Denominazione Urbanistica ufficiale"
+          example: "Fiumara"
+        clv_streetNumber:
+          type: string
+          description: "Numero civico assegnato all’accesso esterno"
+          example: "3"
+        clv_flatNumber:
+          type: string
+          description: "Numero interno assegnato all’accesso interno"
+          example: "42"
+        clv_City:
+          type: string
+          description: "Nome esteso del Comune di nascita (se nato in Italia)"
+          example: "Genova"
+        genovaOnto_officialStreetNameCode:
+          type: string
+          description: "Codice della via/piazza/corso..."
+          example: "123"
+        genovaOnto_streetNumberCode:
+          type: string
+          description: "Codice del Numero Civico"
+          example: "123"
+        genovaOnto_flatNumberCode:
+          type: string
+          description: "Codice dell'Indirizzo"
+          example: "456"
+    BirthPlace:
+      type: object
+      description: "Luogo di nascita del residente"
+      properties:
+        clv_hasIdentifier:
+          type: string
+          description: "Codice Istat del Comune di nascita ovvero codice MIN dello stato di nascita (se diverso da Italia)"
+          example: "010025"
+        clv_City:
+          type: string
+          description: "Nome esteso del Comune di nascita (se nato in Italia)"
+          example: "Genova"
+        clv_Province:
+          type: string
+          description: "Nome esteso della provincia di nascita / città metropolitana(se nato in Italia)"
+          example: "Genova"
+        clv_Region:
+          type: string
+          description: "Nome esteso della regione di nascita (se nato in Italia)"
+          example: "Liguria"
+        clv_Country:
+          type: string
+          description: "Nome esteso dello stato di nascita"
+          example: "Italia"
     Residente:
       type: object
       required:
@@ -232,29 +300,7 @@ components:
           description: "Data di nascita del residente"
           example: "2011-03-02"
         cpv_hasBirthPlace:
-          type: object
-          description: "Luogo di nascita del residente"
-          properties:
-            clv_hasIdentifier:
-              type: string
-              description: "Codice Istat del Comune di nascita ovvero codice MIN dello stato di nascita (se diverso da Italia)"
-              example: "010025"
-            clv_City:
-              type: string
-              description: "Nome esteso del Comune di nascita (se nato in Italia)"
-              example: "Genova"
-            clv_Province:
-              type: string
-              description: "Nome esteso della provincia di nascita / città metropolitana(se nato in Italia)"
-              example: "Genova"
-            clv_Region:
-              type: string
-              description: "Nome esteso della regione di nascita (se nato in Italia)"
-              example: "Liguria"
-            clv_Country:
-              type: string
-              description: "Nome esteso dello stato di nascita"
-              example: "Italia"
+          $ref: '#/components/schemas/BirthPlace'
         cpv_hasCitizenship:
           type: object
           description: "Cittadinanza del residente"
@@ -276,49 +322,7 @@ components:
           description: "Sesso del residente; M: maschio, F: femmina, X: indeterminato"
           example: "M"
         cpv_hasAddress:
-          type: object
-          description: "Indirizzo di residenza"
-          properties:
-            clv_fullAddress:
-              type: string
-              description: "Indirizzo per esteso della residenza"
-              example: "Via Fiumara 3/42, 16149 Genova"
-            clv_postCode:
-              type: string
-              description: "CAP dell'indirizzo"
-              example: "16142"
-            clv_toponymQualifier:
-              type: string
-              description: "DUG (Denominazione Urbanistica Generica) o qualificatore di toponimo (e.g., via, vicolo, viale, piazza, ecc.) dell'odonimo/toponimo"
-              example: "Via"
-            clv_officialStreetName:
-              type: string
-              description: "Parte di toponimo stradale chiamata DUF - Denominazione Urbanistica ufficiale"
-              example: "Fiumara"
-            clv_streetNumber:
-              type: string
-              description: "Numero civico assegnato all’accesso esterno"
-              example: "3"
-            clv_flatNumber:
-              type: string
-              description: "Numero interno assegnato all’accesso interno"
-              example: "42"
-            clv_City:
-              type: string
-              description: "Nome esteso del Comune di nascita (se nato in Italia)"
-              example: "Genova"
-            genovaOnto_officialStreetNameCode:
-              type: string
-              description: "Codice della via/piazza/corso..."
-              example: "123"
-            genovaOnto_streetNumberCode:
-              type: string
-              description: "Codice del Numero Civico"
-              example: "123"
-            genovaOnto_flatNumberCode:
-              type: string
-              description: "Codice dell'Indirizzo"
-              example: "456"
+          $ref: '#/components/schemas/Address'
         cpv_inRegisteredFamily:
             allOf:
                 - $ref: "#/components/schemas/SchedaAnagrafica"
@@ -482,33 +486,7 @@ components:
           description: "Valore attribuito con finalità fiscale all’immobile espresso con la coppia: valuta (ISO 4217), valore"
           example: "fgfdgdfgdfg"
     Problem:
-      type: object
-      properties:
-        detail:
-          type: string
-          description: "A human readable explanation specific to this occurrence of the\nproblem.\n"
-          example: Connection to database timed out
-        instance:
-          type: string
-          description: "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
-          format: uri
-        status:
-          maximum: 600
-          exclusiveMaximum: true
-          minimum: 100
-          type: integer
-          description: "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n"
-          format: int32
-          example: xxx
-        title:
-          type: string
-          description: "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable\n"
-        type:
-          type: string
-          description: "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n"
-          format: uri
-          example: "https://tools.ietf.org/html/rfc7231#section-6.6.4"
-          default: "about:blank"
+      $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/Problem"
     ItemRelazioneParentale:
       type: object
       required:
