@@ -15,15 +15,37 @@ tags:
     description: Operazioni utilizzate nell'ambito dei sistemi di backoffice
   - name: portale
     description: Operazioni utilizzate nell'ambito dei portali di servizi agli utenti
+x-commons:
+  common-responses: &common-responses
+    "400":
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+    "503":
+      description: Service unavailable
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+    default:
+      description: Unexpected error
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+
 paths:
   "/demografico/residente/{codiceFiscale}":
     parameters:
       - in: path
         name: codiceFiscale
         required: true
+        description: Codice Fiscale Residente
         schema:
-          type: string
-          example: "GVCFRN81R14G720X"
+          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+        example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato master Residente"
       tags:
@@ -32,6 +54,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -40,32 +63,14 @@ paths:
                 $ref: "#/components/schemas/Residente"
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   "/demografico/scheda-anagrafica/{codiceFiscale}":
     parameters:
       - in: path
         name: codiceFiscale
         required: true
         schema:
-          type: string
-          example: "GVCFRN81R14G720X"
+          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+        example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato Scheda Anagrafica"
       tags:
@@ -74,6 +79,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -82,32 +88,14 @@ paths:
                 $ref: "#/components/schemas/SchedaAnagrafica"
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   "/demografico/tessera-elettorale/{codiceFiscale}":
     parameters:
       - in: path
         name: codiceFiscale
         required: true
         schema:
-          type: string
-          example: "GVCFRN81R14G720X"
+          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+        example: "GVCFRN81R14G720X"
     get:
       summary: "Restituisce la rappresentazione JSON del dato Tessera Elettorale"
       tags:
@@ -116,6 +104,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -124,24 +113,6 @@ paths:
                 $ref: "#/components/schemas/TesseraElettorale"
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   "/oggetti/dati-catastali/{codiceIndirizzo}":
     parameters:
       - in: path
@@ -157,6 +128,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -165,33 +137,15 @@ paths:
                 $ref: "#/components/schemas/DatiCatastali"
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   "/oggetti/stato-civile/genitore/{codiceFiscaleFiglio}":
     parameters:
       - in: path
         name: codiceFiscaleFiglio
         required: true
+        description: Identificativo del figlio
         schema:
-          type: string
-          description: Identificativo del figlio
-          example: "GVCRSS10D48G720H"
+          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
+        example: "GVCRSS10D48G720H"
     get:
       summary: "Restituisce la rappresentazione JSON del dato di dei Genitori, ovvero delle persone che nello Stato Civile risultano essere genitori a fronte dell'identificativo del figlio"
       tags:
@@ -200,6 +154,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -208,33 +163,16 @@ paths:
                 $ref: "#/components/schemas/StrutturaGenitori"
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
+
   "/oggetti/stato-civile/figlio/{codiceFiscaleGenitore}":
     parameters:
       - in: path
         name: codiceFiscaleGenitore
         required: true
+        description: Identificativo del genitore
+        example: "GVCRSS10D48G720H"
         schema:
-          type: string
-          description: Identificativo del genitore
-          example: "GVCRSS10D48G720H"
+          $ref: "https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/schemas/TaxCode"
     get:
       summary: "Restituisce la rappresentazione JSON del dato dei figli (SE ESISTONO), ovvero delle persone che nello Stato Civile risultano essere figli a fronte dell'identificativo del genitore"
       tags:
@@ -243,6 +181,7 @@ paths:
         - oauthSecurity:
           - anagrafe_read
       responses:
+        <<: *common-responses
         "200":
           description: OK
           content:
@@ -251,24 +190,6 @@ paths:
                 $ref: '#/components/schemas/StrutturaFigli'
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "503":
-          description: Service unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        default:
-          description: Unexpected error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
 components:
   schemas:
     Residente:
@@ -486,9 +407,9 @@ components:
           description: "Nome dell' intestatario"
           example: "Roberto"
         clv_City:
-              type: string
-              description: "Comune che ha rilasciato la tessera"
-              example: "Genova"
+          type: string
+          description: "Comune che ha rilasciato la tessera"
+          example: "Genova"
         ti_date:
           type: string
           format: date
@@ -682,15 +603,15 @@ components:
           example: "MRORSS62B15D969W"
   responses:
     400BadRequest:
-      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/400BadRequest"
+      $ref: "https://https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/400BadRequest"
     404NotFound:
-      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/404NotFound"
+      $ref: "https://https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/404NotFound"
     429TooManyRequests:
-      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/429TooManyRequests"
+      $ref: "https://https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/429TooManyRequests"
     503ServiceUnavailable:
-      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/503ServiceUnavailable"
+      $ref: "https://https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/503ServiceUnavailable"
     default:
-      $ref: "https://raw.githubusercontent.com/teamdigitale/openapi/master/docs/definitions.yaml#/responses/default"
+      $ref: "https://https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/default"
   securitySchemes:
     oauthSecurity:
       type: oauth2
