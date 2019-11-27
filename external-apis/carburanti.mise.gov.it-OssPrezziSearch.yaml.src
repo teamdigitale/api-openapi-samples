@@ -166,6 +166,46 @@ paths:
           description: Successful response - returns a single `Distributore`.
         default:
           $ref: '#/components/responses/default'
+  /ricerca/autostrada:
+    post:
+      summary: Ricerca prezzi dei carburanti per tratta autostradale
+      description: Ritorna le stazioni di rifornimento con i relativi prezzi.
+      operationId: getStazioniByAutostrada
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RicercaAutostrada'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Risposta'
+          description: Successful response - returns a single `Distributore`.
+        default:
+          $ref: '#/components/responses/default'
+  /ricerca/areads:
+    post:
+      summary: Ricerca prezzi dei carburanti per tratta autostradale
+      description: Ritorna le stazioni di rifornimento con i relativi prezzi.
+      operationId: getStazioniByImpianto
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RicercaImpianto'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Risposta'
+          description: Successful response - returns a single `Distributore`.
+        default:
+          $ref: '#/components/responses/default'
 
 components:
   responses:
@@ -324,7 +364,23 @@ components:
           town:
             type: string
             example: Latina
+    RicercaImpianto:
+      allOf:
+      - $ref: '#/components/schemas/BaseRicerca'
+      - description: Ricerca per nome impianto
+        properties:
+          nameServiceArea:
+            type: string
+            example: "agip sacco vitaliano"
 
+    RicercaAutostrada:
+      allOf:
+      - $ref: '#/components/schemas/BaseRicerca'
+      - description: Ricerca per tratta autostradale
+        properties:
+          highwayId:
+            type: string
+            example: A1
     RicercaPath:
       allOf:
       - $ref: '#/components/schemas/BaseRicerca'
