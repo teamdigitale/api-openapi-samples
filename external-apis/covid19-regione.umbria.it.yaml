@@ -42,7 +42,8 @@ tags:
     description: Stato dell'API
 servers:
   - url: 'https://api.regione.umbria.it:443/covid19/1.0.0'
-  - url: 'http://api.regione.umbria.it:443/covid19/1.0.0'
+    description: produzione
+  
 paths:
   /dati:
     get:
@@ -80,6 +81,7 @@ paths:
           required: true
           schema:
             type: integer
+            default: 10
           description: Limit
       responses:
         '200':
