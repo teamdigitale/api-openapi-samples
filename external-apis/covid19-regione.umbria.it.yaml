@@ -68,7 +68,10 @@ paths:
           required: false
           schema:
             type: string
-          description: Codice area geografica (ISTAT per i comuni) o della struttura (ad es. ospedali) a cui si riferiscono i dati
+            example: "54039"
+          description: |-
+            Codice area geografica (ISTAT per i comuni) o della struttura (ad es. ospedali) a cui si riferiscono i dati.
+            Eg. per Perugia e' "54039"
         - name: offset
           in: query
           required: true
