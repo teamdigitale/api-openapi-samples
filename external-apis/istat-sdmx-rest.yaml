@@ -6,6 +6,8 @@ info:
   x-summary: Accesso ai dati ISTAT tramite interfaccia REST SDMX
   contact:
     url: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
+    name: Istituto Italiano di Statistica
+  termsOfService: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
 
   description: |-
     Grazie a un sistema tecnologicamente avanzato, l’Istat è in grado di diffondere i dati del [corporate data
