@@ -2,24 +2,26 @@ openapi: 3.0.0
 info:
   version: '2.0.0'
   title: 'ISTAT SDMX RESTful API'
+  x-api-id: 4d35fcf9-f059-4e46-bb95-889b8c0dee53
+  x-summary: Accesso ai dati ISTAT tramite interfaccia REST SDMX
   contact:
     url: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
 
   description: |-
-    Grazie a un sistema tecnologicamente avanzato, l’Istat è in grado di diffondere i dati del corporate data
-    warehouse I.Stat anche in modalità machine-to-machine via web service.
+    Grazie a un sistema tecnologicamente avanzato, l’Istat è in grado di diffondere i dati del [corporate data
+    warehouse I.Stat](http://dati.istat.it) anche in modalità machine-to-machine via web service.
 
     Il servizio, gratuito e liberamente disponibile, consente agli enti e alle organizzazioni di formulare specifiche
     richieste (query), di effettuare il download dei dati di interesse  e di accoglierli agevolmente nei  propri
     sistemi (basi dati, portali web ecc.).
 
-    Il meccanismo query/download sfrutta un protocollo standard SDMX (Statistical Data and Metadata eXchange), a
+    Il meccanismo query/download sfrutta un protocollo standard [SDMX (Statistical Data and Metadata eXchange)](https://sdmx.org), a
     dottato per la trasmissione di dati statistici dalle più importanti organizzazioni internazionali.
 
     #### Note
-    For additional information, check the
-    [official sdmx-rest specification](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs)
-    or the [dedicated Wiki](https://github.com/sdmx-twg/sdmx-rest/wiki).
+    Per ulteriori informazioni sulle specifiche SDMX, potete vedere
+    [le specifiche ufficiali sdmx-rest](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs)
+    o il [Wiki dedicato](https://github.com/sdmx-twg/sdmx-rest/wiki).
 x-commons:
   common_responses: &common_responses
     '304':
@@ -46,13 +48,15 @@ x-commons:
       $ref: '#/components/responses/503'
 
 servers:
-  - url: 'http://sdmx.istat.it/sdmxws/rest/'
-    description: SDMX REST URL
+  - url: 'http://sdmx.istat.it/sdmxws/rest'
+    description: SDMX REST URL di produzione
 
 paths:
   /data/{flow}/{key}/{provider}:
     get:
       summary: 'Data query'
+      description: |-
+        Recupera un dataset nei formati supportati.
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
@@ -77,6 +81,8 @@ paths:
   /availableconstraint/{flow}/{key}/{provider}/{componentID}:
     get:
       summary: 'Data availability query'
+      description: |-
+        Mostra la disponibilita' di dati e dei metadati associati.
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
