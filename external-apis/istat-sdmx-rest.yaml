@@ -62,7 +62,6 @@ paths:
         - $ref: '#/components/parameters/dimensionAtObservation'
         - $ref: '#/components/parameters/detail'
         - $ref: '#/components/parameters/includeHistory'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
@@ -71,7 +70,7 @@ paths:
           $ref: '#/components/responses/200'
 
 
-  /availableconstraint/{flow}/{key}/{provider}/{componentID}:
+  /availableconstraint/{flow}/{key}/{componentID}:
     get:
       summary: 'Data availability query'
       description: |-
@@ -79,14 +78,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
-        - $ref: '#/components/parameters/provider'
         - $ref: '#/components/parameters/componentID'
         - $ref: '#/components/parameters/mode'
         - $ref: '#/components/parameters/acreferences'
         - $ref: '#/components/parameters/startPeriod'
         - $ref: '#/components/parameters/endPeriod'
         - $ref: '#/components/parameters/updatedAfter'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
@@ -104,7 +101,6 @@ paths:
         - $ref: '#/components/parameters/versions'
         - $ref: '#/components/parameters/references'
         - $ref: '#/components/parameters/structDetail'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
@@ -123,7 +119,6 @@ paths:
         - $ref: '#/components/parameters/items'
         - $ref: '#/components/parameters/references'
         - $ref: '#/components/parameters/structDetail'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
@@ -142,7 +137,6 @@ paths:
         - $ref: '#/components/parameters/version'
         - $ref: '#/components/parameters/dimensionAtObservation'
         - $ref: '#/components/parameters/explicitMeasure'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
         <<: *common_responses
@@ -511,17 +505,6 @@ components:
         type: string
         enum: [none, all, datastructure, conceptscheme, codelist, dataproviderscheme, dataflow]
         default: none
-    accept-encoding:
-      in: header
-      name: Accept-Encoding
-      description: |
-        Specifies whether the response should be compressed and how.
-
-        `identity` (the default) indicates that no compression will be performed.
-      schema:
-        type: string
-        enum: [br, compress, deflate, exi, gzip, identity, pack200-gzip, zstd]
-        default: identity
     accept-language:
       in: header
       name: Accept-Language
