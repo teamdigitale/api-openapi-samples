@@ -6,7 +6,7 @@ info:
   x-summary: Accesso ai dati ISTAT tramite interfaccia REST SDMX
   contact:
     url: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
-    name: Istituto Italiano di Statistica
+    name: ISTAT
   termsOfService: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
 
   description: |-
@@ -19,8 +19,11 @@ info:
 
     Il meccanismo query/download sfrutta un protocollo standard [SDMX (Statistical Data and Metadata eXchange)](https://sdmx.org), a
     dottato per la trasmissione di dati statistici dalle più importanti organizzazioni internazionali.
-
+    
     #### Note
+    Questa specifica viene rilasciata in forma sperimentale e la documentazione ufficiale è quella indicata nei
+    link.
+    
     Per ulteriori informazioni sulle specifiche SDMX, potete vedere
     [le specifiche ufficiali sdmx-rest](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs)
     o il [Wiki dedicato](https://github.com/sdmx-twg/sdmx-rest/wiki).
@@ -46,7 +49,7 @@ servers:
     description: SDMX REST URL di produzione
 
 paths:
-  /data/{flow}/{key}/{provider}:
+  /data/{flow}/{key}:
     get:
       summary: 'Data query'
       description: |-
@@ -54,7 +57,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
-        - $ref: '#/components/parameters/provider'
         - $ref: '#/components/parameters/startPeriod'
         - $ref: '#/components/parameters/endPeriod'
         - $ref: '#/components/parameters/updatedAfter'
@@ -63,7 +65,6 @@ paths:
         - $ref: '#/components/parameters/dimensionAtObservation'
         - $ref: '#/components/parameters/detail'
         - $ref: '#/components/parameters/includeHistory'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
@@ -72,7 +73,7 @@ paths:
           $ref: '#/components/responses/200'
 
 
-  /availableconstraint/{flow}/{key}/{provider}/{componentID}:
+  /availableconstraint/{flow}/{key}/{componentID}:
     get:
       summary: 'Data availability query'
       description: |-
@@ -80,22 +81,20 @@ paths:
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
-        - $ref: '#/components/parameters/provider'
         - $ref: '#/components/parameters/componentID'
         - $ref: '#/components/parameters/mode'
         - $ref: '#/components/parameters/acreferences'
         - $ref: '#/components/parameters/startPeriod'
         - $ref: '#/components/parameters/endPeriod'
         - $ref: '#/components/parameters/updatedAfter'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
         <<: *common_responses
         '200':
-          $ref: '#/components/responses/200'
+          $ref: '#/components/responses/200-struct'
 
-  /structure/{structureType}/{agencyID}/{resourceID}/{version}:
+  /{structureType}/{agencyID}/{resourceID}/{version}:
     get:
       summary: 'Structure query'
       parameters:
@@ -105,50 +104,12 @@ paths:
         - $ref: '#/components/parameters/versions'
         - $ref: '#/components/parameters/references'
         - $ref: '#/components/parameters/structDetail'
-        - $ref: '#/components/parameters/accept-encoding'
         - $ref: '#/components/parameters/accept-language'
         - $ref: '#/components/parameters/if-modified-since'
       responses:
         <<: *common_responses
         '200':
           $ref: '#/components/responses/200-struct'
-
-  /structure/{itemSchemeType}/{agencyID}/{resourceID}/{version}/{itemID}:
-    get:
-      summary: 'Item Scheme query'
-      parameters:
-        - $ref: '#/components/parameters/itemSchemeType'
-        - $ref: '#/components/parameters/agencies'
-        - $ref: '#/components/parameters/resourceIDs'
-        - $ref: '#/components/parameters/versions'
-        - $ref: '#/components/parameters/items'
-        - $ref: '#/components/parameters/references'
-        - $ref: '#/components/parameters/structDetail'
-        - $ref: '#/components/parameters/accept-encoding'
-        - $ref: '#/components/parameters/accept-language'
-        - $ref: '#/components/parameters/if-modified-since'
-      responses:
-        <<: *common_responses
-        '200':
-          $ref: '#/components/responses/200-struct'
-
-
-  /schema/{context}/{agencyID}/{resourceID}/{version}:
-    get:
-      summary: 'Schema query'
-      parameters:
-        - $ref: '#/components/parameters/context'
-        - $ref: '#/components/parameters/agencyID'
-        - $ref: '#/components/parameters/resourceID'
-        - $ref: '#/components/parameters/version'
-        - $ref: '#/components/parameters/dimensionAtObservation'
-        - $ref: '#/components/parameters/explicitMeasure'
-        - $ref: '#/components/parameters/accept-encoding'
-        - $ref: '#/components/parameters/if-modified-since'
-      responses:
-        <<: *common_responses
-        '200':
-          $ref: '#/components/responses/200-schemas'
 
 components:
   schemas:
@@ -177,14 +138,14 @@ components:
 
         Examples:
 
-        * `EXR`: The ID of the domain
-        * `ECB,EXR`: The EXR domain, maintained by the ECB
-        * `ECB,EXR,1.0`: Version 1.0 of the EXR domain, maintained by the ECB
+        * `115_333`: The ID of the domain
+        * `IT1,115_333`: The IT1 domain, maintained by the ISTAT
+        * `IT1,115_333,1.2`: Version 1.2 of the 115_333 domain, maintained by ISTAT
       required: true
       schema:
         type: string
         pattern: '^([a-zA-Z][a-zA-Z\d_-]*(\.[a-zA-Z][a-zA-Z\d_-]*)*,)?[a-zA-Z\d_@$-]+(,(latest|(\d+(\.\d+)*)))?$'
-        example: "115_333"
+        example: "IT1,115_333,1.2"
     key:
       in: path
       name: key
@@ -212,8 +173,7 @@ components:
 
         Examples:
 
-        * `ECB`: Data provided by ECB
-        * `CH2+NO2`: Data provided by CH2 or NO2
+        * `IT1`: Data provided by ISTAT
       required: true
       schema:
         type: string
@@ -301,6 +261,7 @@ components:
       schema:
         type: string
         pattern: '^(([A-Za-z][A-Za-z\d_-]*)(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+(\+([A-Za-z][A-Za-z\d_-]*(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+)*$'
+        example: IT1
     resourceIDs:
       in: path
       name: resourceID
@@ -314,6 +275,7 @@ components:
       schema:
         type: string
         pattern: '^([A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
+        example: '115_333'
     versions:
       in: path
       name: version
@@ -329,6 +291,7 @@ components:
       schema:
         type: string
         pattern: '^(all|latest|[\d]+(\.[\d]+)*(\+[\d]+(\.[\d]+)*)*)$'
+        example: "1.2"
     items:
       in: path
       name: itemID
@@ -512,18 +475,7 @@ components:
       schema:
         type: string
         enum: [none, all, datastructure, conceptscheme, codelist, dataproviderscheme, dataflow]
-        default: none
-    accept-encoding:
-      in: header
-      name: Accept-Encoding
-      description: |
-        Specifies whether the response should be compressed and how.
-
-        `identity` (the default) indicates that no compression will be performed.
-      schema:
-        type: string
-        enum: [br, compress, deflate, exi, gzip, identity, pack200-gzip, zstd]
-        default: identity
+        default: all
     accept-language:
       in: header
       name: Accept-Language
