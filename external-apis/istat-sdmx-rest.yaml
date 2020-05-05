@@ -6,7 +6,7 @@ info:
   x-summary: Accesso ai dati ISTAT tramite interfaccia REST SDMX
   contact:
     url: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
-    name: Istituto Italiano di Statistica
+    name: ISTAT
   termsOfService: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
 
   description: |-
@@ -46,7 +46,7 @@ servers:
     description: SDMX REST URL di produzione
 
 paths:
-  /data/{flow}/{key}/{provider}:
+  /data/{flow}/{key}:
     get:
       summary: 'Data query'
       description: |-
@@ -54,7 +54,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
-        - $ref: '#/components/parameters/provider'
         - $ref: '#/components/parameters/startPeriod'
         - $ref: '#/components/parameters/endPeriod'
         - $ref: '#/components/parameters/updatedAfter'
@@ -177,14 +176,14 @@ components:
 
         Examples:
 
-        * `EXR`: The ID of the domain
-        * `ECB,EXR`: The EXR domain, maintained by the ECB
-        * `ECB,EXR,1.0`: Version 1.0 of the EXR domain, maintained by the ECB
+        * `115_333`: The ID of the domain
+        * `IT1,115_333`: The IT1 domain, maintained by the ISTAT
+        * `IT1,115_333,1.2`: Version 1.2 of the 115_333 domain, maintained by ISTAT
       required: true
       schema:
         type: string
         pattern: '^([a-zA-Z][a-zA-Z\d_-]*(\.[a-zA-Z][a-zA-Z\d_-]*)*,)?[a-zA-Z\d_@$-]+(,(latest|(\d+(\.\d+)*)))?$'
-        example: "115_333"
+        example: "IT1,115_333,1.2"
     key:
       in: path
       name: key
@@ -212,8 +211,7 @@ components:
 
         Examples:
 
-        * `ECB`: Data provided by ECB
-        * `CH2+NO2`: Data provided by CH2 or NO2
+        * `IT1`: Data provided by ISTAT
       required: true
       schema:
         type: string
