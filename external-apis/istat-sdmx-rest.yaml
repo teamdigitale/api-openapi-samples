@@ -30,22 +30,14 @@ x-commons:
       $ref: '#/components/responses/304'
     '400':
       $ref: '#/components/responses/400'
-    '401':
-      $ref: '#/components/responses/401'
-    '403':
-      $ref: '#/components/responses/403'
-    '404':
-      $ref: '#/components/responses/404'
     '406':
       $ref: '#/components/responses/406'
     '413':
       $ref: '#/components/responses/413'
     '414':
       $ref: '#/components/responses/414'
-    '500':
-      $ref: '#/components/responses/500'
-    '501':
-      $ref: '#/components/responses/501'
+    'default':
+      $ref: '#/components/responses/default'
     '503':
       $ref: '#/components/responses/503'
 
@@ -589,21 +581,13 @@ components:
       description: No changes
     '400':
       description: Bad syntax
-    '401':
-      description: Unauthorized
-    '403':
-      description: Forbidden
-    '404':
-      description: Not found
     '406':
       description: Not acceptable
     '413':
       description: Request entity too large
     '414':
       description: URI too long
-    '500':
+    'default':
       description: Internal server error
-    '501':
-      description: Not implemented
     '503':
       description: Service unavailable
