@@ -504,7 +504,7 @@ components:
       schema:
         type: string
         enum: [none, all, datastructure, conceptscheme, codelist, dataproviderscheme, dataflow]
-        default: none
+        default: all
     accept-language:
       in: header
       name: Accept-Language
