@@ -91,7 +91,7 @@ paths:
         '200':
           $ref: '#/components/responses/200-struct'
 
-  /structure/{structureType}/{agencyID}/{resourceID}/{version}:
+  /{structureType}/{agencyID}/{resourceID}/{version}:
     get:
       summary: 'Structure query'
       parameters:
@@ -107,41 +107,6 @@ paths:
         <<: *common_responses
         '200':
           $ref: '#/components/responses/200-struct'
-
-  /structure/{itemSchemeType}/{agencyID}/{resourceID}/{version}/{itemID}:
-    get:
-      summary: 'Item Scheme query'
-      parameters:
-        - $ref: '#/components/parameters/itemSchemeType'
-        - $ref: '#/components/parameters/agencies'
-        - $ref: '#/components/parameters/resourceIDs'
-        - $ref: '#/components/parameters/versions'
-        - $ref: '#/components/parameters/items'
-        - $ref: '#/components/parameters/references'
-        - $ref: '#/components/parameters/structDetail'
-        - $ref: '#/components/parameters/accept-language'
-        - $ref: '#/components/parameters/if-modified-since'
-      responses:
-        <<: *common_responses
-        '200':
-          $ref: '#/components/responses/200-struct'
-
-
-  /schema/{context}/{agencyID}/{resourceID}/{version}:
-    get:
-      summary: 'Schema query'
-      parameters:
-        - $ref: '#/components/parameters/context'
-        - $ref: '#/components/parameters/agencyID'
-        - $ref: '#/components/parameters/resourceID'
-        - $ref: '#/components/parameters/version'
-        - $ref: '#/components/parameters/dimensionAtObservation'
-        - $ref: '#/components/parameters/explicitMeasure'
-        - $ref: '#/components/parameters/if-modified-since'
-      responses:
-        <<: *common_responses
-        '200':
-          $ref: '#/components/responses/200-schemas'
 
 components:
   schemas:
@@ -293,6 +258,7 @@ components:
       schema:
         type: string
         pattern: '^(([A-Za-z][A-Za-z\d_-]*)(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+(\+([A-Za-z][A-Za-z\d_-]*(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+)*$'
+        example: IT1
     resourceIDs:
       in: path
       name: resourceID
@@ -306,6 +272,7 @@ components:
       schema:
         type: string
         pattern: '^([A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
+        example: '115_333'
     versions:
       in: path
       name: version
@@ -321,6 +288,7 @@ components:
       schema:
         type: string
         pattern: '^(all|latest|[\d]+(\.[\d]+)*(\+[\d]+(\.[\d]+)*)*)$'
+        example: "1.2"
     items:
       in: path
       name: itemID
