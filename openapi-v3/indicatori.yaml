@@ -208,6 +208,8 @@ components:
         codice_stato:
           type: string
           example: ITA
+          description: |-
+            vedi https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/VocabolariControllati/territorial-classifications/countries/italy/italy.ttl
         nome_stato:
           type: string
           example: Italia
