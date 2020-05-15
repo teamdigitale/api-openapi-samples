@@ -1,5 +1,53 @@
 openapi: 3.0.2
+info:
+  title: API Indicatori
+  version: 0.0.1beta
+  description: |-
+    L'API permette di pubblicare una serie di indicatori associati ad una determinata area amministrativa 
+    (comune, unità territoriale sovracomunale, regione) con granularità giornaliera.
+
+    Gli indicatori pubblicabili possono variare nel tempo e ad ogni indicatore possono essere associati 
+    dei metadati utili ad indicarne il corretto significato.
+    Gli indicatori possono essere dati campionati o elaborati.
+
+    L'API permette di ritornare l'area geografica di riferimento in formato geojson
+    o un link al file geojson di riferimento.
+
+    A seconda della richiesta i dati possono essere ritornati in JSON, GeoJSON o CSV.
+
+    La possibilità di fare ricerche è opzionale.
+    Va' capito come restituire uno schema "flat" in formato CSV in caso gli indicatori variassero nel tempo
+    e come renderizzare eventuali dati "sparse" quando i valori mancano: 
+    una soluzione potrebbe essere usare gli URI degli indicatori come nomi dei campi del csv.
+
+    I path sono separati perché non è detto che la somma (eg. dei dati delle province) corrisponda col totale
+    dei dati regionali a causa di possibili difficoltà nel campionamento o di problematiche amministrative
+    (eg. trasferimenti, disallineamenti dovuti alla durata temporale dei campionamenti, errori umani, ...).
+
+
 paths:
+  /search:
+    get:
+      description: |-
+        Non implementato per ora. Potremmo ricercare per unità amministrativa
+  /unita-di-campionamento/{codice_unita}/{data_campionamento}:
+    get:
+      operationId: get_dati_unita
+      description: |-
+        Potremmo ritornare i dati per unità di campionamento, ossia la minima
+        entità che campiona i dati. Chiedere feedback agli interessati  
+  /unita-territoriale-sovracomunale/{codice_uts}/{data_campionamento}:
+    get:
+      operationId: get_dati_uts
+      description: |-
+        Usare la provincia potrebbe essere più chiaro, ma non coprire eventuali
+        casi dove i dati sono raccolti a livello di UTS. Chiedere feedback agli interessati
+  /comune/{codice_comune}/{data_campionamento}:
+    get:
+      operationId: get_dati_comune
+      description: |-
+        Come per regione, stessi dati da ritornare ma con uno schema di Location che include
+        codice_uts e codice_comune.
   /regione/{codice_regione}/{data_campionamento}:
     get:
       operationId: get_dati_regione
@@ -121,14 +169,17 @@ components:
           type: string
         descrizione:
           type: string
-        tipo:
+        uri:
           type: string
           format: url
+          description: |-
+            ad ogni indicatore è assegnato un URI che lo rende univoco e che
+            può anche referenziare un URL dove questo viene definito semanticamente.
       example:
         nome: casi_positivi
         valore: "10000"
         descrizione: "il numero di casi positivi"
-        tipo: "https://covid.api/indicatori/casi_positivi"
+        uri: "https://covid.api/indicatori/casi_positivi"
     Location:
       type: object
       description: The root schema comprises the entire JSON document.
