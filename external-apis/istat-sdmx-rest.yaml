@@ -59,7 +59,7 @@ info:
     - estrarre il dataset dell’Indice della Produzione industriale in formato json:
     
     ```
-    curl 'http://sdmx.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?format=jsondata'
+    curl 'http://sdmx.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?startPeriod=2018&endPeriod=2018&format=jsondata'
     ```
     
     AUTENTICAZIONE
@@ -141,12 +141,61 @@ paths:
         '200':
           $ref: '#/components/responses/200-struct'
 
+  /dataflow/{agencyID}/{resourceID}/{version}:
+    get:
+      summary: 'Dataflow query'
+      description: |-
+        Mostra le informazioni sul dataflow.
+         
+        Eg. Il dataflow dell'Indice di produzione industriale
+         ha `resourceID=115_333`  
+      tags:
+      - metadata
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-language'
+        - $ref: '#/components/parameters/if-modified-since'
+      responses:
+        <<: *common_responses
+        '200':
+          $ref: '#/components/responses/200-struct'
+
+  /datastructure/{agencyID}/{resourceID}/{version}:
+    get:
+      summary: 'Datastructure query'
+      description: |-
+         Mostra le informazioni sulla struttura dei dati.
+         
+         Eg. La struttura data utilizzata dal dataflow associato
+         all'Indice di produzione industriale
+         ha `resourceID=DCSC_INDXPRODIND_1`.
+         
+         Una datastructure può essere usata da più dataflow. 
+      tags:
+      - metadata
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-language'
+        - $ref: '#/components/parameters/if-modified-since'
+      responses:
+        <<: *common_responses
+        '200':
+          $ref: '#/components/responses/200-struct'
+
+
   /{structureType}/{agencyID}/{resourceID}/{version}:
     get:
       summary: 'Structure query'
       description: |-
-         Mostra informazioni strutturali sui dati. In questa casistica ricadono path come:
-         `/datastructure` e `/dataflow`.
+         Mostra informazioni strutturali sui dati. In questa casistica ricadono i path ulteriori rispetto a datastructure e dataflow.
       tags:
       - metadata
       parameters:
