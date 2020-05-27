@@ -10,23 +10,61 @@ info:
   termsOfService: https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx
 
   description: |-
-    Grazie a un sistema tecnologicamente avanzato, l’Istat è in grado di diffondere i dati del [corporate data
-    warehouse I.Stat](http://dati.istat.it) anche in modalità machine-to-machine via web service.
-
-    Il servizio, gratuito e liberamente disponibile, consente agli enti e alle organizzazioni di formulare specifiche
-    richieste (query), di effettuare il download dei dati di interesse  e di accoglierli agevolmente nei  propri
-    sistemi (basi dati, portali web ecc.).
-
-    Il meccanismo query/download sfrutta un protocollo standard [SDMX (Statistical Data and Metadata eXchange)](https://sdmx.org), a
-    dottato per la trasmissione di dati statistici dalle più importanti organizzazioni internazionali.
+    ## DOCUMENTAZIONE
+    Il [Single Exit Point](https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx)
+    (SEP) è una API esposta dall'Istituto Nazionale di Statistica (Istat)
+    per permettere l'accesso in modalità machine-to-machine ai dati memorizzati nel
+    database di diffusione [I.Stat](http://dati.istat.it).
+    Il servizio, gratuito e liberamente disponibile, consente agli enti e alle organizzazioni
+    di formulare specifiche richieste (query), di effettuare il download dei dati di interesse
+    e di accoglierli agevolmente nei propri sistemi (basi dati, portali web ecc.).
+    La ricerca delle statistiche correntemente prodotte dall’Istat è facilitata da una
+    catalogazione per temi.
     
-    #### Note
-    Questa specifica viene rilasciata in forma sperimentale e la documentazione ufficiale è quella indicata nei
-    link.
+    ## NOTE
+    Il meccanismo query/download si basa sullo standard [SDMX (Statistical Data and
+    Metadata eXchange)](https://sdmx.org) sviluppato da sette organizzazioni internazionali (Bank for
+    International Settlements, European Central Bank, Eurostat, International Monetary
+    Fund, Organisation for Economic Cooperation and Development (OECD), United
+    Nations Statistical Division, World Bank) per facilitare lo scambio e la condivisione di
+    dati e metadati statistici.
     
-    Per ulteriori informazioni sulle specifiche SDMX, potete vedere
-    [le specifiche ufficiali sdmx-rest](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs)
-    o il [Wiki dedicato](https://github.com/sdmx-twg/sdmx-rest/wiki).
+    Dal 2013 SDMX è diventato uno standard ISO (IS 17369).
+    
+    SDMX è anche alla base del progetto [Hub della statistica pubblica](https://www.sistan.it/index.php?id=580)
+    per la condivisione,
+    l'integrazione e la diffusione di macrodati prodotti dai soggetti del Sistema Statistico
+    Nazionale (Sistan) o da altri enti produttori di statistiche che svolgono funzioni o
+    servizi d'interesse pubblico.
+    SDMX si basa su un solido modello informativo adottato anche dal W3C per la
+    descrizione dei dati multidimensionali in ambito Linked Open Data attraverso l'[RDF
+    Data Cube Vocabolary](https://www.w3.org/TR/vocab-data-cube).
+    
+    ## INFORMAZIONI TECNICHE ED ESEMPI
+    Essendo l'API SEP basata sullo standard SDMX, per la relativa documentazione tecnica
+    si può far riferimento alle [specifiche ufficiali sdmx-rest](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs)
+    o al [Wiki dedicato](https://github.com/sdmx-twg/sdmx-rest/wiki).
+    Il SEP attraverso il protocollo REST offre la possibilità di ricevere dati e metadati in
+    vari formati: XML, JSON, CSV, RDF
+    
+    Il formato può essere scelto attraverso HTTP content negotiation mechanism oppure,
+    nel caso specifico del SEP, aggiungendo un ulteriore parametro (format) alla query
+    REST. Per esempio:
+    -  estrarre la lista dei dataflow disponibili in formato json:
+    
+    ```
+    curl 'http://sdmx.istat.it/SDMXWS/rest/dataflow?format=jsonstructure'
+    ```
+    
+    - estrarre il dataset dell’Indice della Produzione industriale in formato json:
+    
+    ```
+    curl 'http://sdmx.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?format=jsondata'
+    ```
+    
+    AUTENTICAZIONE
+    Le richieste non richiedono autenticazione.
+  
 x-commons:
   common_responses: &common_responses
     '304':
