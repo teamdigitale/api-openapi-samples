@@ -213,6 +213,15 @@ paths:
           $ref: '#/components/responses/200-struct'
 
 components:
+  examples:
+    DatastructureResourceId:
+      summary: resourceID per datastructure
+      value: DCSC_INDXPRODIND_1
+    DataflowResourceId:
+      summary: resourceID per dataflow
+      value: >-
+        '115_333'
+
   schemas:
     SDMXPeriod:
       type: string
@@ -376,7 +385,12 @@ components:
       schema:
         type: string
         pattern: '^([A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
-        example: '115_333'
+      examples:
+        dataflow:
+          $ref: '#/components/examples/DataflowResourceId'
+        datastructure:
+          $ref: '#/components/examples/DatastructureResourceId'
+          
     versions:
       in: path
       name: version
