@@ -65,6 +65,11 @@ info:
     AUTENTICAZIONE
     Le richieste non richiedono autenticazione.
   
+tags:
+- name: data
+  description: Recupero dei dataset
+- name: metadata
+  description: Recupero di metadati e strutture
 x-commons:
   common_responses: &common_responses
     '304':
@@ -90,6 +95,8 @@ paths:
   /data/{flow}/{key}:
     get:
       summary: 'Data query'
+      tags:
+      - data
       description: |-
         Recupera un dataset nei formati supportati.
       parameters:
@@ -114,6 +121,8 @@ paths:
   /availableconstraint/{flow}/{key}/{componentID}:
     get:
       summary: 'Data availability query'
+      tags:
+      - metadata
       description: |-
         Mostra la disponibilita' di dati e dei metadati associati.
       parameters:
@@ -135,6 +144,11 @@ paths:
   /{structureType}/{agencyID}/{resourceID}/{version}:
     get:
       summary: 'Structure query'
+      description: |-
+         Mostra informazioni strutturali sui dati. In questa casistica ricadono path come:
+         `/datastructure` e `/dataflow`.
+      tags:
+      - metadata
       parameters:
         - $ref: '#/components/parameters/structureType'
         - $ref: '#/components/parameters/agencies'
@@ -391,6 +405,7 @@ components:
       schema:
         type: integer
         minimum: 1
+        format: int32
     lastNObservations:
       in: query
       name: lastNObservations
@@ -400,6 +415,7 @@ components:
       schema:
         type: integer
         minimum: 1
+        format: int32
     dimensionAtObservation:
       in: query
       name: dimensionAtObservation
