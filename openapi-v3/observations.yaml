@@ -154,9 +154,10 @@ paths:
           items:
             $ref: '#/components/schemas/ObservationParameterId'
       responses:
-       '200':
-          $ref: '#/components/responses/AdministrativeUnitDatasets'
         <<: *common-responses
+        '200':
+          $ref: '#/components/responses/AdministrativeUnitDatasets'
+
   /observation-parameters/{parameter_id}:
     get:
       description: |-
@@ -318,7 +319,7 @@ components:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.6/definitions.yaml#/responses/default'
     AdministrativeUnitDatasets:
       description: |-
-        Elenca delle collezioni di osservazioni 
+        Elenca delle collezioni di osservazioni
       content:
         application/json:
           schema:
