@@ -62,18 +62,29 @@ info:
 #   alla sua descrizione.
 tags:
   - name: public
-    description: Retrieve informations
+    description: Retrieve informations v. §2.7
+    externalDocs: &lg-spid-aa
+      description: Linee Guida Spid AA
+      url: https://agid.gov.it/riferimento-lg-spid-aa
+  - name: protected
+    description: Accesso permesso per enti e SP convenzionati, v. §2.7
+    externalDocs:
+      <<: *lg-spid-aa
+  - name: private
+    description: Accesso previo consenso v. §2.7
+    externalDocs:
+      <<: *lg-spid-aa
   - name: authorization
     description: |-
       Tag definito nelle LG Spid AA per i path authorization e token
-# Uno o piu' server di erogazione.
-#   Puo' essere utile indicare gli indirizzi di collaudo,
-#   sviluppo e test.
+
 servers:
-  - description: Test server
-    url: https://aa.example/patente/v1
+  - description: |-
+    I server devono rispettare una serie di indicazioni
+    url: https://aa.example/patente/{version}
+    
   - description: Development server
-    url: https://localhost:8443/patente/v1
+    url: https://localhost:8443/patente/{version}
 
 
 #
@@ -193,6 +204,9 @@ components:
   responses:
     # Predefined error codes for this API
     403Forbidden:
+      description: |-
+        Questa risposta viene data ad un SP quando gli attributi
+        sono accessibili solo previo consenso
       content:
         application/problem+json:
           schema:
