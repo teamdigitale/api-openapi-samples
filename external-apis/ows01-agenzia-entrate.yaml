@@ -96,7 +96,7 @@ info:
         
         ## Contatti e assistenza
 
-        Per maggiori informazioni si può consultare il manuale: []Servizio di Consultazione della cartografia
+        Per maggiori informazioni si può consultare il manuale: [Servizio di Consultazione della cartografia
         catastale - Web Map Service (WMS) - pdf](https://www.agenziaentrate.gov.it/portale/documents/20143/260417/Manuale+consultazione+cartografia_Documentazione+descrittiva+del+servizio+di+consultazione+della+cartografia+catastale+20180611.pdf/35e955f7-2344-56c8-1157-8f7567531660)
 
         Per quesiti relativi al servizio consultare [le risposte alle domande più frequenti(FAQ)](https://www.agenziaentrate.gov.it/portale/web/guest/schede/fabbricatiterreni/consultazione-cartografia-catastale/servizio-consultazione-cartografia/risposte-alle-domande-frequenti)
@@ -168,10 +168,10 @@ components:
         Request:
           description: |-
               Sono ammesse le seguenti operazioni:
-               GetMap con dimensione massima 2048 x 2048
-               GetCapabilities
-               GetFeatureInfo sui layer “Particelle”, “Mappe”
-               GetLegendGraphic
+              - GetMap con dimensione massima 2048 x 2048
+              - GetCapabilities
+              - GetFeatureInfo sui layer “Particelle”, “Mappe”
+              - GetLegendGraphic
           enum:
               - GetCapabilities
               - GetMap
