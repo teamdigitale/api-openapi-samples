@@ -74,13 +74,10 @@ tags:
     description: Accesso previo consenso v. §2.7
     externalDocs:
       <<: *lg-spid-aa
-  - name: authorization
-    description: |-
-      Tag definito nelle LG Spid AA per i path authorization e token
 
 servers:
   - description: |-
-    I server devono rispettare una serie di indicazioni
+      I server devono rispettare una serie di indicazioni
     url: https://aa.example/patente/{version}
     
   - description: Development server
@@ -106,8 +103,11 @@ paths:
         Ritorna un timestamp in formato RFC5424
         prendendola dal server attuale.
       operationId: get_echo
+      security:
+      - MODI: []
+      - ConsensoUtente: [openid, profile, offline_access, "patente:full", "patente:minimal", "patente:boolean"]
       tags:
-        - public
+        - private
       responses:
         <<: *common-responses
         '200':
@@ -121,36 +121,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Patente'
-  /authorization:
-    get:
-      description: |-
-        blah
-      tags:
-      - authorization
-      servers:
-      - url: https://aa.example/authorization
-        description: authorization server
-      responses:
-        "200": &200-ok
-          description: |-
-            A successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                
-  /token:
-    get:
-      description: |-
-        blah
-      tags:
-      - authorization
-      servers:
-      - url: https://aa.example/authorization
-        description: authorization server
-      responses:
-        "200":
-          <<: *200-ok
 
   /status:
     get:
@@ -180,6 +150,55 @@ paths:
                 $ref: '#/components/schemas/Problem'
 
 components:
+  securitySchemes:
+    MODI:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+      description: |-
+        Questo modello prevede il passaggio di un JWT
+        contenente le seguenti informazioni
+        conformi alle indicazioni del MODI
+        eg. basato su [ID_AUTH_REST_01](https://docs.italia.it/italia/piano-triennale-ict/lg-modellointeroperabilita-docs/it/bozza/doc/02_Pattern%20sicurezza/05_accesso-del-fruitore/03_id_auth_rest_01.html)
+      
+    ConsensoUtente:
+      description: |-
+        Questa sezione esplicita il riferimento all'URL di configurazione
+        di OIDC relativo al provider. Deve contenere le informazioni
+        indicate in:
+        [oidc discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)
+        e simile a quanto visto in [spid oidc](https://docs.italia.it/AgID/documenti-in-consultazione/lg-openidconnect-spid-docs/it/bozza/metadata/openid-provider-op-metadata.html?highlight=metadata)
+        ad esempio:
+        ```
+        {
+          "issuer": "https://aa.spid.it/",
+          "authorization_endpoint": "https://aa.spid.it/authorize",
+          "token_endpoint": "https://aa.spid.it/token",
+          "jwks_uri": "https://aa.spid.it/.well-known/jwks.json",
+          "scopes_supported": [
+            "openid",
+            "profile",
+            "offline_access",
+            "patente:full",
+            "patente:minimal",
+            "patente:boolean"
+          ],
+          "response_types_supported": [
+            "code",
+          ],
+          "token_endpoint_auth_methods_supported": [
+            "private_key_jwt"
+          ],
+          "subject_types_supported":[
+            "public"
+          ],
+          ...
+        }
+
+        ```
+      type: openIdConnect
+      openIdConnectUrl: https://aa.spid.it/.well-known/openid-configuration
+
   examples:
     403Forbidden:
       summary: §2.3 Consenso non fornito
@@ -187,7 +206,7 @@ components:
         title: Forbidden
         status: 403
         detail: Consent Required
-        instance: https://aa.example/authorization
+        instance: https://aa.spid.it/.well-known/openid-configuration
   headers:
     Cache-Control:
       schema:
