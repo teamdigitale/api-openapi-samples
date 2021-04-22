@@ -29,7 +29,19 @@ info:
         La consultazione libera della cartografia catastale consiste nella navigazione di molti contenuti
         delle mappe catastali in maniera dinamica.
         Le informazioni sono allineate con la banca dati cartografica del Catasto, costantemente aggiornata in
-        modalità automatica mediante gli atti tecnici predisposti dai professionisti abilitati. Il servizio, realizzato in attuazione della direttiva europea INSPIRE – INfrastructure for SPatial InfoRmation in Europe, si basa sullo standard Web Map Service (WMS), è direttamente fruibile tramite i software GIS (Geographic Information System) o specifiche applicazioni dell’utente e consente la visualizzazione integrata con altri dati territoriali. L’interfaccia ufficiale del servizio di consultazione WMS, basata sulle regole di implementazione della [direttiva europea INSPIRE](https://inspire.ec.europa.eu/), è descritta nel Repertorio nazionale dei dati territoriali [scheda metadati del servizio WMS](https://geodati.gov.it/geoportalRNDTPA/catalog/search/resource/details.page?uuid=age%3Aconsultazione_catasto_wms) e nel[Geoportale INSPIRE](https://inspire-geoportal.ec.europa.eu/index.html). Il servizio copre l’intero territorio nazionale, ad eccezione dei territori nei quali il Catasto è
+        modalità automatica mediante gli atti tecnici predisposti dai professionisti abilitati. 
+        Il servizio, realizzato in attuazione della direttiva europea INSPIRE – INfrastructure for SPatial InfoRmation 
+        in Europe, si basa sullo standard Web Map Service (WMS), è direttamente fruibile tramite 
+        i software GIS (Geographic Information System) o specifiche applicazioni dell’utente 
+        e consente la visualizzazione integrata con altri dati territoriali. 
+        
+        L’interfaccia ufficiale del servizio di consultazione WMS, 
+        basata sulle regole di implementazione della 
+        [direttiva europea INSPIRE](https://inspire.ec.europa.eu/), 
+        è descritta nel Repertorio nazionale dei dati territoriali 
+        [scheda metadati del servizio WMS](https://geodati.gov.it/geoportalRNDTPA/catalog/search/resource/details.page?uuid=age%3Aconsultazione_catasto_wms)
+         e nel[Geoportale INSPIRE](https://inspire-geoportal.ec.europa.eu/index.html).
+         Il servizio copre l’intero territorio nazionale, ad eccezione dei territori nei quali il Catasto è
         gestito,  per delega dello Stato, dalle Province Autonome di Trento e di Bolzano. Non sono
         esposte le mappe sottoposte a vincoli di riservatezza o quelle sulle quali sono in corso interventi di
         manutenzione.
