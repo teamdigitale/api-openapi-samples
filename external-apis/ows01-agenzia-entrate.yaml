@@ -14,18 +14,18 @@ info:
       name: CC-BY 4.0
       url: 'https://creativecommons.org/licenses/by/4.0/'
     x-summary: >-
-      Agenzia delle Entrate - Servizio di consultazione della cartografia catastale WMS. Le informazioni
-      sono allineate con la banca dati cartografica del Catasto, costantemente aggiornata in modalità
-      automatica mediante gli atti tecnici predisposti dai professionisti abilitati. Licenza CC BY 4.0.
-      L'Agenzia è l'amministrazione titolare dei dati. La citazione della titolarità è sempre obbligatoria
-      in caso d'uso.
+      Servizio di consultazione della cartografia catastale WMS. Le informazioni
+      sono allineate con la banca dati cartografica del Catasto.
     x-audience:
         - public
-    x-api-id: 00000000-0000-0000-0000-000000000000
 
     description: |-
         ## Che cos'è
 
+        Servizio di consultazione della cartografia catastale WMS erogata con licenza CC BY 4.0.
+        L'Agenzia è l'amministrazione titolare dei dati.
+        La citazione della titolarità è sempre obbligatoria in caso d'uso.
+        
         La consultazione libera della cartografia catastale consiste nella navigazione di molti contenuti
         delle mappe catastali in maniera dinamica.
         Le informazioni sono allineate con la banca dati cartografica del Catasto, costantemente aggiornata in
