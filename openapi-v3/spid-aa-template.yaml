@@ -1,8 +1,8 @@
 #
-# Questo e' un progetto d'esempio in formato OpenAPI 3.0 API Starter Kit.
-#
-# Stai per sviluppare un API? Segui attentamente questo template e
-#   potrai integrarla facilmente in Developers Italia.
+# Template file per Attribute Authority che autentica:
+#  - tramite MODI
+#  - tramite MODI-BIS
+#  - tramite UserConsent
 #
 x-commons:
   ratelimit-headers: &ratelimit-headers
@@ -24,8 +24,7 @@ x-commons:
       $ref: '#/components/responses/503ServiceUnavailable'
     default:
       $ref: '#/components/responses/default'
-
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   version: "1.0.0"
   title: |-
@@ -38,9 +37,8 @@ info:
   x-spid:
     # Questa sezione è obbligatoria §2.1
     aa-version: 1.0.0
-    aa-home: https://aa.example/patente/v1/u1/openapi.yaml
+    aa-home: https://aa.example/patente/v1/ui/openapi.yaml
     aa-registry: https://spid.gov.it/aa/registry/patente/v1/openapi.yaml
-    
   termsOfService: 'http://swagger.io/terms/'
   # Chi posso contattare per informazioni sul servizio e sul suo stato?
   contact:
@@ -74,19 +72,13 @@ tags:
     description: Accesso previo consenso v. §2.7
     externalDocs:
       <<: *lg-spid-aa
-  - name: authorization
-    description: |-
-      Tag definito nelle LG Spid AA per i path authorization e token
-
 servers:
   - description: |-
-    I server devono rispettare una serie di indicazioni
-    url: https://aa.example/patente/{version}
-    
+      I server devono rispettare una serie di indicazioni
+    url: https://aa.example/patente/v1
+
   - description: Development server
-    url: https://localhost:8443/patente/{version}
-
-
+    url: https://localhost:8443/patente/v1
 #
 # Qui vanno tutti i path.
 #
@@ -103,55 +95,50 @@ paths:
             il codice fiscale del soggetto
       summary: Ritorna un timestamp in formato RFC5424.
       description: |
-        Ritorna un timestamp in formato RFC5424
-        prendendola dal server attuale.
-      operationId: get_echo
+        Ritorna gli attributi relativi al codice fiscale passato
+        in accordo con il profilo di accesso (security scope).
+
+        Esempio 1: una PA richiede accesso agli attributi avendo
+          nell'Access Token il solo scope `validate_patente`.
+          In questo caso, il server ritorna solamente `true` eventualmente
+          incapsulato in un JWT, ad indicare
+          che il soggetto è in possesso di una patente di guida di tipo "B"
+          ```
+          {"items": [{"tipo": "B", "valida": true}]}
+          ```
+
+        Esempio 2: una PA richiede accesso agli attributi avendo
+          nell'Access Token lo scope `read_patente`.
+          In questo caso, il server ritorna tutti i dati eventualmente
+          incapsulati in un JWT
+          ```
+          {"items":  [{"tipo": "B", "valida": true, "patente": "UA000111222333W"}]}
+          ```
+      operationId: get_patente
+      security:
+      - UserConsentOIDC: [read_patente, validate_patente, openid, profile]
+      - ID_AUTH_REST_01: [read_patente, validate_patente]
+      - UserConsent: [read_patente, validate_patente]
       tags:
-        - public
+        - protected
+        - private
       responses:
         <<: *common-responses
         '200':
           description: |
-            Il server ha ritornato il timestamp.
-          # Questi header di throttling sono obbligatori e definiti
-          #   nel Nuovo modello di interoperabilità.
+            Il server ritorna gli attributi.
           headers:
             <<: *ratelimit-headers
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Patente'
-  /authorization:
-    get:
-      description: |-
-        blah
-      tags:
-      - authorization
-      servers:
-      - url: https://aa.example/authorization
-        description: authorization server
-      responses:
-        "200": &200-ok
-          description: |-
-            A successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                
-  /token:
-    get:
-      description: |-
-        blah
-      tags:
-      - authorization
-      servers:
-      - url: https://aa.example/authorization
-        description: authorization server
-      responses:
-        "200":
-          <<: *200-ok
-
+                properties:
+                  items:
+                    type: array
+                    maxItems: 10
+                    minItems: 0
+                    items:
+                      $ref: '#/components/schemas/Patente'
   /status:
     get:
       summary: Ritorna lo stato dell'applicazione.
@@ -178,12 +165,49 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-
 components:
+  securitySchemes:
+    ID_AUTH_REST_01:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |-
+        A JWT signed with a trusted key.
+        A process to identify trusted keys must be defined.
+    POND:
+      type: oauth2
+      description: |-
+        This API uses OAuth 2 with the clientCredentials flow
+        with a specific authorization server.
+      flows:
+        clientCredentials:
+          tokenUrl: https://pond.example/oauth2/tokenUrl
+          scopes:
+            read_patente: read full data
+            validate_patente: validate only
+    UserConsent:
+      type: oauth2
+      description: |-
+        This API uses OAuth 2 with the clientCredentials flow with PKCE.
+        The behavior
+      flows:
+        authorizationCode:
+          authorizationUrl: https://aa.example/patente/v1/authorization
+          tokenUrl: https://aa.example/patente/v1/token
+          scopes:
+            read_patente: read full data
+            validate_patente: validate only
+    UserConsentOIDC:
+      type: openIdConnect
+      openIdConnectUrl: https://aa.example/.well-known/openid-configuration
+      description: |-
+        In the OIDC Connect URL we must provide:
+        - scopes
+
   examples:
     403Forbidden:
       summary: §2.3 Consenso non fornito
-      value: 
+      value:
         title: Forbidden
         status: 403
         detail: Consent Required
@@ -193,13 +217,13 @@ components:
       schema:
         type: string
     X-RateLimit-Limit:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Limit'
     X-RateLimit-Remaining:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Reset'
     Retry-After:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/Retry-After'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/Retry-After'
 
   responses:
     # Predefined error codes for this API
@@ -211,24 +235,28 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Problem'
-          examples: 
+          examples:
             403Forbidden:
               $ref: '#/components/examples/403Forbidden'
-      $ref: >-
-        https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/403Forbidden
-
     400BadRequest:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/400BadRequest'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/400BadRequest'
     404NotFound:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/404NotFound'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/404NotFound'
     429TooManyRequests:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/429TooManyRequests'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/429TooManyRequests'
     503ServiceUnavailable:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/503ServiceUnavailable'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/503ServiceUnavailable'
     default:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/responses/default'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/default'
 
   schemas:
+    JWTAuthentication:
+      type: object
+      properties:
+        iss:
+          type: string
+          format: url
+
     XSpid:
       type: object
       required:
@@ -246,13 +274,18 @@ components:
           type: string
           format: url
     Problem:
-      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/schemas/Problem'
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/schemas/Problem'
     Patente:
       type: object
       description: Patente di guida
       externalDocs:
         url: http://www.mit.gov.it/documentazione/patenti-di-guida-informazioni-riconoscimento-sostituzione-relative-alla-patente-di
       properties:
+        valida:
+          type: boolean
+        tipo:
+          type: string
+          enum: ["A", "B", "C", "D"]
         patente:
           type: string
           description: |-
