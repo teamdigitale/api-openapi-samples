@@ -93,7 +93,7 @@ paths:
           type: string
           description: |-
             il codice fiscale del soggetto
-      summary: Ritorna un timestamp in formato RFC5424.
+      summary: Ritorna gli attributi delle patenti di una persona.
       description: |
         Ritorna gli attributi relativi al codice fiscale passato
         in accordo con il profilo di accesso (security scope).
