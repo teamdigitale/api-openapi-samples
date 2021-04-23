@@ -93,7 +93,12 @@ paths:
           type: string
           description: |-
             il codice fiscale del soggetto
-      summary: Ritorna gli attributi delle patenti di una persona.
+      summary: Ritorna un timestamp in formato RFC5424.
+      x-spid-operation:
+        consentRequired: N
+        spidLevel: LoA1
+        offlineAccess: true
+        offlineAccessDurationMax: 864000
       description: |
         Ritorna gli attributi relativi al codice fiscale passato
         in accordo con il profilo di accesso (security scope).
@@ -116,8 +121,8 @@ paths:
           ```
       operationId: get_patente
       security:
-      - UserConsentOIDC: [read_patente, validate_patente, openid, profile]
-      - ID_AUTH_REST_01: [read_patente, validate_patente]
+      - UserConsentOIDC: [read_patente, validate_patente, openid, profile, "offline_access"]
+      - "SPID Attribute Authority Security Scheme": [read_patente, validate_patente]
       - UserConsent: [read_patente, validate_patente]
       tags:
         - protected
@@ -167,14 +172,14 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   securitySchemes:
-    ID_AUTH_REST_01:
+    "SPID Attribute Authority Security Scheme":
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: |-
         A JWT signed with a trusted key.
         A process to identify trusted keys must be defined.
-    POND:
+    ExternalAS:
       type: oauth2
       description: |-
         This API uses OAuth 2 with the clientCredentials flow
@@ -201,8 +206,28 @@ components:
       type: openIdConnect
       openIdConnectUrl: https://aa.example/.well-known/openid-configuration
       description: |-
-        In the OIDC Connect URL we must provide:
-        - scopes
+        Di seguito un contenuto di esempio dei metadati degli endpoint OIDC usati per ottenere il consenso:
+
+        ```
+        {
+          "issuer": "https://authorization.aa.it/",
+          "authorization_endpoint": "https://authorization.aa.it/authorize",
+          "token_endpoint": "https://authorization.aa.it/token",
+          "jwks_uri": "https://example.com/.well-known/jwks.json",
+          "scopes_supported": [
+            "offline_access",
+            "openid",
+            "profile"
+          ],
+          "response_types_supported": [
+            "code"
+          ],
+          "token_endpoint_auth_methods_supported": [
+            "private_key_jwt"
+          ],
+          "subject_types_supported":["public"],
+        }
+        ````
 
   examples:
     403Forbidden:
