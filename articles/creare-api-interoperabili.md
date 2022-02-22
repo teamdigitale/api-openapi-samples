@@ -19,4 +19,3 @@ Sappiamo che molti generatori di codice supportano solo le vecchie specifiche sw
   * ricondurvi al caso precedente :wink:
 
 Leggete poi [i tanti post sull’interoperabilità ](https://forum.italia.it/c/piano-triennale/interoperabilita) che sono su questo forum!
-

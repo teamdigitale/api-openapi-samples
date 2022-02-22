@@ -46,5 +46,3 @@ Ecco altre utili indicazioni per costruire servizi interoperabili:
 * [utilizzare UTF-8](http://lg-patrimonio-pubblico.readthedocs.io/it/latest/riepilogoazioni.html#azione-11)
 * utilizzare ISO4217:alpha-3 (eg. EUR, USD, GBP, …) per le monete, come in[ fatturaPA](http://www.fatturapa.gov.it/export/fatturazione/sdi/Specifiche_tecniche_del_formato_FatturaPA_v1.0.pdf)
 * utilizzare ISO 3166-1-alpha2 (eg. IT, US, DE) per i paesi
-
-

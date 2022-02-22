@@ -1,0 +1,175 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                     xmlns:cie="https://www.cartaidentita.interno.gov.it/saml-extensions"
+                     xmlns:spid="https://spid.gov.it/saml-extensions"
+                     ID="_342411f0-564a-4f80-a5bd-8b8b4f773b67"
+                     cacheDuration="P30DT0H0M0.000S"
+                     entityID="https://entityID.unico/dell/SP">
+	<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+		<ds:SignedInfo>
+			<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+			<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+			<ds:Reference URI="#_342411f0-564a-4f80-a5bd-8b8b4f773b67">
+				<ds:Transforms>
+					<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+					<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</ds:Transforms>
+				<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+				<ds:DigestValue>gABFlNNEvv+c+ZChCTXZXyVbKnJuKls7TRvizrp3eEc=</ds:DigestValue>
+			</ds:Reference>
+		</ds:SignedInfo>
+		<ds:SignatureValue>jwLlxo4kePy9YyS/....CGgZPUD2LBZjn6B8uvC7cu/aezBSmQvGxAbzBSppQbr0M9kfSMfJ7hb5W3NSttMnP31kWW4PYEXn/Q5ME1N2v5+LjGTWCiXcjcPG+Q321+pMx9c2qRWrBy5AUfwUhQ96vK0mEqs8Jlxnlga6ySPLDJXQspasnZdEr6yJ4StP/Bd+XOMJYa1XkhwKUxOaVUoTJuEUn841kDOmvWhMp4uDpVpi6hQL3+UDggRfVl243gOBE8j69m6f93Qrlxg6/yhQTW3BuM59tph+mnYl920+51AU6iZUVPg==</ds:SignatureValue>
+		<ds:KeyInfo>
+			<ds:X509Data>
+				<ds:X509Certificate>MIIG1DCCBLygAwIBAg..........t9k8uSEvYtB+8BGsROd</ds:X509Certificate>
+			</ds:X509Data>
+		</ds:KeyInfo>
+	</ds:Signature>
+	<md:SPSSODescriptor AuthnRequestsSigned="true"
+	                    WantAssertionsSigned="true"
+	                    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIGujCCBKKgAwIBAgIT.......eMrnSvcY0LXQ==</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIG1DCCBLygAw............zt9k8uSEvYtB+8BGsROd</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509SubjectName>authconc01.abcde.it</ds:X509SubjectName>
+					<ds:X509Certificate>MIIF6TCCA9GgAwI...........yAtA+5Tsu4Cz6DXY=</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+		                        Location="https://authconc01.abcde.it/auth/realms/abcde-concorsi/broker/cieid/endpoint"/>
+		<md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+		                        Location="https://authconc01.abcde.it/auth/realms/abcde-concorsi/broker/infocertid/endpoint"/>
+		<md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+		                        Location="https://authconc01.abcde.it/auth/realms/abcde-concorsi/broker/arubaid/endpoint"/>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+		<md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+		                             Location="https://serviziweb2.abcde.it/PassiFederazioneWEB/spid/sp/AssertionConsumerService"
+		                             index="0"
+		                             isDefault="true"/>
+		<md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+		                             Location="https://authconc01.abcde.it/auth/realms/abcde-concorsi/broker/spidid/endpoint"
+		                             index="1"/>
+		<md:AttributeConsumingService index="0">
+			<md:ServiceName xml:lang="it">Servizi abcde</md:ServiceName>
+			<md:RequestedAttribute FriendlyName="Codice identificativo"
+			                       Name="spidCode"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Codice fiscale"
+			                       Name="fiscalNumber"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Cognome"
+			                       Name="familyName"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Nome"
+			                       Name="name"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Sesso"
+			                       Name="gender"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Data di nascita"
+			                       Name="dateOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Provincia di Nascita"
+			                       Name="countyOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Luogo di nascita"
+			                       Name="placeOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Numero di telefono mobile"
+			                       Name="mobilePhone"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Indirizzo di posta elettronica"
+			                       Name="email"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Domicilio digitale"
+			                       Name="digitalAddress"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+		</md:AttributeConsumingService>
+		<md:AttributeConsumingService index="1">
+			<md:ServiceName xml:lang="it">Servizio Concorsi abcde</md:ServiceName>
+			<md:ServiceDescription xml:lang="it">servizio concorsi abcde</md:ServiceDescription>
+			<md:RequestedAttribute FriendlyName="Nome"
+			                       Name="name"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Cognome"
+			                       Name="familyName"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Codice fiscale"
+			                       Name="fiscalNumber"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Sesso"
+			                       Name="gender"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Luogo di nascita"
+			                       Name="placeOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Provincia di Nascita"
+			                       Name="countyOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Data di nascita"
+			                       Name="dateOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Domicilio digitale"
+			                       Name="digitalAddress"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Indirizzo di posta elettronica"
+			                       Name="email"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+		</md:AttributeConsumingService>
+		<md:AttributeConsumingService index="2">
+			<md:ServiceName xml:lang="it">Servizio Concorsi abcde - CIE</md:ServiceName>
+			<md:ServiceDescription xml:lang="it">servizio concorsi abcde-cie</md:ServiceDescription>
+			<md:RequestedAttribute FriendlyName="Nome"
+			                       Name="name"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Cognome"
+			                       Name="familyName"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Data di nascita"
+			                       Name="dateOfBirth"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+			<md:RequestedAttribute FriendlyName="Codice fiscale"
+			                       Name="fiscalNumber"
+			                       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>
+		</md:AttributeConsumingService>
+	</md:SPSSODescriptor>
+	<md:Organization>
+		<md:OrganizationName xml:lang="it">Nome Organizzazione</md:OrganizationName>
+		<md:OrganizationDisplayName xml:lang="it">Display Name</md:OrganizationDisplayName>
+		<md:OrganizationURL xml:lang="it">https://www.abcde.it/</md:OrganizationURL>
+	</md:Organization>
+	<md:ContactPerson contactType="administrative">
+		<md:Extensions>
+			<cie:Public/>
+			<cie:IPACode>aaaa</cie:IPACode>
+			<cie:Municipality>H501</cie:Municipality>
+			<cie:Province>RM</cie:Province>
+		</md:Extensions>
+		<md:Company> Istituto N.........</md:Company>
+		<md:EmailAddress>areasicurezza@postacert.abcde.gov.it</md:EmailAddress>
+		<md:TelephoneNumber>+390652222222</md:TelephoneNumber>
+	</md:ContactPerson>
+	<md:ContactPerson contactType="other">
+		<md:Extensions>
+			<spid:Public/>
+			<spid:IPACode>abcde</spid:IPACode>
+		</md:Extensions>
+		<md:Company>Istituto N.........</md:Company>
+		<md:EmailAddress>areasicurezza@postacert.abcde.gov.it</md:EmailAddress>
+		<md:TelephoneNumber>+3906222222222</md:TelephoneNumber>
+	</md:ContactPerson>
+</md:EntityDescriptor>

@@ -1,12 +1,12 @@
 # Messaggi d'errore in JSON: lo standard rfc7807
 
-In un sistema fortemente integrato come quello delle PA è utile avere una gestione degli errori uniforme. 
+In un sistema fortemente integrato come quello delle PA è utile avere una gestione degli errori uniforme.
 
 Per le comunicazioni basate su JSON esiste [RFC7807](https://tools.ietf.org/html/rfc7807), che struttura i messaggi di errore con:
 
   - un campo obbligatorio (title)
   - una serie di campi opzionali (type, detail, status, instance)
-  - ulteriori campi personalizzati, che possono essere aggiunti 
+  - ulteriori campi personalizzati, che possono essere aggiunti
 
 ```
     HTTP/1.1 500 Internal Error

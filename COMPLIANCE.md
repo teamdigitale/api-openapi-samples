@@ -88,7 +88,7 @@ You can use the pre-built responses in errors.
   headers:
     X-RateLimit-Limit:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
-    X-RateLimit-Remaining:  
+    X-RateLimit-Remaining:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
     X-RateLimit-Reset:
       $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
