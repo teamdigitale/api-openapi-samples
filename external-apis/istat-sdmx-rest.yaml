@@ -62,6 +62,10 @@ info:
     curl 'http://sdmx.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?startPeriod=2018&endPeriod=2018&format=jsondata'
     ```
     
+    Per limitare il volume delle risposte, che possono essere anche
+    di diversi gigabyte, è importante restringere il campo delle ricerche
+    limitando i record ritornati.
+    
     AUTENTICAZIONE
     Le richieste non richiedono autenticazione.
   
@@ -99,6 +103,12 @@ paths:
       - data
       description: |-
         Recupera un dataset nei formati supportati.
+        
+        Per recuperare un dataset è necessario conoscere il dominio statistico
+        del dataset, che corrisponde ad un identificativo dei dati da ritornare.
+        
+        E' anche possibile specificare la versione del dataset.
+        
       parameters:
         - $ref: '#/components/parameters/flow'
         - $ref: '#/components/parameters/key'
@@ -141,6 +151,35 @@ paths:
         '200':
           $ref: '#/components/responses/200-struct'
 
+  /dataflow:
+    get:
+      summary: 'Elenca i dataflow'
+      description: |-
+        Ritorna tutti i dataflow con le loro descrizioni.
+
+        E' possibile ricercare i risultati nell'output. 
+      tags:
+      - metadata
+      parameters:
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-language'
+        - $ref: '#/components/parameters/if-modified-since'
+        - name: format
+          in: query
+          schema:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - jsonstructure
+            - rdf
+      responses:
+        <<: *common_responses
+        '200':
+          $ref: '#/components/responses/200-struct'
+
+
   /dataflow/{agencyID}/{resourceID}/{version}:
     get:
       summary: 'Dataflow query'
@@ -149,6 +188,7 @@ paths:
          
         Eg. Il dataflow dell'Indice di produzione industriale
          ha `resourceID=115_333`  
+
       tags:
       - metadata
       parameters:
@@ -256,13 +296,27 @@ components:
         type: string
         pattern: '^([a-zA-Z][a-zA-Z\d_-]*(\.[a-zA-Z][a-zA-Z\d_-]*)*,)?[a-zA-Z\d_@$-]+(,(latest|(\d+(\.\d+)*)))?$'
         example: "IT1,115_333,1.2"
+      examples:
+        ProduzioneIndustrialeSimple:
+          value: "115_333"
+          summary: Ricerca semplice in base al dataflow dell'Indice della produzione industriale
+        ProduzioneIndustrialeVersion:
+          value: "IT1,115_333,1.2"
+          summary: Ricerca completa indicando agenzia, dataflow e versione
+        ProduzioneIndustrialeAgency:
+          value: "IT1,115_333"
+          summary: Ricerca indicando agenzia (Istat) e dataflow
+        PopolazioneResidenteSimple:
+          value: "22_289"
+          summary: Ricerca semplice per dataflow della Popolazione residente
     key:
       in: path
       name: key
       description: |
         The (possibly partial) **key identifying the data to be returned**.
 
-        The keyword `all` can be used to indicate that all data belonging to the specified dataflow and provided by the specified provider must be returned.
+        The keyword `all` can be used to indicate that all data belonging to the specified dataflow and provided by the specified provider must be returned;
+        *this might be in the order of gigabytes*
 
         The examples below are based on the following key: Frequency, Country, Component of inflation, Unit of measure.
          * `M.DE.000000.ANR`: Full key, matching exactly one series, i.e. the monthly (`M`) rates of change (`ANR`) of overall inflation (`000000`) in Germany (`DE`).
@@ -273,6 +327,19 @@ components:
         type: string
         pattern: '^([\.A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
         example: "..N..IND_PROD2"
+      examples:
+        ProduzioneIndustrialeSlice:
+          value: "..N..IND_PROD2"
+          summary: >-
+            Ricerca i campi contenenti il valore IND_PROD2
+        PopolazioneResidenteSlice:
+          value: .TOTAL.058091.9.99..
+          summary: >-
+            Popolazione per tutte le fasce d'età (TOTAL)
+            per il Comune di Roma (codice istat 058091)
+            sia maschi che femmine (9)
+            per tutti gli stati anagrafici (99)
+            
     provider:
       in: path
       name: provider
@@ -356,8 +423,13 @@ components:
         The keyword `latest` can be used to return the latest production version of the matching resource.
       required: true
       schema:
-        type: string
-        pattern: '^(latest|[\d]+(\.[\d]+)*)$'
+        oneOf:
+        - type: string
+          pattern: '^([\d]+(\.[\d]+)*)$'
+        - type: string
+          enum:
+          - latest
+          - all
     agencies:
       in: path
       name: agencyID
@@ -404,9 +476,20 @@ components:
         The keyword `latest` can be used to return the latest production version of the matching resource.
       required: true
       schema:
-        type: string
-        pattern: '^(all|latest|[\d]+(\.[\d]+)*(\+[\d]+(\.[\d]+)*)*)$'
-        example: "1.2"
+        oneOf:
+        - type: string
+          pattern: '^([\d]+(\.[\d]+)*(\+[\d]+(\.[\d]+)*)*)$'
+        - type: string
+          enum:
+          - all
+          - latest
+      examples:
+        all:
+          value: "all"
+          summary: Return all versions of the matching resource.
+        latest:
+          value: "latest"
+          summary: Return the latest production version of the matching resource.
     items:
       in: path
       name: itemID
@@ -437,7 +520,7 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/SDMXPeriod'
-      example: "2000-01"
+      example: "2020-01"
 
     endPeriod:
       in: query
@@ -448,6 +531,7 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/SDMXPeriod'
+      example: "2020-10"
     updatedAfter:
       in: query
       name: updatedAfter
@@ -523,7 +607,6 @@ components:
       required: false
       schema:
         type: boolean
-        default: false
     explicitMeasure:
       in: query
       name: explicitMeasure
