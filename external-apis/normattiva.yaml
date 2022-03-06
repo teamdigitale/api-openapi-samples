@@ -1,0 +1,218 @@
+#
+# Questo e' un progetto d'esempio in formato OpenAPI 3.0 API Starter Kit.
+#
+# Stai per sviluppare un API? Segui attentamente questo template e
+#   potrai integrarla facilmente in Developers Italia.
+#
+# Se usi componenti in modo ricorrente, yaml
+#   permette di definirle e riusarle.
+#   Puoi metterle nell'oggetto x-commons e rimuoverlo
+#   prima di pubblicarle.
+x-commons:
+  ratelimit-headers: &ratelimit-headers
+    X-RateLimit-Limit:
+      $ref: '#/components/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: '#/components/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: '#/components/headers/X-RateLimit-Reset'
+  common-responses: &common-responses
+    '400':
+      $ref: '#/components/responses/400BadRequest'
+    '429':
+      $ref: '#/components/responses/429TooManyRequests'
+    '503':
+      $ref: '#/components/responses/503ServiceUnavailable'
+    default:
+      $ref: '#/components/responses/default'
+
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: |-
+    Normattiva.
+  x-summary: >-
+    Cerca e scarica le norme italiane.
+  description: |
+    #### Documentazione
+
+    Questa API permette di cercare e scaricare le norme
+    italiane in formato Akoma Ntoso.
+
+  # I termini del servizio contengono un riferimento
+  #   a tutte le indicazioni e le note legali per l'utilizzo
+  #   del servizio, inclusi gli eventuali riferimenti utili al GDPR.
+  termsOfService: 'http://www.normattiva.it/'
+  # Chi posso contattare per informazioni sul servizio e sul suo stato?
+  contact:
+    email: robipolli@gmail.com
+    name: Roberto Polli
+    url: https://twitter.com/ioggstream
+  # L'audience delle API. Attualmente e' definito solamente
+  #   la tipologia `public`.
+  x-audience:
+    - public
+  # Ogni API deve avere un UUID, invariante nel tempo e
+  #   rispetto al `title`.
+  x-api-id: 00000000-0000-0000-0000-000000000000
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+  # Per dare indicazioni sul ciclo di vita dell'API
+  # si puo' usare un parametro come:
+  x-lifecycle:
+    published: 1970-01-01
+    deprecated: 2050-01-01
+    retired: 2050-06-01
+    maturity: published
+
+# Una lista di `tag` utili a raggruppare le varie operazioni
+#   eseguite dalle API. Ogni `tag` puo' referenziare un link
+#   alla sua descrizione.
+tags:
+  - name: public
+    description: Retrieve informations
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
+# Uno o piu' server di erogazione.
+#   Puo' essere utile indicare gli indirizzi di collaudo,
+#   sviluppo e test.
+#   Di seguito mostriamo come indicare se il server
+#   e' una sandbox o meno con dei tag custom.
+servers:
+  - description: Development server
+    url: https://www.normattiva.it
+    
+#
+# Qui vanno tutti i path.
+#
+paths:
+  /do/atto/caricaAKN:
+    get:
+      operationId: get_caricaAKN
+      description: Mostra una legge in formato Akoma Ntoso
+      parameters:
+        - name: dataGU
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '[0-9]{8}'
+            example: "20200914"
+        - name: codiceRedaz
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '[A-Z0-9]{8}'
+            example: =20G00139
+        - name: dataVigenza
+          required: true
+          in: query
+          schema:
+            type: string
+            pattern: '[0-9]{8}'
+            example: '20200914'
+      responses:
+        "200":
+          description: "Ritorna una norma in Akoma Ntoso"
+          content:
+            application/xml: {}
+
+  /do/atto/suggester/{q}:
+    get:
+      parameters:
+        - name: q
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 48
+      summary: Autocompleta le ricerche
+      description: |
+        Autocompleta le ricerche.
+      operationId: get_suggester
+      tags:
+        - public
+      responses:
+        <<: *common-responses
+        '200':
+          description: |
+            Le parole chiave ritorante.
+          # Questi header di throttling sono obbligatori e definiti
+          #   nel Nuovo modello di interoperabilità.
+          headers:
+            <<: *ratelimit-headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Suggestions'
+  /status:
+    get:
+      summary: Ritorna lo stato dell'applicazione.
+      description: |
+        Ritorna lo stato dell'applicazione. A scopo
+        di test, su base randomica puo' ritornare
+        un errore.
+      operationId: get_status
+      tags:
+        - public
+      responses:
+        <<: *common-responses
+        '200':
+          description: |
+            Il server ha ritornato lo status. In caso di problemi
+            ritorna sempre un problem+json.
+          # Questi header di throttling sono obbligatori e definiti
+          #   nel Nuovo modello di interoperabilità.
+          headers:
+            <<: *ratelimit-headers
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+components:
+
+  headers:
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/X-RateLimit-Reset'
+    Retry-After:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/headers/Retry-After'
+
+  responses:
+    # Predefined error codes for this API
+    400BadRequest:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/400BadRequest'
+    404NotFound:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/404NotFound'
+    429TooManyRequests:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/429TooManyRequests'
+    503ServiceUnavailable:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/503ServiceUnavailable'
+    default:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/responses/default'
+
+  schemas:
+    Problem:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.7/definitions.yaml#/schemas/Problem'
+    Suggestions:
+      type: array
+      maxItems: 20
+      minItems: 0
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          label:
+            type: string
+            description: An html-formatted string
+          value:
+            type: string
+            description: an ascii string with the search keyword
+            maxLength: 100
