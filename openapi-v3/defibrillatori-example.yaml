@@ -40,11 +40,12 @@ components:
     DefibrillatoreId:
       type: string
       format: uuid
-      maxLength: 48
-      minLength: 48
-      pattern: '[a-z0-9-]{48}'
+      maxLength: 36
+      minLength: 36
+      pattern: '[a-z0-9-]{36}'
       description: >-
         L'identificativo univoco del defibrillatore.
+      example: 7411c337-2f9a-4f6b-911d-d1b814ea4c57
     Defibrillatore:
       type: object
       additionalProperties: false
@@ -55,13 +56,15 @@ components:
         status:
           type: string
           enum: [attivo, non-attivo]
+          example: attivo
         gestore:
           type: string
           maxLength: 32
-          pattern: '[a-zA-Z0-9_]{,32}'
+          pattern: '[a-zA-Z0-9\-_]+'
           description: |-
             codice IPA dell'ente che gestisce il defibrillatore.
             Gli utenti autenticati devono essere riferibili all'ente.
+          example: "C_E472"
     GeoJSONFeature:
       type: object
       additionalProperties: false
@@ -116,6 +119,7 @@ components:
         type:
           type: string
           enum: [FeatureCollection]
+          example: FeatureCollection
         features:
           type: array
           maxItems: 1000
@@ -132,6 +136,7 @@ components:
         * 2 caratteri per regioni
         * 3 caratteri per province
         * 6 caratteri per comuni
+      example: '059001'
     Latitude:
       $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/components/schemas/Latitude
     Longitude:
@@ -165,6 +170,7 @@ components:
         minimum: 0
         default: 500
         maximum: 2000
+        example: 500
     DefibrillatoreId:
       name: id
       in: path
