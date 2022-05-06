@@ -634,7 +634,7 @@ rules:
       function: undefined
   use-problem-json-for-errors:
     description: |-
-      
+
       Error management is a key enabler of a resilient API ecosystem.
       Enforcing a consistent schema for errors between different APIs,
       enables client to properly implement an error management strategy,
@@ -709,7 +709,7 @@ rules:
               type: string
   hint-problem-schema:
     description: |-
-      
+
       WARN: This rule is under implementation and just provides an hint.
 
       Error management is a key enabler of a resilient API ecosystem.
@@ -1342,7 +1342,7 @@ rules:
 
       and MUST not be used, including `implicit` and `password`.
 
-      The new [OAuth2.1](https://tools.ietf.org/html/draft-ietf-oauth-v2-1-01) 
+      The new [OAuth2.1](https://tools.ietf.org/html/draft-ietf-oauth-v2-1-01)
 
       still in draft, removes them and suggests to
 
@@ -1451,4 +1451,3 @@ rules:
             - required:
                 - format
           additionalProperties: true
-

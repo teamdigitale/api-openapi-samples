@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: SPID Registry API
   version: "1.2"
-  
+
   contact:
     name: SPID API Support
     email: spid.tech@agid.gov.it
@@ -16,35 +16,35 @@ info:
 
     Queste API sono documentate in **OpenAPI format**.
     # Introduzione
-    Il registry, registro pubblico della federazione SPID, contiene la lista delle entità che hanno 
+    Il registry, registro pubblico della federazione SPID, contiene la lista delle entità che hanno
     superato il processo di accreditamento e quindi facenti parte della federazione SPID.
-    Il registry viene popolato dall'Agenzia per l’Italia Digitale a seguito del processo di stipula delle 
-    convenzioni e aggiornata dalla stessa Agenzia nel corso delle attività legate alla gestione delle 
+    Il registry viene popolato dall'Agenzia per l’Italia Digitale a seguito del processo di stipula delle
+    convenzioni e aggiornata dalla stessa Agenzia nel corso delle attività legate alla gestione delle
     convenzioni e della vigilanza sui soggetti del circuito SPID.
-    Il contenuto informativo del registry è in fruizione a tutte le entità appartenenti al circuito SPID ai 
-    fini della verifica della sussistenza di relazioni di trust nei confronti di entità terze (IdP, AA, SP) e 
-    del reperimento delle informazioni associate alla alle stesse. 
-    La proposta condivisa dal gruppo di lavoro per la gestione dei metadata prevede l’utilizzo di due 
+    Il contenuto informativo del registry è in fruizione a tutte le entità appartenenti al circuito SPID ai
+    fini della verifica della sussistenza di relazioni di trust nei confronti di entità terze (IdP, AA, SP) e
+    del reperimento delle informazioni associate alla alle stesse.
+    La proposta condivisa dal gruppo di lavoro per la gestione dei metadata prevede l’utilizzo di due
     differenti modalità, che saranno entrambe rese diponibili da AgID: API, GIT.
 
     # Specifiche API
-    La soluzione prevede l’implementazione di una interfaccia API Rest, resa disponibile da AgID 
-    presso il Registro pubblico dei metadata (registry.spid.gov.it), che consente il recupero dei 
+    La soluzione prevede l’implementazione di una interfaccia API Rest, resa disponibile da AgID
+    presso il Registro pubblico dei metadata (registry.spid.gov.it), che consente il recupero dei
     metadata attraverso interrogazioni massive e ricerche mirate.
-    L’API sarà compatibile con lo standard Metadata Query Protocol (MDQ) e conforme inoltre alle 
+    L’API sarà compatibile con lo standard Metadata Query Protocol (MDQ) e conforme inoltre alle
     specifiche OAS (OpenAPI Specification) e MODI (LL.GG. Interoperabilità AgID).
 
     Attraverso tale interfaccia gli IdP potranno interrogare il Registry in due modalità:
     - richiesta puntuale per ottenere l’XML di un metadata identificato tramite EntityID
     - richiesta massiva per ottenere XML aggregato di tutti o un insieme specifico di metadata rilasciati sul Registry
-    
+
     *Descrizione [Formato PDF](./MDA_036-20210324_GestioneMetadata.pdf)*
 
 servers:
   - url: https://registry.spid.gov.it
     description: Registro pubblico dei metadata SPID
   - url: http://localhost
-    description: Installazione locale del Registro SPID 
+    description: Installazione locale del Registro SPID
 
 tags:
   - name: Public API
@@ -87,7 +87,7 @@ paths:
         '401':
             $ref: '#/components/responses/Unauthorized'
         '404':
-            $ref: '#/components/responses/NotFound'     
+            $ref: '#/components/responses/NotFound'
         '405':
             $ref: '#/components/responses/MethodNotAllowed'
         '406':
@@ -100,10 +100,10 @@ paths:
     get:
       tags:
         - Richiesta Massiva
-      summary: /entities 
-      description: 
-        La richiesta massiva, consente di ottenere in forma aggregata tutti i metadata aggiornati rilasciati da AgiD sul Registry oppure l’insieme di metadata richiesto. 
-        Tale modalità può essere utilizzata dagli IdP per aggiornare il registro locale attraverso procedure schedulate in esecuzione automatica. 
+      summary: /entities
+      description:
+        La richiesta massiva, consente di ottenere in forma aggregata tutti i metadata aggiornati rilasciati da AgiD sul Registry oppure l’insieme di metadata richiesto.
+        Tale modalità può essere utilizzata dagli IdP per aggiornare il registro locale attraverso procedure schedulate in esecuzione automatica.
         La chiamata all'endpoint  produce tutti i  metadata sotto forma di XML aggregato
       operationId: getAllMetadata
       parameters:
@@ -129,7 +129,7 @@ paths:
         '401':
             $ref: '#/components/responses/Unauthorized'
         '404':
-            $ref: '#/components/responses/NotFound'     
+            $ref: '#/components/responses/NotFound'
         '405':
             $ref: '#/components/responses/MethodNotAllowed'
         '406':
@@ -157,6 +157,7 @@ components:
         OK_singola_entityID:
           description: In caso di record recuperato con successo, essa conterrà nel body un oggetto xml rappresentativo del metadata richiesto.
           content:
+            # I possibili valori di Content-Type sono indicati qui.
             application/json:
               schema:
                 $ref: '#/components/schemas/oneSP_schema'
@@ -164,8 +165,12 @@ components:
                 oneSP_metadata_json:
                   $ref: '#/components/examples/oneSP_metadata_json'
             application/samlmetadata+xml:
+              #< -- E' possibile referenziare gli schema XML/XSD tramite
+              # x-oas-draft-alternate-schema:
+              #  type: xml-schema
+              #  externalValue: ./rootschema.xsd
               schema:
-                $ref: '#/components/schemas/oneSP_schema'  #< -- Si deve capire se è possibile  inserire gli schema XML/XSD
+                $ref: '#/components/schemas/oneSP_schema'
               examples:
                   oneSP_metadata_xml:
                     $ref: '#/components/examples/oneSP_metadata_xml'
@@ -178,14 +183,14 @@ components:
               schema:
                 type: string
                 description: Es. application/samlmetadata+xml (anche le response vuote).
-              required: true                   
+              required: true
             ETag:
               schema:
                 type: string
                 maxLength: 64      # <-- Verificare se va bene questo formato
                 description: Entity Tag(anche le response vuote).
                 example: "abcdefg"
-              required: true                   
+              required: true
             Cache-Control:
               schema:
                 type: string
@@ -205,16 +210,16 @@ components:
               schema:
                 type: string
                 description: valore URL-encoded dell’EntityID del metatadato da ricevere
-                example: stesso valore del parametro della Request                  
+                example: stesso valore del parametro della Request
             only_entity_id:
               schema:
                 type: string       # <-- to check (oppure boolean??)
-                example: stesso valore del parametro della Request     
+                example: stesso valore del parametro della Request
                 description: (solo se presente come parametro) Restituisce solo gli entity_id.
             output:
               schema:
-                type: string       
-                example: json     
+                type: string
+                example: json
                 description: (solo se presente come parametro) Ritorna il risultato della ricerca in formato JSON.
         OK_multiple_entityID:
           description: |
@@ -251,27 +256,22 @@ components:
               schema:
                 type: string
               description: Richiesto se e solo se il contenuto è compresso (anche le response vuote).
-            Content-Type:
-              schema:
-                type: string
-              description: Es. application/samlmetadata+xml (anche le response vuote).
-              required: true                   
             Etag:
               schema:
                 type: string
               description: Entity Tag(anche le response vuote).
               example: "abcdefg"
-              required: true                   
+              required: true
             Cache-Control:
               schema:
                 type: string
-              required: true                   
+              required: true
               description: Utilizzato per specificare direttive per il meccanismo di caching nella request/response.
             Content-Length:
               schema:
                 type: string
               example: 1234
-              required: true                   
+              required: true
               description: Utilizzato per specificare direttive per il meccanismo di caching nella request/response.
             Last-Modified:
               schema:
@@ -298,7 +298,7 @@ components:
               schema:
                 type: string
               description: (solo se presente come parametro) valore URL-encoded dell’EntityID del metatadato da ricevere
-              example: stesso valore del parametro della Request                  
+              example: stesso valore del parametro della Request
             offsetParam:
               schema:
                 type: integer
@@ -314,18 +314,18 @@ components:
                 example: IDP
                 default: SP
                 description: (solo se presente come parametro) Filtro per tipologia di ente (IDP,SP,AA).
-            updated_from:                                
+            updated_from:
               schema:
                 type: string
               example: stesso valore del parametro della Request
               description: (solo se presente come parametro) Recupera i metadata aggiornati da una specifica data (YYYYMMDD).
-            deleted_from:                                
+            deleted_from:
               schema:
                 type: string
                 pattern: /([0-9]{4})(?:[0-9]{2})([0-9]{2})/
                 example: "20190517"
                 description: (solo se presente come parametro) Recupera i metadata non più presenti o cancellati da una specifica data  (YYYYMMDD).
-            valid_at:                                    
+            valid_at:
               schema:
                 type: string
               example: stesso valore del parametro della Request
@@ -333,7 +333,7 @@ components:
             organization_type:
               schema:
                 type: string
-              example: stesso valore del parametro della Request     
+              example: stesso valore del parametro della Request
               description: (solo se presente come parametro) Filtro per tipologia di ente (se PA o Privato).
             federation_type:
               schema:
@@ -345,23 +345,23 @@ components:
             aggregator_code:
               schema:
                 type: string
-              example: stesso valore del parametro della Request     
+              example: stesso valore del parametro della Request
               description: (solo se presente come parametro) Filtro per codice dell’ente aggregatore ovvero IPA o PIVA.
             eidas_ready:
               schema:
                 type: string       # <-- to check (oppure boolean??)
-              example: stesso valore del parametro della Request    
+              example: stesso valore del parametro della Request
               description: (solo se presente come parametro) Filtro su attributi eIDAS.
             only_entity_id:
               schema:
                 type: string       # <-- to check (oppure boolean??)
-              example: stesso valore del parametro della Request     
+              example: stesso valore del parametro della Request
               description: (solo se presente come parametro) Restituisce solo gli entity_id.
             output:
               schema:
-                type: string       
+                type: string
                 enum: [json]
-                example: json     
+                example: json
                 description:  (solo se presente come parametro) Ritorna il risultato della ricerca in formato JSON.
         NotFound_example:
           description: The specified resource was not found
@@ -396,16 +396,16 @@ components:
               type: string
               example: Arthur Dent
           # Both properties are required
-          required:  
+          required:
             - id
-            - name  
-        MultipleSP_xml:   
+            - name
+        MultipleSP_xml:
           type: object
           $ref: './multipleSP_metadata_example.xml'  #< -- Si deve capire se è possibile  inserire gli schema XML/XSD
-        MultipleSP_xml_onlyID:   
+        MultipleSP_xml_onlyID:
           type: object
           $ref: './multipleSP_metadata_example_only_entityID.xml' #< -- Si deve capire se è possibile  inserire gli schema XML/XSD
-        MultipleSP_json_onlyID:   
+        MultipleSP_json_onlyID:
           type: object
           required:
             - Reference
@@ -430,128 +430,130 @@ components:
           xml:
             name: Entita
         oneSP_schema:
-            description: Schema del metatdato JSON per un SP 
+            description: Schema del metatdato JSON per un SP
             type: object
-            properties: 
+            properties:
               entity_id:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: https://entityID.unico/dell/SP
               file_name:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: isssss.xml
               file_hash:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: 06bdad0dd2812c5b37857b96e5ecc977367fd0a8c2129a0c275c8dc8f48
               code:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: xyz
               aggregator_code:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
+                  nullable: true
                   example: null
               signing_certificate_x509:
-                  description: To be inserted 
+                  description: To be inserted
                   type: array
                   items:
                       $ref: '#/components/schemas/certificate_x509'
               organization_name:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: Nome organizzazione
               organization_display_name:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: Display name
               organization_type:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: PA
               federation_type:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: SP
               single_logout_service:
-                  description: To be inserted 
+                  description: To be inserted
                   type: array
                   items:
                       $ref: '#/components/schemas/end_point'
                   minLength: 1
               assertion_consumer_service:
-                  description: To be inserted 
+                  description: To be inserted
                   type: array
                   items:
                       $ref: '#/components/schemas/ACS_end_point'
                   minLength: 1
               attribute_consuming_service:
-                  description: To be inserted 
+                  description: To be inserted
                   type: array
                   items:
                       $ref: '#/components/schemas/attribute_end_point'
                   minLength: 1
               eidas_ready:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: N
               create_date:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: 2021-12-20 12:51:12
               lastupdate_date:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: 2021-12-20 12:51:12
               delete_date:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
+                  nullable: true
                   example: null
               _deleted:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: N
               _disabled:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: N
               registry_link:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: https://registry.spid.gov.it/entities/http%3A%2F%2Fwww.xyz.it
         oneSP_schema_onlyID:
-            description: Reference al metatdato pubblicato per un SP 
+            description: Reference al metatdato pubblicato per un SP
             type: object
-            properties: 
+            properties:
               entity_id:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: https://entityID.unico/dell/SP
               registry_link:
-                  description: To be inserted 
+                  description: To be inserted
                   type: string
                   minLength: 1
                   example: https://registry.spid.gov.it/entities/http%3A%2F%2Fwww.xyz.it
         certificate_x509:
-            description: To be inserted 
+            description: To be inserted
             type: string
             minLength: 1
             example: MIIGujCCBKKgAwI...cY0LXQ==
@@ -563,7 +565,7 @@ components:
                     type: string
                     minLength: 1
                     example: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
-                Location: 
+                Location:
                     description: Location
                     type: string
                     minLength: 1
@@ -574,11 +576,11 @@ components:
                 - $ref: '#/components/schemas/end_point'
                 - type: object
                   properties:
-                        index: 
+                        index:
                             type: integer
                             description: Index
                             example: 0
-                        isDefault: 
+                        isDefault:
                             type: boolean
                             description: isDefault
                             example: False
@@ -586,17 +588,17 @@ components:
             type: object
             properties:
                 index:
-                    description: index 
+                    description: index
                     type: integer
                     minLength: 1
                     example: 0
-                ServiceName: 
-                    description: ServiceName 
+                ServiceName:
+                    description: ServiceName
                     type: string
                     minLength: 1
                     example: Servizi xyz
-                ServiceDescription: 
-                    description: ServiceDescription 
+                ServiceDescription:
+                    description: ServiceDescription
                     type: string
                     minLength: 1
                     example: Questo servizio fornisce...
@@ -604,64 +606,43 @@ components:
                     anyOf:
                     - $ref: '#/components/schemas/SPID_attributes'
         SPID_attributes:
-            description: SET degli attributi definiti in SPID
+            description: |-
+              Insieme degli attributi definiti in SPID.
             type: object
             properties:
                 countyOfBirth:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 dateOfBirth:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 digitalAddress:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 email:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 familyName:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 fiscalNumber:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 gender:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 mobilePhone:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 name:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 placeOfBirth:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
                 spidCode:
                   type: string
                   description: TobeDONE
-                  default: 
-                  example: 
     parameters:
             sp-entityid:
               in: path
@@ -669,9 +650,9 @@ components:
               required: true
               schema:
                 type: string
-              allowReserved: false                   
+              allowReserved: false
               description: valore URL-encoded dell’EntityID del metatadato da ricevere
-              example: https%3A%2F%2Fwww.inps.it                  
+              example: https%3A%2F%2Fwww.inps.it
             offsetParam:
               in: query
               name: page
@@ -689,6 +670,7 @@ components:
                 minimum: 1
                 maximum: 50               #<-- quale è il massimo???
                 default: 50
+                format: int32
               description: Numero di metadata per ogni pagina.
             entity_type:
               in: query
@@ -700,7 +682,7 @@ components:
                 example: IDP
                 default: SP
                 description: Filtro per tipologia di ente (IDP,SP,AA).
-            updated_from:                                
+            updated_from:
               in: query
               name: updated_from
               required: false
@@ -709,7 +691,7 @@ components:
                 pattern: /([0-9]{4})(?:[0-9]{2})([0-9]{2})/
                 example: "20190517"
                 description: Recupera i metadata aggiornati da una specifica data (YYYYMMDD).
-            deleted_from:                                
+            deleted_from:
               in: query
               name: deleted_from
               required: false
@@ -718,7 +700,7 @@ components:
                 pattern: /([0-9]{4})(?:[0-9]{2})([0-9]{2})/
                 example: "20190517"
                 description: Recupera i metadata non più presenti o cancellati da una specifica data  (YYYYMMDD).
-            valid_at:                                    
+            valid_at:
               in: query
               name: valid_at
               required: false
@@ -734,7 +716,7 @@ components:
               schema:
                 type: string
                 enum: [PA,PR]
-                example: PPR     
+                example: PPR
                 description: Filtro per tipologia di ente (se PA o Privato).
             federation_type:
               in: query
@@ -752,7 +734,7 @@ components:
               required: false
               schema:
                 type: string
-                example: UICCIAA     
+                example: UICCIAA
                 description: Filtro per codice dell’ente aggregatore ovvero IPA o PIVA.
             eidas_ready:
               in: query
@@ -761,7 +743,7 @@ components:
               schema:
                 type: string       # <-- to check (oppure boolean??)
                 enum: [Y,N]
-                example: Y     
+                example: Y
                 default: N          # <-- to check
                 description: Filtro su attributi eIDAS.
             only_entity_id:
@@ -771,7 +753,7 @@ components:
               schema:
                 type: string       # <-- to check (oppure boolean??)
                 enum: [Y,N]
-                example: Y     
+                example: Y
                 default: N          # <-- to check
                 description: Restituisce solo gli entity_id.
             output:
@@ -779,32 +761,26 @@ components:
               name: output
               required: false
               schema:
-                type: string       
+                type: string
                 enum: [json]
-                example: json     
+                example: json
                 description: Ritorna il risultato della ricerca in formato JSON.
     examples:
       oneSP_metadata_xml:
           description: Metadata di esempio XML
-          value:
-            $ref: './oneSP_metadata_example.xml'
+          externalValue: 'oneSP_metadata_example.xml'
       oneSP_metadata_json:
           description: Metadata di esempio XML
-          value:
-            $ref: './oneSP_metadata_example.json'
+          externalValue: 'oneSP_metadata_example.json'
       MultipleSP_json:
-              description: Metadata di esempio JSON 
-              value:
-                $ref: './multipleSP_metadata_example.json'
+          description: Metadata di esempio JSON
+          externalValue: 'multipleSP_metadata_example.json'
       MultipleSP_xml:
           description: Metadata di esempio XML
-          value:
-            $ref: './multipleSP_metadata_example.xml'
+          externalValue: 'multipleSP_metadata_example.xml'
       MultipleSP_xml_onlyID:
-              description: Metadata di esempio XML - **Only_entity_id**
-              value:
-                $ref: './multipleSP_metadata_example_only_entityID.xml'
+          description: Metadata di esempio XML - **Only_entity_id**
+          externalValue: 'multipleSP_metadata_example_only_entityID.xml'
       MultipleSP_json_onlyID:
-              description: Metadata di esempio JSON - **Only_entity_id**
-              value:
-                $ref: './multipleSP_metadata_example_only_entityID.json'
+          description: Metadata di esempio JSON - **Only_entity_id**
+          externalValue: 'multipleSP_metadata_example_only_entityID.json'

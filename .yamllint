@@ -7,5 +7,3 @@ rules:
     indent-sequences: consistent
   line-length:
     max: 180
-
-
