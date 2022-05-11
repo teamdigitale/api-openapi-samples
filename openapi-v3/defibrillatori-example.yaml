@@ -107,7 +107,15 @@ components:
         <<: *GeoJSONFeatureProperties
         properties:
           $ref: '#/components/schemas/Defibrillatore'
-
+      example:
+        type: Feature
+        geometry:
+          type: Point
+          coordinates: [ 40.123, 14.123]
+        properties:
+          id: 7411c337-2f9a-4f6b-911d-d1b814ea4c57
+          status: attivo
+          gestore: C_E472
     DefibrillatoriGeo:
       type: object
       description: Un oggetto GeoJSon FeatureCollection
