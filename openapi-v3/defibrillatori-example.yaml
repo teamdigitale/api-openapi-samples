@@ -9,13 +9,13 @@ info:
     Questa API permette a tutti di elencare
     e localizzare i defibrillatori presenti in un'area.
     Inoltre permette al personale autorizzato di gestire
-    le informazioni in elenco
+    le informazioni in elenco.
 
     E' utile perché...
   termsOfService: 'https://tos.example.it'
   contact:
     email: roberto@teamdigitale.governo.it
-    name: Team Digitale
+    name: Dipartimento Trasformazione Digitale
     url: 'https://innovazione.gov.it'
 tags:
 -  name: public
@@ -207,9 +207,10 @@ paths:
   /status:
     get:
       summary: Get status
-      operationId: get_status
+      operationId: mostra_status
       tags:
       - monitor
+      - public
       security:
         - {}
       description: Returns OK if the service works.
@@ -225,7 +226,7 @@ paths:
   /defibrillatori:
     get:
       summary: Elenca defibrillatori
-      operationId: list_defibrillatori
+      operationId: lista_defibrillatori
       security:
         - {}
       tags:
@@ -251,7 +252,7 @@ paths:
           $ref: "#/components/responses/default"
     post:
       summary: Aggiungi defibrillatore
-      operationId: post_defibrillatori
+      operationId: crea_defibrillatore
       tags:
       - manage
       security:
@@ -290,9 +291,10 @@ paths:
     - $ref: "#/components/parameters/DefibrillatoreId"
     get:
       summary: Elenca un defibrillatore
-      operationId: get_defibrillatore
+      operationId: mostra_defibrillatore
       tags:
       - public
+      - manage
       security:
         - {}
       description: |-
@@ -310,7 +312,7 @@ paths:
           $ref: "#/components/responses/default"
     patch:
       summary: Aggiorna un defibrillatore
-      operationId: update_defibrillatore
+      operationId: modifica_defibrillatore
       tags:
       - manage
       security:
@@ -339,7 +341,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DefibrillatoreGeo"
         "403":
-          description: |-
+          description: |- 
             Non si hanno i permessi per modificare l'oggetto indicato.
             E' gestito da un'altro ente.
           content:
@@ -350,7 +352,7 @@ paths:
           $ref: "#/components/responses/default"
     delete:
       summary: Elimina un defibrillatore.
-      operationId: delete_defibrillatore
+      operationId: elimina_defibrillatore
       description: Elimina un defibrillatore.
       security:
         - OAuthToken: [operatore]
