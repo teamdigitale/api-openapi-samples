@@ -198,7 +198,7 @@ components:
           tokenUrl: https://as.example/token
           scopes:
             "operatore": Gestisci i defibrillatori.
-            "automa": Cambia lo stato di un defibrillatore.
+            "sistema-IoT": Cambia lo stato di un defibrillatore.
   responses:
     default:
       $ref: https://teamdigitale.github.io/openapi/master/definitions.yaml#/components/responses/default
@@ -256,7 +256,7 @@ paths:
       tags:
       - manage
       security:
-        - OAuthToken: [operatore, automa]
+        - OAuthToken: [operatore]
       description: |-
         Aggiungi un defibrillatore.
       requestBody:
@@ -316,7 +316,7 @@ paths:
       tags:
       - manage
       security:
-        - OAuthToken: [operatore, automa]
+        - OAuthToken: [operatore, sistema-IoT]
       description: |-
         Aggiorna un defibrillatore specifico con i dati forniti
         * da un operatore (utente autenticato) dell'ente che gestisce il
