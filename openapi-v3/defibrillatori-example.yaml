@@ -18,7 +18,7 @@ info:
     name: Dipartimento Trasformazione Digitale
     url: 'https://innovazione.gov.it'
 tags:
--  name: public
+-  name: publish
    description: >-
     Pubblica le informazioni sui defibrillatori
 -  name: manage
@@ -26,7 +26,7 @@ tags:
     Permetti agli enti di gestire i defibrillatori
 -  name: monitor
    description: >-
-    Operazioni per il monitoraggio.
+    Monitoraggio dello stato dell'API.
 servers:
 - url: https://api.example/defibrillatori/v0
   description: production
@@ -210,7 +210,7 @@ paths:
       operationId: mostra_status
       tags:
       - monitor
-      - public
+      - publish
       security:
         - {}
       description: Returns OK if the service works.
@@ -230,7 +230,7 @@ paths:
       security:
         - {}
       tags:
-      - public
+      - publish
       description: |-
         Elenca i defibrillatori presenti in un'area definita alternativamente
         dai parametri:
@@ -286,14 +286,14 @@ paths:
                 $ref: "#/components/schemas/DefibrillatoreGeo"
         default:
           $ref: "#/components/responses/default"
-  /defibrillatore/{id}:
+  /defibrillatori/{id}:
     parameters:
     - $ref: "#/components/parameters/DefibrillatoreId"
     get:
       summary: Elenca un defibrillatore
       operationId: mostra_defibrillatore
       tags:
-      - public
+      - publish
       - manage
       security:
         - {}
