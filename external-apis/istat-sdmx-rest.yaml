@@ -92,7 +92,7 @@ x-commons:
       $ref: '#/components/responses/503'
 
 servers:
-  - url: 'http://sdmx.istat.it/sdmxws/rest'
+  - url: 'https://esploradati.istat.it/SDMXWS/rest'
     description: SDMX REST URL di produzione
 
 paths:
