@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: ElencoProfessionisti
+  version: "1.0.0"
+  x-api-id: 00000000-0000-0000-0000-000000000000
+  x-summary: Elenco dei professionisti della Regione Umbria
+  description: |-
+    #### Documentazione
+    API per l'acquisizione dell'elenco dei professionisti della Regione Umbria.
+    Per maggiori informazioni sull'elenco regionale delle imprese consultare
+    (il sito relativo)[http://www.regione.umbria.it/opere-pubbliche/consulta-l-elenco].
+
+    L'utilizzo di questa API è libero e non richiede alcuna sottoscrizione.
+
+
+    Elenco regionale dei professionisti da invitare alle procedure negoziate
+    per l'affidamento di servizi attinenti all'architettura e all'ingegneria
+    di importo inferiore a centomila euro.
+
+    #### Note
+    L'API viene erogata tramite il [Catalogo API della Regione Umbria](https://apistore.regione.umbria.it/store/)
+  contact:
+    name: Riferimento Tecnico - Umbria Digitale
+    url: https://apistore.regione.umbria.it/store/apis/info?name=ElencoProfessionisti&version=1.0&provider=admin&tag=Cataloghi%20indici%20elenchi-group
+    email: servicedesk@umbriadigitale.it
+  termsOfService: >-
+    WRITEME
+  x-lifecycle:
+    published: 2019-03-13T14:56:39+01:00
+    maturity: published
+  x-catalog:
+    tag:
+    - "cataloghi indici elenchi"
+paths:
+  /elenco-professionisti:
+    get:
+      responses:
+        '200':
+          description: Chiamata effettuata con successo
+          content:
+            'application/json':
+              schema:
+                type: object
+                title: Lista tipologie per professionista
+                required:
+                  - professionisti
+                properties:
+                  professionisti:
+                    title: Professionisti
+                    type: object
+                    required:
+                      - professionista
+                    properties:
+                      professionista:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Professionista'
+      summary: >-
+        Elenco regionale dei professionisti da invitare alle procedure negoziate
+        per l'affidamento di servizi attinenti all'architettura e all'ingegneria
+        di importo inferiore a centomila euro.
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+servers:
+  - url: 'https://api.regione.umbria.it:443/elencoprofessionisti/1.0'
+    description: Produzione
+    x-healthCheck:
+      url: TODO
+      interval: 300
+      timeout: 15
+components:
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://api.regione.umbria.it:443/authorize'
+          scopes: {}
+  schemas:
+    Professionista:
+      title: ProfessionistaItem
+      required:
+        - soggetto
+        - codice-fiscale-piva
+        - recapito
+        - id-profilo
+        - profilo
+        - numero-domanda
+        - id-fascia-importo
+        - descrizione-fascia-importo
+        - id-tipologia-servizio
+        - descrizione-tipologia-servizio
+      properties:
+        soggetto:
+          type: string
+        codice-fiscale-piva:
+          type: string
+        recapito:
+          type: string
+        id-profilo:
+          type: string
+        profilo:
+          type: string
+        numero-domanda:
+          type: string
+        id-fascia-importo:
+          type: string
+        descrizione-fascia-importo:
+          type: string
+        id-tipologia-servizio:
+          type: string
+        descrizione-tipologia-servizio:
+          type: string
