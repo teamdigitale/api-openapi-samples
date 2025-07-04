@@ -29,11 +29,11 @@ per interoperare ogni servizio deve aggiungere delle funzioni di conversione ed 
 
 Le [Linee Guida Nazionali per la Valorizzazione del Patrimonio Informativo Pubblico ](http://lg-patrimonio-pubblico.readthedocs.io/it/latest/index.html) forniscono una strategia per i nomi delle variabili e la serializzazione degli oggetti.
 
-Ad esempio, [questo file definisce i campi di una persona ](https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/Ontologie/CPV/latest/CPV-AP_IT.jsonld) e fornisce un riferimento parlante per i nomi dei campi sia in inglese che in italiano.
+Ad esempio, [questo file definisce i campi di una persona ](https://github.com/italia/dati-semantic-assets/blob/master/Ontologie/CPV/latest/CPV-AP_IT.jsonld) e fornisce un riferimento parlante per i nomi dei campi sia in inglese che in italiano.
 
 Di seguito alcuni esempi in camelCase e snake_case:
 
-* [givenName, given_name ](https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/882ca0cfdc17c188e00606bac68c7b306e88e6ec/Ontologie/CPV/latest/CPV-AP_IT.jsonld#L16), [nomeProprio, nome_proprio](https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/882ca0cfdc17c188e00606bac68c7b306e88e6ec/Ontologie/CPV/latest/CPV-AP_IT.jsonld#L51)
+* [givenName, given_name ](https://github.com/italia/dati-semantic-assets/blob/882ca0cfdc17c188e00606bac68c7b306e88e6ec/Ontologie/CPV/latest/CPV-AP_IT.jsonld#L16), [nomeProprio, nome_proprio](https://github.com/italia/dati-semantic-assets/blob/882ca0cfdc17c188e00606bac68c7b306e88e6ec/Ontologie/CPV/latest/CPV-AP_IT.jsonld#L51)
 * familyName, family_name, cognome, cognome
 * dateOfBirth, date_of_birth, dataDiNascita, data_di_nascita
 * taxCode, tax_code, codiceFiscale, codice_fiscale
