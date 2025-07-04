@@ -96,7 +96,7 @@ paths:
       - name: administrative_unit
         description: |-
           The type of administrative unit, related to the
-          https://github.com/italia/daf-ontologie-vocabolari-controllati/tree/master/VocabolariControllati/territorial-classifications
+          https://github.com/italia/dati-semantic-assets/tree/master/VocabolariControllati/territorial-classifications
           vocabulary, in italian.
         schema:
           type: string
@@ -545,7 +545,7 @@ components:
           type: string
           description: >-
             vedi
-            https://github.com/italia/daf-ontologie-vocabolari-controllati/blob/master/VocabolariControllati/administrative-units/countries/italy/italy.ttl
+            https://github.com/italia/dati-semantic-assets/blob/master/VocabolariControllati/administrative-units/countries/italy/italy.ttl
         country_name:
           type: string
           example: Italia
