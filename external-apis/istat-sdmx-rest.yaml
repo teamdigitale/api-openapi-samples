@@ -53,13 +53,13 @@ info:
     -  estrarre la lista dei dataflow disponibili in formato json:
     
     ```
-    curl 'http://sdmx.istat.it/SDMXWS/rest/dataflow?format=jsonstructure'
+    curl 'https://esploradati.istat.it/SDMXWS/rest/dataflow?format=jsonstructure'
     ```
     
     - estrarre il dataset dell’Indice della Produzione industriale in formato json:
     
     ```
-    curl 'http://sdmx.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?startPeriod=2018&endPeriod=2018&format=jsondata'
+    curl 'https://esploradati.istat.it/SDMXWS/rest/data/IT1,115_333,1.2?startPeriod=2018&endPeriod=2018&format=jsondata'
     ```
     
     Per limitare il volume delle risposte, che possono essere anche

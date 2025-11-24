@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "servers": [
     {
-      "url": "http://sdmxb.istat.it/sdmxws/rest/"
+      "url": "https://esploradati.istat.it/SDMXWS/rest/"
     }
   ],
   "paths": {
